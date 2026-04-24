@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Por o Para</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f0f;
+      color: #e0e0e0;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── Landing ── */
+
+    .landing {
+      width: 100%;
+      max-width: 600px;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .landing-cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      object-fit: contain;
+      object-position: top center;
+    }
+
+    .landing-fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, transparent, #0f0f0f 80%);
+    }
+
+    .landing-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .landing-sub {
+      font-size: 15px;
+      color: #a78b00;
+      line-height: 1.5;
+      margin-bottom: 28px;
+      font-weight: 500;
+    }
+
+    .landing-cta {
+      padding: 18px 64px;
+      font-size: 17px;
+      font-weight: 700;
+      background: #fbbf24;
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .landing-cta:hover { opacity: 0.9; }
+    .landing-cta:active { transform: scale(0.97); }
+
+    .landing-count {
+      margin-top: 16px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    /* ── Game ── */
+
+    .game {
+      width: 100%;
+      max-width: 600px;
+      min-height: 100dvh;
+      display: none;
+      flex-direction: column;
+    }
+
+    .header {
+      padding: 20px 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-logo {
+      height: 32px;
+      width: auto;
+    }
+
+    .restart {
+      background: none;
+      border: 1px solid #332b00;
+      border-radius: 8px;
+      color: #a78b00;
+      font-size: 13px;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-weight: 600;
+    }
+
+    .restart:hover { border-color: #fbbf24; color: #fbbf24; }
+    .restart:active { transform: scale(0.97); }
+
+    .scoreboard {
+      display: flex;
+      gap: 8px;
+      padding: 0 20px 20px;
+      margin-top: 8px;
+    }
+
+    .score-box {
+      flex: 1;
+      padding: 14px 16px;
+      border-radius: 10px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .score-box.correct-box {
+      background: #1a1400;
+      border: 1px solid #fbbf2422;
+    }
+
+    .score-box.wrong-box {
+      background: #1a0a0a;
+      border: 1px solid #dc262622;
+    }
+
+    .score-box .number {
+      font-size: 28px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .score-box.correct-box .number { color: #fbbf24; }
+    .score-box.wrong-box .number { color: #ef4444; }
+
+    .score-box .label {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .score-box.correct-box .label { color: #92700c; }
+    .score-box.wrong-box .label { color: #7f1d1d; }
+
+    .card {
+      width: 100%;
+      padding: 0 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .question-number {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .sentence {
+      font-size: 24px;
+      line-height: 1.5;
+      font-weight: 500;
+      color: #fff;
+      margin-bottom: 32px;
+    }
+
+    .blank {
+      display: inline-block;
+      min-width: 80px;
+      border-bottom: 3px solid #fbbf2466;
+      text-align: center;
+      padding: 0 4px;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .blank.correct-reveal { border-color: #fbbf24; color: #fbbf24; }
+    .blank.wrong-reveal { border-color: #ef4444; color: #ef4444; text-decoration: line-through; }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 18px 24px;
+      font-size: 18px;
+      font-weight: 700;
+      border: 2px solid #fbbf24;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: #1a1400;
+      color: #fbbf24;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .btn:hover { background: #2a2000; border-color: #fcd34d; }
+    .btn:active { transform: scale(0.97); }
+    .btn.selected-correct { background: #a16207; border-color: #fbbf24; color: #fff; }
+    .btn.selected-wrong { background: #dc2626; border-color: #dc2626; color: #fff; }
+    .btn.was-correct { border-color: #fbbf24; color: #fbbf24; background: transparent; }
+
+    .feedback {
+      margin-top: 24px;
+      padding: 16px 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .feedback.show { opacity: 1; }
+    .feedback.correct-fb { background: #1a1400; border: 1px solid #fbbf2433; color: #fde68a; }
+    .feedback.wrong-fb { background: #1a0a0a; border: 1px solid #dc262633; color: #fca5a5; }
+
+    .next-btn {
+      margin-top: 24px;
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      background: transparent;
+      border: 2px solid #332b00;
+      border-radius: 10px;
+      color: #fbbf24;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      opacity: 0;
+      pointer-events: none;
+      align-self: flex-start;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .next-btn.show { opacity: 1; pointer-events: auto; }
+    .next-btn:hover { background: #1a1400; border-color: #fbbf24; }
+    .next-btn:active { transform: scale(0.97); }
+
+    .bottom-pad { height: 32px; flex-shrink: 0; }
+
+    @media (max-width: 480px) {
+      .landing-cta { padding: 18px 48px; width: 100%; }
+      .sentence { font-size: 21px; }
+      .btn { padding: 20px 16px; font-size: 17px; border-radius: 10px; }
+      .feedback { font-size: 14px; padding: 14px 16px; }
+      .next-btn { width: 100%; text-align: center; padding: 16px; }
+      .score-box .number { font-size: 24px; }
+      .score-box { padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Landing -->
+  <div class="landing" id="landing">
+    <img class="landing-cover" src="cover.png" alt="Por o Para">
+    <div class="landing-fade"></div>
+    <div class="landing-content">
+      <p class="landing-sub">Elige la preposici&oacute;n correcta en cada frase.</p>
+      <button class="landing-cta" onclick="startGame()">Empezar</button>
+      </div>
+  </div>
+
+  <!-- Game -->
+  <div class="game" id="game">
+    <div class="header">
+      <div class="header-left">
+        <img class="header-logo" src="logo.jpg" alt="Por or Para?">
+      </div>
+      <button class="restart" onclick="goHome()">Reiniciar</button>
+    </div>
+    <div class="scoreboard">
+      <div class="score-box correct-box">
+        <span class="number" id="correct-count">0</span>
+        <span class="label">correctas</span>
+      </div>
+      <div class="score-box wrong-box">
+        <span class="number" id="wrong-count">0</span>
+        <span class="label">incorrectas</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="question-number" id="q-number"></div>
+      <div class="sentence" id="sentence"></div>
+      <div class="buttons">
+        <button class="btn" id="btn-por" onclick="answer('por')">Por</button>
+        <button class="btn" id="btn-para" onclick="answer('para')">Para</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="next-btn" onclick="next()">Siguiente &rarr;</button>
+    </div>
+    <div class="bottom-pad"></div>
+  </div>
+
+<script>
+const sentences = [
+  // === PARA: Propósito / objetivo ===
+  { text: "Estudio mucho ___ aprobar el examen.", answer: "para", rule: "Para + infinitivo expresa propósito (con el fin de)." },
+  { text: "Necesito un cuchillo ___ cortar el pan.", answer: "para", rule: "Para + infinitivo expresa propósito." },
+  { text: "Fui al supermercado ___ comprar leche.", answer: "para", rule: "Para + infinitivo = con el fin de." },
+  { text: "Ahorro dinero ___ viajar a Japón.", answer: "para", rule: "Para expresa un objetivo o propósito." },
+  { text: "Llamé ___ reservar una mesa.", answer: "para", rule: "Para + infinitivo = con el fin de." },
+  { text: "Uso gafas ___ leer.", answer: "para", rule: "Para + infinitivo expresa propósito." },
+  { text: "Compré flores ___ decorar la casa.", answer: "para", rule: "Para expresa el propósito previsto." },
+  { text: "Trabaja mucho ___ mantener a su familia.", answer: "para", rule: "Para + infinitivo = con el fin de." },
+  { text: "Vine ___ ayudarte.", answer: "para", rule: "Para + infinitivo expresa propósito." },
+  { text: "Necesitas estudiar más ___ mejorar tus notas.", answer: "para", rule: "Para + infinitivo = con el fin de." },
+
+  // === PARA: Destinatario ===
+  { text: "Este regalo es ___ ti.", answer: "para", rule: "Para indica el destinatario." },
+  { text: "Compré un libro ___ mi madre.", answer: "para", rule: "Para indica quién recibe algo." },
+  { text: "La carta es ___ el director.", answer: "para", rule: "Para marca el destinatario previsto." },
+  { text: "Cociné algo especial ___ mis invitados.", answer: "para", rule: "Para indica quién se beneficia." },
+  { text: "Hice un pastel ___ los niños.", answer: "para", rule: "Para indica el destinatario." },
+
+  // === PARA: Destino ===
+  { text: "Salimos ___ Madrid mañana.", answer: "para", rule: "Para indica destino." },
+  { text: "El tren sale ___ Barcelona a las ocho.", answer: "para", rule: "Para indica dirección/destino." },
+  { text: "Ya vamos ___ la playa.", answer: "para", rule: "Para expresa destino." },
+  { text: "Tomé un vuelo ___ Roma.", answer: "para", rule: "Para indica destino." },
+
+  // === PARA: Fecha límite ===
+  { text: "El informe es ___ el lunes.", answer: "para", rule: "Para establece una fecha límite." },
+  { text: "Necesito el vestido ___ el viernes.", answer: "para", rule: "Para expresa una fecha límite." },
+  { text: "Termina el proyecto ___ mañana.", answer: "para", rule: "Para establece un plazo." },
+  { text: "Todo estará listo ___ las cinco.", answer: "para", rule: "Para indica una fecha límite." },
+  { text: "¿Puedes tenerlo listo ___ la semana que viene?", answer: "para", rule: "Para expresa una fecha límite." },
+
+  // === PARA: Comparación ===
+  { text: "___ ser tan joven, sabe mucho.", answer: "para", rule: "Para expresa comparación (considerando que)." },
+  { text: "___ un principiante, cocinas muy bien.", answer: "para", rule: "Para introduce una comparación sorprendente." },
+  { text: "___ su edad, está en muy buena forma.", answer: "para", rule: "Para expresa 'considerando'." },
+  { text: "No está mal ___ ser la primera vez.", answer: "para", rule: "Para establece una comparación inesperada." },
+  { text: "___ un estudiante, habla con mucha confianza.", answer: "para", rule: "Para introduce una comparación." },
+
+  // === PARA: Opinión ===
+  { text: "___ mí, la película fue aburrida.", answer: "para", rule: "Para mí = en mi opinión." },
+  { text: "___ nosotros, es la mejor opción.", answer: "para", rule: "Para + pronombre = en la opinión de alguien." },
+  { text: "___ ella, el problema no es grave.", answer: "para", rule: "Para + persona = desde su perspectiva." },
+
+  // === POR: Causa / razón ===
+  { text: "Gracias ___ tu ayuda.", answer: "por", rule: "Por expresa la causa o razón de la gratitud." },
+  { text: "Lo hice ___ amor.", answer: "por", rule: "Por indica motivación/causa." },
+  { text: "Llegué tarde ___ el tráfico.", answer: "por", rule: "Por expresa la causa." },
+  { text: "Cerró la tienda ___ falta de clientes.", answer: "por", rule: "Por indica la razón." },
+  { text: "Suspendieron el partido ___ la lluvia.", answer: "por", rule: "Por expresa la causa." },
+  { text: "No pude dormir ___ el ruido.", answer: "por", rule: "Por indica la razón." },
+  { text: "Me disculpo ___ llegar tarde.", answer: "por", rule: "Por sigue a las disculpas, indicando la razón." },
+  { text: "Le regañaron ___ su comportamiento.", answer: "por", rule: "Por indica la causa de la reprimenda." },
+  { text: "Perdimos el vuelo ___ no salir a tiempo.", answer: "por", rule: "Por + infinitivo = a causa de (no) hacer algo." },
+  { text: "Lo admiro ___ su valentía.", answer: "por", rule: "Por expresa la razón de la admiración." },
+
+  // === POR: Duración de tiempo ===
+  { text: "Viví en México ___ tres años.", answer: "por", rule: "Por expresa duración de tiempo." },
+  { text: "Esperé ___ dos horas.", answer: "por", rule: "Por indica cuánto duró algo." },
+  { text: "Estudió español ___ seis meses.", answer: "por", rule: "Por expresa duración." },
+  { text: "Dormí ___ diez horas.", answer: "por", rule: "Por indica duración." },
+  { text: "Llovió ___ toda la noche.", answer: "por", rule: "Por expresa duración de tiempo." },
+
+  // === POR: Intercambio ===
+  { text: "Pagué diez euros ___ el café.", answer: "por", rule: "Por indica intercambio de dinero." },
+  { text: "Cambié mi coche viejo ___ uno nuevo.", answer: "por", rule: "Por indica un intercambio o trueque." },
+  { text: "Te doy mi bocadillo ___ tu manzana.", answer: "por", rule: "Por expresa un intercambio." },
+  { text: "Vendí la bicicleta ___ cien dólares.", answer: "por", rule: "Por indica el precio en un intercambio." },
+  { text: "¿Cuánto pagaste ___ esos zapatos?", answer: "por", rule: "Por se usa al preguntar por el precio." },
+
+  // === POR: Movimiento a través de / a lo largo de ===
+  { text: "Caminamos ___ el parque.", answer: "por", rule: "Por indica movimiento a través de un lugar." },
+  { text: "El gato entró ___ la ventana.", answer: "por", rule: "Por indica paso a través de." },
+  { text: "Pasamos ___ tu barrio ayer.", answer: "por", rule: "Por = a través de, por." },
+  { text: "Paseamos ___ la playa al atardecer.", answer: "por", rule: "Por indica movimiento a lo largo de." },
+  { text: "Condujimos ___ la autopista toda la noche.", answer: "por", rule: "Por expresa movimiento a lo largo de." },
+  { text: "Viajamos ___ toda Europa en tren.", answer: "por", rule: "Por indica movimiento a través de." },
+
+  // === POR: Medio de comunicación / transporte ===
+  { text: "Te envié la información ___ correo electrónico.", answer: "por", rule: "Por indica el medio de comunicación." },
+  { text: "Hablamos ___ teléfono ayer.", answer: "por", rule: "Por indica el medio de comunicación." },
+  { text: "Me enteré ___ las noticias.", answer: "por", rule: "Por indica el canal/medio." },
+  { text: "Envié el paquete ___ correo.", answer: "por", rule: "Por indica el medio de envío." },
+  { text: "Lo vi ___ televisión.", answer: "por", rule: "Por indica el medio." },
+
+  // === POR: Por / frecuencia ===
+  { text: "Vamos al gimnasio tres veces ___ semana.", answer: "por", rule: "Por significa 'por cada' en expresiones de frecuencia." },
+  { text: "Gana dos mil euros ___ mes.", answer: "por", rule: "Por = por cada." },
+  { text: "El límite es cien kilómetros ___ hora.", answer: "por", rule: "Por significa 'por cada'." },
+  { text: "Toma dos pastillas ___ día.", answer: "por", rule: "Por = por cada (frecuencia/dosis)." },
+
+  // === POR: En nombre de / en lugar de ===
+  { text: "Firmé el documento ___ mi jefe.", answer: "por", rule: "Por = en nombre de / en lugar de." },
+  { text: "Hoy trabajo ___ María porque está enferma.", answer: "por", rule: "Por = en lugar de, sustituyendo a." },
+  { text: "Hablaré ___ todo el equipo.", answer: "por", rule: "Por = en nombre de." },
+  { text: "Puedo ir a la reunión ___ ti.", answer: "por", rule: "Por = en lugar de alguien." },
+  { text: "Votaré ___ el candidato que defiende la educación.", answer: "por", rule: "Por = a favor de, apoyando." },
+
+  // === POR: Agente pasivo ===
+  { text: "El libro fue escrito ___ García Márquez.", answer: "por", rule: "Por introduce el agente en voz pasiva." },
+  { text: "La canción fue cantada ___ una famosa soprano.", answer: "por", rule: "Por marca el agente en construcciones pasivas." },
+  { text: "La casa fue diseñada ___ un arquitecto italiano.", answer: "por", rule: "Por introduce el autor en voz pasiva." },
+  { text: "El gol fue marcado ___ el delantero.", answer: "por", rule: "Por = por (agente pasivo)." },
+  { text: "La decisión fue tomada ___ el comité.", answer: "por", rule: "Por introduce el agente en voz pasiva." },
+
+  // === POR: Tiempo / lugar aproximado ===
+  { text: "Llegaremos ___ la mañana.", answer: "por", rule: "Por indica un momento aproximado del día." },
+  { text: "Vivo ___ aquí cerca.", answer: "por", rule: "Por indica ubicación aproximada." },
+  { text: "Pasaré ___ tu casa ___ la tarde.", answer: "por", rule: "Por = alrededor de (tiempo o lugar aproximado)." },
+  { text: "___ esa época, yo vivía en Buenos Aires.", answer: "por", rule: "Por indica un período aproximado." },
+
+  // === Mixtos / contrastes difíciles ===
+  { text: "Brindemos ___ los novios.", answer: "por", rule: "Por sigue a 'brindar' — en honor a." },
+  { text: "Lo hago ___ ti, no ___ mí.", answer: "por", rule: "Por = a causa de (motivación). Contexto: sacrificio." },
+  { text: "Salí ___ pan y no encontré ninguna panadería abierta.", answer: "por", rule: "Salir por = salir a buscar/conseguir algo." },
+  { text: "¿___ qué estudias español?", answer: "por", rule: "¿Por qué? pregunta por la causa/razón." },
+  { text: "¿___ qué estudias español? — ___ trabajar en Latinoamérica.", answer: "para", rule: "¿Para qué? pregunta por el propósito/objetivo." },
+  { text: "Estoy preocupado ___ mi hermano.", answer: "por", rule: "Preocupado por = preocupado a causa de." },
+  { text: "Esto es muy fácil ___ mí.", answer: "para", rule: "Para mí = para mí (opinión/juicio personal)." },
+  { text: "Fueron al médico ___ el dolor de cabeza.", answer: "por", rule: "Por = a causa de (lo que les impulsó)." },
+  { text: "¿Tienes algo ___ el dolor de cabeza?", answer: "para", rule: "Para = destinado a solucionar (propósito)." },
+  { text: "Lucho ___ mis derechos.", answer: "por", rule: "Luchar por = luchar a favor de (una causa)." },
+  { text: "Lo dejó todo ___ seguir su sueño.", answer: "por", rule: "Por = a causa de / impulsado por (motivación)." },
+  { text: "El medicamento es ___ la fiebre.", answer: "para", rule: "Para = destinado a tratar (propósito)." },
+  { text: "Lucharon ___ la libertad.", answer: "por", rule: "Por = a favor de / por el bien de." },
+  { text: "Está listo ___ salir.", answer: "para", rule: "Listo para = preparado para (propósito)." },
+  { text: "Estamos aquí ___ celebrar tu cumpleaños.", answer: "para", rule: "Para + infinitivo = propósito." },
+  { text: "No tengo tiempo ___ quejas.", answer: "para", rule: "Para = destinado a, asignado a." },
+  { text: "Tengo mucho respeto ___ esa profesora.", answer: "por", rule: "Respeto por = respeto a causa de." },
+  { text: "Preguntó ___ ti.", answer: "por", rule: "Preguntar por = preguntar acerca de alguien." },
+  { text: "___ lo general, ceno a las nueve.", answer: "por", rule: "Por lo general = expresión fija (generalmente)." },
+  { text: "___ supuesto que puedes venir.", answer: "por", rule: "Por supuesto = expresión fija (claro que sí)." },
+  { text: "___ favor, cierra la puerta.", answer: "por", rule: "Por favor = expresión fija." },
+  { text: "Voy a estar aquí ___ siempre.", answer: "para", rule: "Para siempre = expresión fija (eternamente)." },
+  { text: "___ fin terminamos el proyecto.", answer: "por", rule: "Por fin = expresión fija (finalmente)." },
+  { text: "___ eso no quiero ir.", answer: "por", rule: "Por eso = expresión fija (por esa razón)." },
+  { text: "Queda mucho ___ hacer.", answer: "por", rule: "Por + infinitivo = que queda pendiente." },
+  { text: "Estoy ___ salir, ¿vienes?", answer: "por", rule: "Estar por + infinitivo = estar a punto de." },
+  { text: "___ cierto, ¿viste la nueva película?", answer: "por", rule: "Por cierto = expresión fija (a propósito)." },
+];
+
+let current = 0;
+let total = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let answered = false;
+let order = [];
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function startGame() {
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('game').style.display = 'flex';
+  resetGame();
+}
+
+function goHome() {
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('landing').style.display = 'flex';
+}
+
+function resetGame() {
+  order = shuffle([...Array(sentences.length).keys()]);
+  current = 0;
+  total = 0;
+  correctCount = 0;
+  wrongCount = 0;
+  render();
+}
+
+function render() {
+  if (current >= order.length) {
+    order = shuffle([...Array(sentences.length).keys()]);
+    current = 0;
+  }
+
+  const s = sentences[order[current]];
+  const parts = s.text.split('___');
+  document.getElementById('sentence').innerHTML =
+    parts[0] + '<span class="blank" id="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>' + parts[1];
+  document.getElementById('q-number').textContent = `Pregunta ${total + 1}`;
+  document.getElementById('correct-count').textContent = correctCount;
+  document.getElementById('wrong-count').textContent = wrongCount;
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('next-btn').className = 'next-btn';
+  document.getElementById('btn-por').className = 'btn';
+  document.getElementById('btn-para').className = 'btn';
+  document.getElementById('btn-por').disabled = false;
+  document.getElementById('btn-para').disabled = false;
+  answered = false;
+}
+
+function answer(choice) {
+  if (answered) return;
+  answered = true;
+
+  const s = sentences[order[current]];
+  const isCorrect = choice === s.answer;
+  const blank = document.getElementById('blank');
+  const fb = document.getElementById('feedback');
+
+  blank.textContent = choice;
+
+  const btnPor = document.getElementById('btn-por');
+  const btnPara = document.getElementById('btn-para');
+  btnPor.disabled = true;
+  btnPara.disabled = true;
+
+  if (isCorrect) {
+    correctCount++;
+    blank.className = 'blank correct-reveal';
+    if (choice === 'por') btnPor.className = 'btn selected-correct';
+    else btnPara.className = 'btn selected-correct';
+    fb.className = 'feedback correct-fb show';
+    fb.textContent = s.rule;
+  } else {
+    wrongCount++;
+    blank.className = 'blank wrong-reveal';
+    if (choice === 'por') {
+      btnPor.className = 'btn selected-wrong';
+      btnPara.className = 'btn was-correct';
+    } else {
+      btnPara.className = 'btn selected-wrong';
+      btnPor.className = 'btn was-correct';
+    }
+    fb.className = 'feedback wrong-fb show';
+    fb.innerHTML = `La respuesta es <strong>${s.answer}</strong>. ${s.rule}`;
+  }
+
+  total++;
+  document.getElementById('correct-count').textContent = correctCount;
+  document.getElementById('wrong-count').textContent = wrongCount;
+  document.getElementById('next-btn').className = 'next-btn show';
+}
+
+function next() {
+  current++;
+  render();
+}
+
+document.addEventListener('keydown', (e) => {
+  if (document.getElementById('landing').style.display !== 'none') {
+    if (e.key === 'Enter' || e.key === ' ') startGame();
+    return;
+  }
+  if (e.key === '1' || e.key === 'ArrowLeft') answer('por');
+  if (e.key === '2' || e.key === 'ArrowRight') answer('para');
+  if (e.key === 'Enter' || e.key === ' ') { if (answered) next(); }
+});
+
+</script>
+
+</body>
+</html>
