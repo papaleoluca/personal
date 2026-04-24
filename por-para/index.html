@@ -338,7 +338,9 @@
 
 <script>
 const sentences = [
-  // === PARA: Propósito / objetivo ===
+  // ═══════════════════════════════════════
+  // PARA: Propósito / objetivo
+  // ═══════════════════════════════════════
   { text: "Estudio mucho ___ aprobar el examen.", answer: "para", rule: "Para + infinitivo expresa propósito (con el fin de)." },
   { text: "Necesito un cuchillo ___ cortar el pan.", answer: "para", rule: "Para + infinitivo expresa propósito." },
   { text: "Fui al supermercado ___ comprar leche.", answer: "para", rule: "Para + infinitivo = con el fin de." },
@@ -349,40 +351,70 @@ const sentences = [
   { text: "Trabaja mucho ___ mantener a su familia.", answer: "para", rule: "Para + infinitivo = con el fin de." },
   { text: "Vine ___ ayudarte.", answer: "para", rule: "Para + infinitivo expresa propósito." },
   { text: "Necesitas estudiar más ___ mejorar tus notas.", answer: "para", rule: "Para + infinitivo = con el fin de." },
+  { text: "Tomé un taxi ___ no llegar tarde.", answer: "para", rule: "Para + infinitivo expresa propósito." },
+  { text: "Se sentó en primera fila ___ ver mejor.", answer: "para", rule: "Para + infinitivo = con el fin de." },
+  { text: "Abrí la ventana ___ que entrara aire fresco.", answer: "para", rule: "Para que + subjuntivo expresa propósito." },
+  { text: "Habla más alto ___ que te oigan.", answer: "para", rule: "Para que + subjuntivo = con el fin de que." },
+  { text: "Le di las llaves ___ que pudiera entrar.", answer: "para", rule: "Para que + subjuntivo expresa propósito." },
 
-  // === PARA: Destinatario ===
+  // ═══════════════════════════════════════
+  // PARA: Destinatario
+  // ═══════════════════════════════════════
   { text: "Este regalo es ___ ti.", answer: "para", rule: "Para indica el destinatario." },
   { text: "Compré un libro ___ mi madre.", answer: "para", rule: "Para indica quién recibe algo." },
   { text: "La carta es ___ el director.", answer: "para", rule: "Para marca el destinatario previsto." },
   { text: "Cociné algo especial ___ mis invitados.", answer: "para", rule: "Para indica quién se beneficia." },
   { text: "Hice un pastel ___ los niños.", answer: "para", rule: "Para indica el destinatario." },
+  { text: "Reservé una mesa ___ cuatro personas.", answer: "para", rule: "Para indica para quién es la reserva." },
+  { text: "Hay un mensaje ___ usted en recepción.", answer: "para", rule: "Para indica el destinatario del mensaje." },
+  { text: "Traje café ___ todos.", answer: "para", rule: "Para indica quién recibe algo." },
 
-  // === PARA: Destino ===
+  // ═══════════════════════════════════════
+  // PARA: Destino
+  // ═══════════════════════════════════════
   { text: "Salimos ___ Madrid mañana.", answer: "para", rule: "Para indica destino." },
   { text: "El tren sale ___ Barcelona a las ocho.", answer: "para", rule: "Para indica dirección/destino." },
   { text: "Ya vamos ___ la playa.", answer: "para", rule: "Para expresa destino." },
   { text: "Tomé un vuelo ___ Roma.", answer: "para", rule: "Para indica destino." },
+  { text: "Se fue ___ su país sin despedirse.", answer: "para", rule: "Para indica destino." },
+  { text: "El autobús va ___ el centro.", answer: "para", rule: "Para indica dirección/destino." },
 
-  // === PARA: Fecha límite ===
+  // ═══════════════════════════════════════
+  // PARA: Fecha límite
+  // ═══════════════════════════════════════
   { text: "El informe es ___ el lunes.", answer: "para", rule: "Para establece una fecha límite." },
   { text: "Necesito el vestido ___ el viernes.", answer: "para", rule: "Para expresa una fecha límite." },
   { text: "Termina el proyecto ___ mañana.", answer: "para", rule: "Para establece un plazo." },
   { text: "Todo estará listo ___ las cinco.", answer: "para", rule: "Para indica una fecha límite." },
   { text: "¿Puedes tenerlo listo ___ la semana que viene?", answer: "para", rule: "Para expresa una fecha límite." },
+  { text: "La boda está planeada ___ junio.", answer: "para", rule: "Para indica una fecha prevista." },
+  { text: "Prometió volver ___ Navidad.", answer: "para", rule: "Para establece un plazo de tiempo." },
+  { text: "Quiero acabar la carrera ___ 2027.", answer: "para", rule: "Para indica una fecha objetivo." },
 
-  // === PARA: Comparación ===
+  // ═══════════════════════════════════════
+  // PARA: Comparación
+  // ═══════════════════════════════════════
   { text: "___ ser tan joven, sabe mucho.", answer: "para", rule: "Para expresa comparación (considerando que)." },
   { text: "___ un principiante, cocinas muy bien.", answer: "para", rule: "Para introduce una comparación sorprendente." },
   { text: "___ su edad, está en muy buena forma.", answer: "para", rule: "Para expresa 'considerando'." },
   { text: "No está mal ___ ser la primera vez.", answer: "para", rule: "Para establece una comparación inesperada." },
   { text: "___ un estudiante, habla con mucha confianza.", answer: "para", rule: "Para introduce una comparación." },
+  { text: "___ lo poco que estudia, saca buenas notas.", answer: "para", rule: "Para expresa comparación (considerando que)." },
+  { text: "Hace mucho frío ___ ser abril.", answer: "para", rule: "Para introduce una comparación inesperada con el tiempo." },
+  { text: "___ un país tan pequeño, tiene mucha diversidad.", answer: "para", rule: "Para expresa 'considerando'." },
 
-  // === PARA: Opinión ===
+  // ═══════════════════════════════════════
+  // PARA: Opinión
+  // ═══════════════════════════════════════
   { text: "___ mí, la película fue aburrida.", answer: "para", rule: "Para mí = en mi opinión." },
   { text: "___ nosotros, es la mejor opción.", answer: "para", rule: "Para + pronombre = en la opinión de alguien." },
   { text: "___ ella, el problema no es grave.", answer: "para", rule: "Para + persona = desde su perspectiva." },
+  { text: "___ el profesor, el examen fue justo.", answer: "para", rule: "Para + persona = según su opinión." },
+  { text: "___ los expertos, la situación va a mejorar.", answer: "para", rule: "Para + grupo = en opinión de." },
 
-  // === POR: Causa / razón ===
+  // ═══════════════════════════════════════
+  // POR: Causa / razón
+  // ═══════════════════════════════════════
   { text: "Gracias ___ tu ayuda.", answer: "por", rule: "Por expresa la causa o razón de la gratitud." },
   { text: "Lo hice ___ amor.", answer: "por", rule: "Por indica motivación/causa." },
   { text: "Llegué tarde ___ el tráfico.", answer: "por", rule: "Por expresa la causa." },
@@ -393,63 +425,137 @@ const sentences = [
   { text: "Le regañaron ___ su comportamiento.", answer: "por", rule: "Por indica la causa de la reprimenda." },
   { text: "Perdimos el vuelo ___ no salir a tiempo.", answer: "por", rule: "Por + infinitivo = a causa de (no) hacer algo." },
   { text: "Lo admiro ___ su valentía.", answer: "por", rule: "Por expresa la razón de la admiración." },
+  { text: "La felicité ___ su ascenso.", answer: "por", rule: "Por indica la razón de la felicitación." },
+  { text: "Lo arrestaron ___ robo.", answer: "por", rule: "Por indica la causa de la detención." },
+  { text: "Está famoso ___ sus canciones.", answer: "por", rule: "Por indica la causa de la fama." },
+  { text: "Fue premiada ___ su investigación.", answer: "por", rule: "Por indica la razón del premio." },
+  { text: "Se cayó ___ correr demasiado rápido.", answer: "por", rule: "Por + infinitivo = a causa de hacer algo." },
 
-  // === POR: Duración de tiempo ===
+  // ═══════════════════════════════════════
+  // POR: Duración de tiempo
+  // ═══════════════════════════════════════
   { text: "Viví en México ___ tres años.", answer: "por", rule: "Por expresa duración de tiempo." },
   { text: "Esperé ___ dos horas.", answer: "por", rule: "Por indica cuánto duró algo." },
   { text: "Estudió español ___ seis meses.", answer: "por", rule: "Por expresa duración." },
   { text: "Dormí ___ diez horas.", answer: "por", rule: "Por indica duración." },
   { text: "Llovió ___ toda la noche.", answer: "por", rule: "Por expresa duración de tiempo." },
+  { text: "Se quedaron en silencio ___ unos minutos.", answer: "por", rule: "Por indica cuánto duró algo." },
+  { text: "Estuvo enfermo ___ varias semanas.", answer: "por", rule: "Por expresa duración." },
+  { text: "No hemos hablado ___ meses.", answer: "por", rule: "Por indica duración de tiempo." },
 
-  // === POR: Intercambio ===
+  // ═══════════════════════════════════════
+  // POR: Intercambio
+  // ═══════════════════════════════════════
   { text: "Pagué diez euros ___ el café.", answer: "por", rule: "Por indica intercambio de dinero." },
   { text: "Cambié mi coche viejo ___ uno nuevo.", answer: "por", rule: "Por indica un intercambio o trueque." },
   { text: "Te doy mi bocadillo ___ tu manzana.", answer: "por", rule: "Por expresa un intercambio." },
   { text: "Vendí la bicicleta ___ cien dólares.", answer: "por", rule: "Por indica el precio en un intercambio." },
   { text: "¿Cuánto pagaste ___ esos zapatos?", answer: "por", rule: "Por se usa al preguntar por el precio." },
+  { text: "No lo cambiaría ___ nada del mundo.", answer: "por", rule: "Por indica un intercambio (hipotético)." },
+  { text: "Me dieron cincuenta euros ___ el trabajo.", answer: "por", rule: "Por indica lo que se recibe a cambio." },
 
-  // === POR: Movimiento a través de / a lo largo de ===
+  // ═══════════════════════════════════════
+  // POR: Movimiento a través de / a lo largo de
+  // ═══════════════════════════════════════
   { text: "Caminamos ___ el parque.", answer: "por", rule: "Por indica movimiento a través de un lugar." },
   { text: "El gato entró ___ la ventana.", answer: "por", rule: "Por indica paso a través de." },
   { text: "Pasamos ___ tu barrio ayer.", answer: "por", rule: "Por = a través de, por." },
   { text: "Paseamos ___ la playa al atardecer.", answer: "por", rule: "Por indica movimiento a lo largo de." },
   { text: "Condujimos ___ la autopista toda la noche.", answer: "por", rule: "Por expresa movimiento a lo largo de." },
   { text: "Viajamos ___ toda Europa en tren.", answer: "por", rule: "Por indica movimiento a través de." },
+  { text: "El río pasa ___ el centro de la ciudad.", answer: "por", rule: "Por indica recorrido a través de." },
+  { text: "Subimos ___ las escaleras porque el ascensor no funcionaba.", answer: "por", rule: "Por indica la vía de paso." },
+  { text: "La luz entraba ___ las cortinas.", answer: "por", rule: "Por indica paso a través de." },
 
-  // === POR: Medio de comunicación / transporte ===
+  // ═══════════════════════════════════════
+  // POR: Medio de comunicación / transporte
+  // ═══════════════════════════════════════
   { text: "Te envié la información ___ correo electrónico.", answer: "por", rule: "Por indica el medio de comunicación." },
   { text: "Hablamos ___ teléfono ayer.", answer: "por", rule: "Por indica el medio de comunicación." },
   { text: "Me enteré ___ las noticias.", answer: "por", rule: "Por indica el canal/medio." },
   { text: "Envié el paquete ___ correo.", answer: "por", rule: "Por indica el medio de envío." },
   { text: "Lo vi ___ televisión.", answer: "por", rule: "Por indica el medio." },
+  { text: "Me contactó ___ Instagram.", answer: "por", rule: "Por indica el medio de comunicación." },
+  { text: "Hicimos la reunión ___ videollamada.", answer: "por", rule: "Por indica el medio." },
+  { text: "Lo leí ___ internet.", answer: "por", rule: "Por indica el canal/medio." },
 
-  // === POR: Por / frecuencia ===
+  // ═══════════════════════════════════════
+  // POR: Frecuencia / por cada
+  // ═══════════════════════════════════════
   { text: "Vamos al gimnasio tres veces ___ semana.", answer: "por", rule: "Por significa 'por cada' en expresiones de frecuencia." },
   { text: "Gana dos mil euros ___ mes.", answer: "por", rule: "Por = por cada." },
   { text: "El límite es cien kilómetros ___ hora.", answer: "por", rule: "Por significa 'por cada'." },
   { text: "Toma dos pastillas ___ día.", answer: "por", rule: "Por = por cada (frecuencia/dosis)." },
+  { text: "Cobran veinte euros ___ persona.", answer: "por", rule: "Por = por cada." },
+  { text: "El hotel cuesta cien euros ___ noche.", answer: "por", rule: "Por indica precio por unidad." },
 
-  // === POR: En nombre de / en lugar de ===
+  // ═══════════════════════════════════════
+  // POR: En nombre de / en lugar de
+  // ═══════════════════════════════════════
   { text: "Firmé el documento ___ mi jefe.", answer: "por", rule: "Por = en nombre de / en lugar de." },
   { text: "Hoy trabajo ___ María porque está enferma.", answer: "por", rule: "Por = en lugar de, sustituyendo a." },
   { text: "Hablaré ___ todo el equipo.", answer: "por", rule: "Por = en nombre de." },
   { text: "Puedo ir a la reunión ___ ti.", answer: "por", rule: "Por = en lugar de alguien." },
   { text: "Votaré ___ el candidato que defiende la educación.", answer: "por", rule: "Por = a favor de, apoyando." },
+  { text: "Acepto el premio ___ mi compañero, que no pudo venir.", answer: "por", rule: "Por = en nombre de alguien ausente." },
+  { text: "¿Puedes llamar al dentista ___ mí?", answer: "por", rule: "Por = en lugar de (hacer algo por alguien)." },
 
-  // === POR: Agente pasivo ===
+  // ═══════════════════════════════════════
+  // POR: Agente pasivo
+  // ═══════════════════════════════════════
   { text: "El libro fue escrito ___ García Márquez.", answer: "por", rule: "Por introduce el agente en voz pasiva." },
   { text: "La canción fue cantada ___ una famosa soprano.", answer: "por", rule: "Por marca el agente en construcciones pasivas." },
   { text: "La casa fue diseñada ___ un arquitecto italiano.", answer: "por", rule: "Por introduce el autor en voz pasiva." },
   { text: "El gol fue marcado ___ el delantero.", answer: "por", rule: "Por = por (agente pasivo)." },
   { text: "La decisión fue tomada ___ el comité.", answer: "por", rule: "Por introduce el agente en voz pasiva." },
+  { text: "La ley fue aprobada ___ el parlamento.", answer: "por", rule: "Por introduce el agente en voz pasiva." },
+  { text: "El cuadro fue pintado ___ Picasso.", answer: "por", rule: "Por marca el autor en voz pasiva." },
+  { text: "La vacuna fue desarrollada ___ un equipo internacional.", answer: "por", rule: "Por introduce el agente en voz pasiva." },
 
-  // === POR: Tiempo / lugar aproximado ===
+  // ═══════════════════════════════════════
+  // POR: Tiempo / lugar aproximado
+  // ═══════════════════════════════════════
   { text: "Llegaremos ___ la mañana.", answer: "por", rule: "Por indica un momento aproximado del día." },
   { text: "Vivo ___ aquí cerca.", answer: "por", rule: "Por indica ubicación aproximada." },
   { text: "Pasaré ___ tu casa ___ la tarde.", answer: "por", rule: "Por = alrededor de (tiempo o lugar aproximado)." },
   { text: "___ esa época, yo vivía en Buenos Aires.", answer: "por", rule: "Por indica un período aproximado." },
+  { text: "Debe de estar ___ los cuarenta años.", answer: "por", rule: "Por indica cantidad aproximada." },
+  { text: "Hay una farmacia ___ aquí.", answer: "por", rule: "Por indica ubicación aproximada." },
+  { text: "Creo que vive ___ el centro.", answer: "por", rule: "Por indica zona aproximada." },
 
-  // === Mixtos / contrastes difíciles ===
+  // ═══════════════════════════════════════
+  // POR: Expresiones fijas con POR
+  // ═══════════════════════════════════════
+  { text: "___ lo general, ceno a las nueve.", answer: "por", rule: "Por lo general = expresión fija (generalmente)." },
+  { text: "___ supuesto que puedes venir.", answer: "por", rule: "Por supuesto = expresión fija (claro que sí)." },
+  { text: "___ favor, cierra la puerta.", answer: "por", rule: "Por favor = expresión fija." },
+  { text: "___ fin terminamos el proyecto.", answer: "por", rule: "Por fin = expresión fija (finalmente)." },
+  { text: "___ eso no quiero ir.", answer: "por", rule: "Por eso = expresión fija (por esa razón)." },
+  { text: "___ cierto, ¿viste la nueva película?", answer: "por", rule: "Por cierto = expresión fija (a propósito)." },
+  { text: "___ ejemplo, puedes usar una lista.", answer: "por", rule: "Por ejemplo = expresión fija." },
+  { text: "___ lo menos, tenemos salud.", answer: "por", rule: "Por lo menos = expresión fija (al menos)." },
+  { text: "___ lo tanto, debemos actuar ahora.", answer: "por", rule: "Por lo tanto = expresión fija (por consiguiente)." },
+  { text: "___ lo visto, no van a venir.", answer: "por", rule: "Por lo visto = expresión fija (al parecer)." },
+  { text: "___ si acaso, lleva un paraguas.", answer: "por", rule: "Por si acaso = expresión fija (por precaución)." },
+  { text: "___ primera vez, estoy de acuerdo contigo.", answer: "por", rule: "Por primera vez = expresión fija." },
+  { text: "___ otra parte, el precio no está mal.", answer: "por", rule: "Por otra parte = expresión fija (además)." },
+  { text: "No me gusta, ___ así decirlo.", answer: "por", rule: "Por así decirlo = expresión fija (por decirlo de algún modo)." },
+
+  // ═══════════════════════════════════════
+  // PARA: Expresiones fijas con PARA
+  // ═══════════════════════════════════════
+  { text: "Voy a estar aquí ___ siempre.", answer: "para", rule: "Para siempre = expresión fija (eternamente)." },
+  { text: "___ colmo, empezó a llover.", answer: "para", rule: "Para colmo = expresión fija (para empeorar las cosas)." },
+  { text: "___ empezar, necesitamos un plan.", answer: "para", rule: "Para empezar = expresión fija (en primer lugar)." },
+  { text: "No es ___ tanto, tranquilo.", answer: "para", rule: "No es para tanto = expresión fija (no es tan grave)." },
+  { text: "___ variar, llegó tarde.", answer: "para", rule: "Para variar = expresión fija (irónico: como siempre)." },
+  { text: "___ ser sincero, no me gustó.", answer: "para", rule: "Para ser sincero = expresión fija (hablando con franqueza)." },
+  { text: "Eso es ___ pensarlo.", answer: "para", rule: "Es para pensarlo = expresión fija (merece reflexión)." },
+  { text: "___ resumir, fue un desastre.", answer: "para", rule: "Para resumir = expresión fija (en resumen)." },
+
+  // ═══════════════════════════════════════
+  // Contrastes difíciles: POR vs PARA
+  // ═══════════════════════════════════════
   { text: "Brindemos ___ los novios.", answer: "por", rule: "Por sigue a 'brindar' — en honor a." },
   { text: "Lo hago ___ ti, no ___ mí.", answer: "por", rule: "Por = a causa de (motivación). Contexto: sacrificio." },
   { text: "Salí ___ pan y no encontré ninguna panadería abierta.", answer: "por", rule: "Salir por = salir a buscar/conseguir algo." },
@@ -468,15 +574,111 @@ const sentences = [
   { text: "No tengo tiempo ___ quejas.", answer: "para", rule: "Para = destinado a, asignado a." },
   { text: "Tengo mucho respeto ___ esa profesora.", answer: "por", rule: "Respeto por = respeto a causa de." },
   { text: "Preguntó ___ ti.", answer: "por", rule: "Preguntar por = preguntar acerca de alguien." },
-  { text: "___ lo general, ceno a las nueve.", answer: "por", rule: "Por lo general = expresión fija (generalmente)." },
-  { text: "___ supuesto que puedes venir.", answer: "por", rule: "Por supuesto = expresión fija (claro que sí)." },
-  { text: "___ favor, cierra la puerta.", answer: "por", rule: "Por favor = expresión fija." },
-  { text: "Voy a estar aquí ___ siempre.", answer: "para", rule: "Para siempre = expresión fija (eternamente)." },
-  { text: "___ fin terminamos el proyecto.", answer: "por", rule: "Por fin = expresión fija (finalmente)." },
-  { text: "___ eso no quiero ir.", answer: "por", rule: "Por eso = expresión fija (por esa razón)." },
   { text: "Queda mucho ___ hacer.", answer: "por", rule: "Por + infinitivo = que queda pendiente." },
   { text: "Estoy ___ salir, ¿vienes?", answer: "por", rule: "Estar por + infinitivo = estar a punto de." },
-  { text: "___ cierto, ¿viste la nueva película?", answer: "por", rule: "Por cierto = expresión fija (a propósito)." },
+
+  // ═══════════════════════════════════════
+  // Avanzado: estar por vs estar para
+  // ═══════════════════════════════════════
+  { text: "El tren está ___ llegar.", answer: "por", rule: "Estar por + infinitivo = estar a punto de (algo inminente)." },
+  { text: "No estoy ___ bromas ahora.", answer: "para", rule: "No estar para = no tener ganas de / no estar de humor." },
+  { text: "La comida está ___ servirse.", answer: "por", rule: "Estar por + infinitivo = todavía no se ha hecho, es inminente." },
+  { text: "Esta casa está ___ derribar.", answer: "para", rule: "Estar para + infinitivo = estar en condiciones de (listo para)." },
+  { text: "La tormenta está ___ empezar.", answer: "por", rule: "Estar por + infinitivo = estar a punto de suceder." },
+  { text: "No estoy ___ fiestas, estoy agotado.", answer: "para", rule: "No estar para = no estar de humor para." },
+  { text: "El bebé está ___ nacer.", answer: "por", rule: "Estar por + infinitivo = ser inminente." },
+
+  // ═══════════════════════════════════════
+  // Avanzado: por poco / por más que
+  // ═══════════════════════════════════════
+  { text: "___ poco me caigo en la calle.", answer: "por", rule: "Por poco = expresión fija (casi, por poco no ocurrió)." },
+  { text: "___ más que estudie, no aprueba.", answer: "por", rule: "Por más que = expresión fija (aunque, no importa cuánto)." },
+  { text: "___ mucho que corras, no llegarás a tiempo.", answer: "por", rule: "Por mucho que = expresión fija (por más que)." },
+  { text: "___ poco pierde el tren.", answer: "por", rule: "Por poco = casi (algo que estuvo a punto de pasar)." },
+  { text: "___ más que lo intento, no lo entiendo.", answer: "por", rule: "Por más que = no importa cuánto." },
+
+  // ═══════════════════════════════════════
+  // Avanzado: verbos con por / para
+  // ═══════════════════════════════════════
+  { text: "Optaron ___ la solución más barata.", answer: "por", rule: "Optar por = elegir entre opciones." },
+  { text: "Se decidió ___ el vestido rojo.", answer: "por", rule: "Decidirse por = elegir." },
+  { text: "Empezamos ___ presentarnos.", answer: "por", rule: "Empezar por = el primer paso es." },
+  { text: "Terminó ___ aceptar la oferta.", answer: "por", rule: "Terminar por = acabar haciendo algo." },
+  { text: "Pasó ___ inteligente pero no lo era.", answer: "por", rule: "Pasar por = hacerse pasar por / ser considerado como." },
+  { text: "Lo tomaron ___ loco.", answer: "por", rule: "Tomar por = confundir con / considerar como." },
+  { text: "Me tienen ___ tonto, pero me doy cuenta de todo.", answer: "por", rule: "Tener por = considerar como." },
+  { text: "Apuesta ___ el caballo negro.", answer: "por", rule: "Apostar por = elegir, confiar en." },
+  { text: "Brindaron ___ el éxito de la empresa.", answer: "por", rule: "Brindar por = hacer un brindis en honor a." },
+  { text: "Se interesa mucho ___ la política.", answer: "por", rule: "Interesarse por = tener interés en." },
+  { text: "Se preocupa ___ llegar puntual.", answer: "por", rule: "Preocuparse por = esforzarse a causa de." },
+  { text: "Sirve ___ cortar metal.", answer: "para", rule: "Servir para = tener la función de." },
+  { text: "No sirve ___ nada quejarse.", answer: "para", rule: "No servir para nada = no tener utilidad." },
+  { text: "Se preparó ___ la entrevista durante semanas.", answer: "para", rule: "Prepararse para = alistarse con un objetivo." },
+  { text: "Falta mucho ___ terminar.", answer: "para", rule: "Faltar para = tiempo restante hasta un objetivo." },
+
+  // ═══════════════════════════════════════
+  // Avanzado: pares mínimos (misma frase, diferente preposición)
+  // ═══════════════════════════════════════
+  { text: "Trabajo ___ una empresa de tecnología.", answer: "para", rule: "Trabajar para = ser empleado de (destinatario del trabajo)." },
+  { text: "Trabajo ___ necesidad, no ___ gusto.", answer: "por", rule: "Trabajar por = a causa de (motivación)." },
+  { text: "Vino ___ avión desde Nueva York.", answer: "por", rule: "Por = medio de transporte (vía)." },
+  { text: "Salió ___ el aeropuerto a las seis.", answer: "para", rule: "Para = destino (dirección hacia)." },
+  { text: "Dieron la vida ___ su país.", answer: "por", rule: "Por = en defensa de / por el bien de (causa)." },
+  { text: "Luchamos ___ un mundo mejor.", answer: "por", rule: "Luchar por = a favor de una causa." },
+  { text: "Lo hicimos ___ mejorar el sistema.", answer: "para", rule: "Para + infinitivo = con el propósito de." },
+  { text: "Lo hicimos ___ presiones del director.", answer: "por", rule: "Por = a causa de (presión externa)." },
+  { text: "Vengo ___ el paquete que encargué.", answer: "por", rule: "Venir por = venir a recoger/buscar." },
+  { text: "Vengo ___ hablar contigo sobre el proyecto.", answer: "para", rule: "Venir para = venir con el propósito de." },
+
+  // ═══════════════════════════════════════
+  // Avanzado: contextos culturales y coloquiales
+  // ═══════════════════════════════════════
+  { text: "Estoy loco ___ ti.", answer: "por", rule: "Estar loco por = sentir pasión/deseo intenso por alguien." },
+  { text: "Muero ___ probar ese restaurante.", answer: "por", rule: "Morir por = tener muchísimas ganas de (deseo intenso)." },
+  { text: "Daría lo que fuera ___ volver a verla.", answer: "por", rule: "Por = a cambio de (sacrificio hipotético)." },
+  { text: "No hay nada como caminar ___ el campo.", answer: "por", rule: "Por indica movimiento a lo largo de un espacio." },
+  { text: "¿___ casualidad sabes dónde está la estación?", answer: "por", rule: "Por casualidad = expresión fija (casualmente)." },
+  { text: "Me quedé dormido, ___ eso no contesté.", answer: "por", rule: "Por eso = expresión fija (por esa razón)." },
+  { text: "Esta herramienta es ___ profesionales.", answer: "para", rule: "Para = destinada a (público objetivo)." },
+  { text: "No es ___ menos, se lo merece.", answer: "para", rule: "No es para menos = expresión fija (está justificado)." },
+  { text: "Tiene madera ___ ser líder.", answer: "para", rule: "Tener madera para = tener aptitud para." },
+  { text: "¿___ cuántas personas es la receta?", answer: "para", rule: "Para = destinado a (cantidad de destinatarios)." },
+  { text: "Todavía falta ___ que llegue el verano.", answer: "para", rule: "Faltar para = tiempo que queda hasta." },
+  { text: "Eso te pasa ___ no escucharme.", answer: "por", rule: "Por + infinitivo = a causa de (consecuencia de un acto)." },
+  { text: "Le dieron el trabajo ___ su experiencia.", answer: "por", rule: "Por = a causa de (razón de la decisión)." },
+  { text: "Hay que prepararse ___ lo peor.", answer: "para", rule: "Prepararse para = alistarse ante una posibilidad futura." },
+  { text: "Haré cualquier cosa ___ que seas feliz.", answer: "para", rule: "Para que + subjuntivo = con el fin de que." },
+  { text: "___ suerte, encontramos un taxi.", answer: "por", rule: "Por suerte = expresión fija (afortunadamente)." },
+  { text: "___ desgracia, perdió todo su dinero.", answer: "por", rule: "Por desgracia = expresión fija (desafortunadamente)." },
+  { text: "La clase no fue ___ tanto.", answer: "para", rule: "No fue para tanto = expresión fija (no fue tan grave)." },
+  { text: "¿___ dónde se va al centro?", answer: "por", rule: "¿Por dónde? = pregunta por la ruta/camino." },
+  { text: "¿___ cuándo necesitas la respuesta?", answer: "para", rule: "¿Para cuándo? = pregunta por la fecha límite." },
+  { text: "Llueve mucho ___ esta zona.", answer: "por", rule: "Por indica ubicación aproximada." },
+  { text: "Se sacrificó ___ sus hijos.", answer: "por", rule: "Sacrificarse por = a causa de / por el bien de." },
+  { text: "Ahorramos ___ comprar una casa.", answer: "para", rule: "Para = con el objetivo de." },
+  { text: "Lo castigaron ___ mentir.", answer: "por", rule: "Por + infinitivo = a causa de." },
+  { text: "Iremos ___ la costa, es más bonito.", answer: "por", rule: "Por indica la ruta elegida." },
+  { text: "¿Esto es ___ comer aquí o ___ llevar?", answer: "para", rule: "Para = con destino a / con el fin de." },
+  { text: "Llevo años luchando ___ este proyecto.", answer: "por", rule: "Luchar por = esforzarse a favor de." },
+  { text: "Nació ___ ser artista.", answer: "para", rule: "Nacer para = tener un destino/vocación natural." },
+  { text: "___ mí que haga lo que quiera.", answer: "por", rule: "Por mí = me da igual, no me importa (consentimiento indiferente)." },
+  { text: "Va ___ los treinta y ya es director.", answer: "por", rule: "Ir por = tener aproximadamente (edad)." },
+  { text: "Estoy ___ quedarme en casa hoy.", answer: "por", rule: "Estar por = estar inclinado a (intención no firme)." },
+  { text: "Le echaron del trabajo ___ impuntual.", answer: "por", rule: "Por = a causa de (razón del despido)." },
+  { text: "Este cuchillo no corta, no sirve ___ nada.", answer: "para", rule: "No servir para nada = no tener utilidad alguna." },
+  { text: "___ un lado quiero ir, ___ otro prefiero quedarme.", answer: "por", rule: "Por un lado... por otro = expresión fija (para contrastar)." },
+  { text: "Estoy aquí ___ lo que necesites.", answer: "para", rule: "Para lo que necesites = a tu disposición (propósito)." },
+  { text: "Se disculpó ___ haber llegado tarde.", answer: "por", rule: "Disculparse por = la razón de la disculpa." },
+  { text: "Tiene un don ___ la música.", answer: "para", rule: "Tener un don para = talento natural destinado a." },
+  { text: "___ ahora, todo va bien.", answer: "por", rule: "Por ahora = expresión fija (de momento)." },
+  { text: "Crucé la calle ___ el semáforo.", answer: "por", rule: "Por indica el punto de paso." },
+  { text: "Lo eligieron ___ presidente.", answer: "para", rule: "Elegir para = designar con destino a un cargo." },
+  { text: "Siento pasión ___ la cocina.", answer: "por", rule: "Pasión por = sentimiento intenso hacia." },
+  { text: "No tengo paciencia ___ estas cosas.", answer: "para", rule: "Paciencia para = capacidad destinada a." },
+  { text: "Dio su vida ___ salvar a los demás.", answer: "por", rule: "Por = a cambio de / por el bien de (sacrificio)." },
+  { text: "Esto va ___ largo.", answer: "para", rule: "Ir para largo = expresión fija (va a durar mucho)." },
+  { text: "¿___ qué sirve este botón?", answer: "para", rule: "¿Para qué sirve? = pregunta por la función/propósito." },
+  { text: "Me tomas ___ tonto, ¿verdad?", answer: "por", rule: "Tomar por = confundir con / tratar como." },
 ];
 
 let current = 0;
