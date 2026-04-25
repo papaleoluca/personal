@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Paco's Flow Generator</title>
+  <title>Breagram.ai</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -555,7 +555,7 @@
     <!-- <img class="landing-cover" src="cover.png" alt="Paco's Flow"> -->
     <div class="landing-fade"></div>
     <div class="landing-content">
-      <div class="landing-logo">PACO'S <span>FLOW</span> GENERATOR</div>
+      <div class="landing-logo">BREA<span>GRAM</span>.AI</div>
       <p class="landing-sub">From Paco's texts to Brea's diagrams</p>
       <button class="landing-cta" onclick="goToApp()">Start</button>
     </div>
@@ -565,7 +565,7 @@
   <div class="app" id="app">
     <div class="header">
       <div class="header-left">
-        <div class="logo">PACO'S <span>FLOW</span> GEN</div>
+        <div class="logo">BREA<span>GRAM</span>.AI</div>
       </div>
       <div class="header-btns">
         <button class="header-btn" onclick="goHome()">HOME</button>
@@ -609,7 +609,7 @@
     // Navigation
     // ═══════════════════════════════════════
 
-    const WORKER_URL = 'https://pacos-flow-api.papaleo-luca1988.workers.dev';
+    const WORKER_URL = 'https://breagram-api.papaleo-luca1988.workers.dev';
 
     function goToApp() {
       document.getElementById('landing').style.display = 'none';
@@ -760,7 +760,7 @@
           logging: false
         });
         const link = document.createElement('a');
-        link.download = 'pacos-flow.png';
+        link.download = 'breagram.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
       } catch (e) {
