@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Paco's Flow</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121c;
+      --surface-border: #1e1e2e;
+      --primary: #06d6a0;
+      --primary-dim: #06d6a033;
+      --primary-dark: #04a67c;
+      --accent: #ff6b9d;
+      --accent-dim: #ff6b9d22;
+      --cyan: #00d4ff;
+      --yellow: #ffd166;
+      --text: #e8e8f0;
+      --text-muted: #5a5a7a;
+      --node-bg: #16162a;
+      --node-border: #2a2a44;
+      --decision-bg: #1a1430;
+      --decision-border: #3d2d66;
+      --arrow: #3a3a5a;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 0%, #06d6a008 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, #ff6b9d06 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ══════════════════════════════════════
+       LANDING
+       ══════════════════════════════════════ */
+
+    .landing {
+      width: 100%;
+      max-width: 600px;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .landing-cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      object-fit: contain;
+      object-position: top center;
+    }
+
+    .landing-fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 55%;
+      background: linear-gradient(to bottom, transparent, var(--bg) 80%);
+    }
+
+    .landing-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .landing-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .landing-logo span { color: var(--accent); }
+
+    .landing-sub {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 32px;
+      font-weight: 400;
+    }
+
+    .landing-cta {
+      padding: 16px 56px;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .landing-cta:hover {
+      background: var(--primary);
+      color: var(--bg);
+      box-shadow: 0 0 24px var(--primary-dim);
+    }
+
+    .landing-cta:active { transform: scale(0.97); }
+
+    /* ══════════════════════════════════════
+       APP
+       ══════════════════════════════════════ */
+
+    .app {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      z-index: 1;
+    }
+
+    .header {
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--surface-border);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #0a0a0fcc;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .logo span { color: var(--accent); }
+
+    .header-btns {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-muted);
+      background: none;
+      border: 1px solid var(--surface-border);
+      border-radius: 6px;
+      padding: 7px 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .header-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* ── Container ── */
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 24px;
+    }
+
+    /* ── Input Section ── */
+
+    .input-section {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .input-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 160px;
+      border: 1px solid var(--surface-border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text);
+      background: var(--bg);
+      resize: vertical;
+      transition: all 0.2s;
+      line-height: 1.6;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 16px var(--primary-dim);
+    }
+
+    textarea::placeholder { color: var(--text-muted); }
+
+    .generate-btn {
+      margin-top: 16px;
+      width: 100%;
+      padding: 14px 24px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .generate-btn:hover {
+      background: var(--primary);
+      color: var(--bg);
+      box-shadow: 0 0 24px var(--primary-dim);
+    }
+
+    .generate-btn:active { transform: scale(0.98); }
+
+    .generate-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .generate-btn:disabled:hover {
+      background: transparent;
+      color: var(--primary);
+      box-shadow: none;
+    }
+
+    /* ── Loading ── */
+
+    .loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+    }
+
+    .loading.show { display: flex; }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--surface-border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 16px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ── Error ── */
+
+    .error-msg {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      background: #1a0a0f;
+      border: 1px solid #ff6b9d33;
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--accent);
+      line-height: 1.5;
+    }
+
+    .error-msg.show { display: block; }
+
+    /* ══════════════════════════════════════
+       DIAGRAM
+       ══════════════════════════════════════ */
+
+    .diagram-wrapper {
+      display: none;
+      margin-top: 28px;
+    }
+
+    .diagram-wrapper.show { display: block; }
+
+    .diagram-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .download-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      background: none;
+      color: var(--cyan);
+      border: 1px solid var(--cyan);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .download-btn:hover {
+      background: var(--cyan);
+      color: var(--bg);
+      box-shadow: 0 0 16px #00d4ff22;
+    }
+
+    .download-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .diagram-section {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 40px 24px;
+      overflow-x: auto;
+    }
+
+    .diagram-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--cyan);
+      margin-bottom: 32px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    /* ── Flow Nodes ── */
+
+    .flow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      min-width: fit-content;
+    }
+
+    .node {
+      background: var(--node-bg);
+      border: 1px solid var(--node-border);
+      border-radius: 8px;
+      padding: 14px 24px;
+      font-size: 13px;
+      font-weight: 400;
+      text-align: center;
+      max-width: 300px;
+      line-height: 1.4;
+    }
+
+    .node.start {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      border-radius: 24px;
+      font-weight: 600;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 0 20px var(--primary-dim);
+    }
+
+    .node.end {
+      background: transparent;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      border-radius: 24px;
+      font-weight: 700;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 0 20px var(--accent-dim);
+    }
+
+    .decision {
+      background: var(--decision-bg);
+      border: 1px solid var(--decision-border);
+      padding: 20px 32px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      max-width: 280px;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      min-height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.3;
+      color: var(--yellow);
+    }
+
+    .arrow {
+      width: 1px;
+      height: 28px;
+      background: var(--arrow);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .arrow::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid var(--arrow);
+    }
+
+    .branch {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .branch-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      flex: 1;
+      max-width: 240px;
+    }
+
+    .branch-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .branch-label.yes {
+      color: var(--primary);
+      background: var(--primary-dim);
+    }
+
+    .branch-label.no {
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .spacer { height: 10px; flex-shrink: 0; }
+
+    /* ── Mobile ── */
+
+    @media (max-width: 480px) {
+      .landing-logo { font-size: 24px; }
+      .landing-cta { width: 100%; padding: 16px; }
+      textarea { height: 140px; }
+      .branch { gap: 16px; }
+      .branch-side { max-width: 160px; }
+      .node { padding: 12px 16px; font-size: 12px; max-width: 160px; }
+      .decision { padding: 16px 24px; font-size: 12px; min-height: 90px; max-width: 220px; }
+      .diagram-section { padding: 28px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════ LANDING ════════ -->
+  <div class="landing" id="landing">
+    <!-- Cover image placeholder — replace src when ready -->
+    <!-- <img class="landing-cover" src="cover.png" alt="Paco's Flow"> -->
+    <div class="landing-fade"></div>
+    <div class="landing-content">
+      <div class="landing-logo">PACO'S <span>FLOW</span></div>
+      <p class="landing-sub">Paste any text. Get a flow diagram.</p>
+      <button class="landing-cta" onclick="goToApp()">START</button>
+    </div>
+  </div>
+
+  <!-- ════════ APP ════════ -->
+  <div class="app" id="app">
+    <div class="header">
+      <div class="header-left">
+        <div class="logo">PACO'S <span>FLOW</span></div>
+      </div>
+      <div class="header-btns">
+        <button class="header-btn" onclick="goHome()">HOME</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="input-section">
+        <div class="input-label">// Paste your text</div>
+        <textarea id="input-text" placeholder="Paste a message, plan, instructions, story... in any language."></textarea>
+        <button class="generate-btn" id="generate-btn" onclick="generate()">GENERATE FLOW</button>
+        <div class="error-msg" id="error-msg"></div>
+      </div>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Generating flow...</div>
+      </div>
+
+      <div class="diagram-wrapper" id="diagram-wrapper">
+        <div class="diagram-toolbar">
+          <button class="download-btn" onclick="downloadDiagram()">
+            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            DOWNLOAD
+          </button>
+        </div>
+        <div class="diagram-section" id="diagram-section">
+          <div class="diagram-title" id="diagram-title"></div>
+          <div class="flow" id="flow-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- html2canvas for download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script>
+
+    // ═══════════════════════════════════════
+    // Navigation
+    // ═══════════════════════════════════════
+
+    const WORKER_URL = 'https://pacos-flow-api.papaleo-luca1988.workers.dev';
+
+    function goToApp() {
+      document.getElementById('landing').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+    }
+
+    function goHome() {
+      document.getElementById('app').style.display = 'none';
+      document.getElementById('landing').style.display = 'flex';
+    }
+
+    // ═══════════════════════════════════════
+    // Generate Flow
+    // ═══════════════════════════════════════
+
+    async function generate() {
+      const text = document.getElementById('input-text').value.trim();
+      if (!text) return;
+
+      const errEl = document.getElementById('error-msg');
+      const loadingEl = document.getElementById('loading');
+      const wrapperEl = document.getElementById('diagram-wrapper');
+      const btn = document.getElementById('generate-btn');
+
+      errEl.classList.remove('show');
+      wrapperEl.classList.remove('show');
+      loadingEl.classList.add('show');
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(WORKER_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || `Error ${res.status}`);
+
+        renderDiagram(data);
+        wrapperEl.classList.add('show');
+
+      } catch (e) {
+        errEl.textContent = e.message;
+        errEl.classList.add('show');
+      } finally {
+        loadingEl.classList.remove('show');
+        btn.disabled = false;
+      }
+    }
+
+    // ═══════════════════════════════════════
+    // Render Diagram
+    // ═══════════════════════════════════════
+
+    function renderDiagram(flow) {
+      document.getElementById('diagram-title').textContent = flow.title || '';
+      const container = document.getElementById('flow-container');
+      container.innerHTML = '';
+      renderNodes(flow.nodes, container);
+    }
+
+    function renderNodes(nodes, container) {
+      nodes.forEach((node, i) => {
+        if (node.type === 'start') {
+          container.appendChild(makeNode(node.text, 'start'));
+          container.appendChild(makeArrow());
+        } else if (node.type === 'end') {
+          container.appendChild(makeNode(node.text, 'end'));
+        } else if (node.type === 'step') {
+          container.appendChild(makeNode(node.text, 'step'));
+          // add arrow if next is not the last or there are more nodes
+          if (i < nodes.length - 1) container.appendChild(makeArrow());
+        } else if (node.type === 'decision') {
+          container.appendChild(makeDecision(node.text));
+          container.appendChild(makeSpacer());
+
+          const branch = document.createElement('div');
+          branch.className = 'branch';
+
+          // Yes branch
+          const yesSide = document.createElement('div');
+          yesSide.className = 'branch-side';
+          const yesLabel = document.createElement('div');
+          yesLabel.className = 'branch-label yes';
+          yesLabel.textContent = node.yes_label || 'Yes';
+          yesSide.appendChild(yesLabel);
+          yesSide.appendChild(makeArrow());
+          if (node.yes_branch) renderNodes(node.yes_branch, yesSide);
+
+          // No branch
+          const noSide = document.createElement('div');
+          noSide.className = 'branch-side';
+          const noLabel = document.createElement('div');
+          noLabel.className = 'branch-label no';
+          noLabel.textContent = node.no_label || 'No';
+          noSide.appendChild(noLabel);
+          noSide.appendChild(makeArrow());
+          if (node.no_branch) renderNodes(node.no_branch, noSide);
+
+          branch.appendChild(yesSide);
+          branch.appendChild(noSide);
+          container.appendChild(branch);
+          container.appendChild(makeSpacer());
+
+          if (i < nodes.length - 1) container.appendChild(makeArrow());
+        }
+      });
+    }
+
+    function makeNode(text, type) {
+      const el = document.createElement('div');
+      el.className = type === 'step' ? 'node' : `node ${type}`;
+      el.textContent = text;
+      return el;
+    }
+
+    function makeDecision(text) {
+      const el = document.createElement('div');
+      el.className = 'decision';
+      el.textContent = text;
+      return el;
+    }
+
+    function makeArrow() {
+      const el = document.createElement('div');
+      el.className = 'arrow';
+      return el;
+    }
+
+    function makeSpacer() {
+      const el = document.createElement('div');
+      el.className = 'spacer';
+      return el;
+    }
+
+    // ═══════════════════════════════════════
+    // Download Diagram
+    // ═══════════════════════════════════════
+
+    async function downloadDiagram() {
+      const section = document.getElementById('diagram-section');
+      try {
+        const canvas = await html2canvas(section, {
+          backgroundColor: '#12121c',
+          scale: 2,
+          useCORS: true,
+          logging: false
+        });
+        const link = document.createElement('a');
+        link.download = 'pacos-flow.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } catch (e) {
+        console.error('Download failed:', e);
+      }
+    }
+
+    // ═══════════════════════════════════════
+    // Keyboard
+    // ═══════════════════════════════════════
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        const app = document.getElementById('app');
+        if (app.style.display !== 'none' && app.style.display !== '') generate();
+      }
+    });
+
+  </script>
+
+</body>
+</html>
