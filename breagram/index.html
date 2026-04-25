@@ -71,11 +71,12 @@
 
     .landing-cover {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      object-fit: contain;
-      object-position: top center;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 350px;
+      max-width: 100%;
+      border-radius: 12px;
     }
 
     .landing-fade {
@@ -235,7 +236,7 @@
 
     textarea {
       width: 100%;
-      height: 160px;
+      height: 240px;
       border: 1px solid var(--surface-border);
       border-radius: 8px;
       padding: 14px 16px;
@@ -538,7 +539,7 @@
     @media (max-width: 480px) {
       .landing-logo { font-size: 24px; }
       .landing-cta { width: 100%; padding: 16px; }
-      textarea { height: 140px; }
+      textarea { height: 210px; }
       .branch { gap: 16px; }
       .branch-side { max-width: 160px; }
       .node { padding: 12px 16px; font-size: 12px; max-width: 160px; }
@@ -551,8 +552,7 @@
 
   <!-- ════════ LANDING ════════ -->
   <div class="landing" id="landing">
-    <!-- Cover image placeholder — replace src when ready -->
-    <!-- <img class="landing-cover" src="cover.png" alt="Paco's Flow"> -->
+    <video class="landing-cover" src="cover.mp4" autoplay loop muted playsinline></video>
     <div class="landing-fade"></div>
     <div class="landing-content">
       <div class="landing-logo">BREA<span>GRAM</span>.AI</div>
