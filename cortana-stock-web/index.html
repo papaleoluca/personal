@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cortana Stock Redistribution</title>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --card: #ffffff;
+      --border: #e5e5e5;
+      --text: #1a1a1a;
+      --muted: #666666;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --warning: #b45309;
+      --stripe: #f8f8f8;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    header {
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 0 0 4px;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      margin: 0;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .drop-zone {
+      display: block;
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 48px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: var(--card);
+    }
+
+    .drop-zone:hover,
+    .drop-zone.dragging {
+      border-color: var(--accent);
+      background: #eff6ff;
+    }
+
+    .drop-zone.has-file {
+      border-color: var(--success);
+      background: #f0fdf4;
+    }
+
+    .drop-zone input[type="file"] {
+      display: none;
+    }
+
+    .drop-zone-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    .drop-zone-text {
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .drop-zone-hint {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 4px 0 0;
+    }
+
+    .file-name {
+      font-weight: 500;
+      color: var(--success);
+    }
+
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.1s ease;
+    }
+
+    button:hover:not(:disabled) {
+      border-color: #d0d0d0;
+      background: #f5f5f5;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    button.primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .hidden { display: none !important; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .summary-item {
+      padding: 12px;
+      background: var(--stripe);
+      border-radius: 8px;
+    }
+
+    .summary-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .summary-value {
+      font-size: 22px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .summary-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .warnings {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--warning);
+    }
+
+    .warnings strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .warnings ul {
+      margin: 4px 0 0;
+      padding-left: 20px;
+    }
+
+    .downloads {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .downloads button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .download-icon {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      background: currentColor;
+      -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M8 1v9m0 0l-3-3m3 3l3-3M2 12v2h12v-2' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>") center/contain no-repeat;
+      mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M8 1v9m0 0l-3-3m3 3l3-3M2 12v2h12v-2' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>") center/contain no-repeat;
+    }
+
+    .table-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .table-controls label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .table-controls input[type="search"] {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      min-width: 200px;
+    }
+
+    .table-controls input[type="search"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .row-count {
+      color: var(--muted);
+      font-size: 13px;
+      margin-left: auto;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      background: var(--card);
+      z-index: 1;
+    }
+
+    th {
+      text-align: left;
+      padding: 10px 12px;
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    th.num, td.num {
+      text-align: right;
+    }
+
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--stripe);
+      vertical-align: middle;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--stripe);
+    }
+
+    td.sku {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    td.title {
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .flow {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .delta-pos { color: var(--success); font-weight: 500; }
+    .delta-neg { color: var(--danger); font-weight: 500; }
+    .delta-zero { color: var(--muted); }
+
+    .arrow { color: var(--muted); }
+
+    .transfers {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .transfers .flow-item {
+      display: inline-block;
+      padding: 1px 6px;
+      background: #eff6ff;
+      color: #1e40af;
+      border-radius: 4px;
+      margin-right: 4px;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    }
+
+    .error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: var(--danger);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    footer a { color: inherit; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Cortana Stock Redistribution</h1>
+      <p class="subtitle">Upload the weekly stock CSV to compute inter-shop transfers across Madrid, Palma, and Barcelona.</p>
+    </header>
+
+    <section class="card">
+      <label class="drop-zone" id="drop-zone">
+        <input type="file" id="file-input" accept=".csv,text/csv" />
+        <div class="drop-zone-icon">CSV</div>
+        <p class="drop-zone-text" id="drop-zone-text">Drop the stock CSV here or click to select</p>
+        <p class="drop-zone-hint">Semicolon-delimited. Needs columns for Title, SKU, Madrid, Palma, Barcelona.</p>
+      </label>
+
+      <div class="actions">
+        <button id="run-btn" class="primary" disabled>Run redistribution</button>
+        <button id="clear-btn" disabled>Clear</button>
+      </div>
+
+      <div class="status" id="status">
+        <div class="spinner"></div>
+        <span id="status-text">Loading Python runtime…</span>
+      </div>
+    </section>
+
+    <section id="error-section" class="card hidden">
+      <div class="error" id="error-message"></div>
+    </section>
+
+    <section id="results-section" class="hidden">
+      <div class="card">
+        <h2 style="margin: 0 0 12px; font-size: 18px;">Summary</h2>
+        <div class="summary-grid" id="summary-grid"></div>
+        <div id="warnings-container"></div>
+      </div>
+
+      <div class="card">
+        <h2 style="margin: 0 0 12px; font-size: 18px;">Downloads</h2>
+        <div class="downloads" id="downloads"></div>
+      </div>
+
+      <div class="card">
+        <h2 style="margin: 0 0 12px; font-size: 18px;">Results</h2>
+        <div class="table-controls">
+          <label>
+            <input type="checkbox" id="filter-movers" checked />
+            Show only rows that move
+          </label>
+          <input type="search" id="search-input" placeholder="Search Title / SKU…" />
+          <span class="row-count" id="row-count"></span>
+        </div>
+        <div class="table-wrap">
+          <table id="results-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Size</th>
+                <th>SKU</th>
+                <th class="num">Madrid</th>
+                <th class="num">Palma</th>
+                <th class="num">Barcelona</th>
+                <th>Transfers</th>
+                <th class="num">Moves</th>
+              </tr>
+            </thead>
+            <tbody id="results-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Runs entirely in your browser — no data leaves your machine. Powered by Pyodide.
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
