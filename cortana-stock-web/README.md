@@ -1,6 +1,6 @@
 # Cortana Stock Redistribution — Web
 
-A single-page web app that runs the Cortana stock redistribution algorithm entirely in the browser. Upload the weekly stock CSV, get the redistribution sheet plus per-shop shipment CSVs, and see the results table on the page.
+A single-page web app that runs the Cortana stock redistribution algorithm entirely in the browser. Drop one or more weekly stock export files (raw Shopify exports or an already-cleaned CSV), get the redistribution sheet plus per-shop shipment CSVs, and see the results table on the page.
 
 No server, no data leaves the browser — Python runs client-side via [Pyodide](https://pyodide.org/).
 
@@ -9,6 +9,7 @@ No server, no data leaves the browser — Python runs client-side via [Pyodide](
 - `index.html` — UI (drop zone, summary, downloads, results table)
 - `app.js` — bootstraps Pyodide, wires the UI, triggers downloads, renders the table
 - `redistribute.py` — the redistribution algorithm (adapted from the Claude Code skill to work on strings instead of files)
+- `combine_exports.py` — combines any number of raw export files into one cleaned CSV before redistribution runs (adapted from the Claude Code skill's `combine_exports.py`)
 
 ## Local test
 
@@ -35,3 +36,4 @@ If you'd rather have the app at the root of the site, move the three files to th
 - Pyodide is loaded from `cdn.jsdelivr.net` at version `v0.26.4`. If a browser blocks it, or you want to pin a newer version, edit the `<script src="…">` tag in `index.html`.
 - Output CSVs use `;` delimiter, UTF-8 with BOM, and CRLF line endings — matching the input format.
 - The redistribution logic is a copy of the Claude Code skill at `~/.claude/skills/cortana-stock/scripts/redistribute.py`. If you change the rules in one place, sync the other.
+- Same goes for `combine_exports.py` and `~/.claude/skills/cortana-stock/scripts/combine_exports.py`.
