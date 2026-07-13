@@ -63,17 +63,15 @@ Same logic, string-in/string-out (no filesystem), matching how the web variant o
 
 This gives the project a second pair of files (alongside `redistribute.py`'s existing skill/web pair) that must be kept in sync manually if the cleaning rules change later — same convention the `cortana-stock-web/README.md` already documents for `redistribute.py`.
 
-### Duplicate detection: diagnostic, not authoritative
+### Duplicate detection: diagnostic only, no new merge/drop logic
 
-The combine stage never decides what to drop. That stays with the existing `clean_input()`, keyed on `(title, size, sku)`, exactly as it works today for single-file input.
+Luca's read, confirmed during design review: these conflict cases realistically shouldn't occur, so the right amount of handling is the same amount the pipeline already gives every other anomaly (corrupt SKUs, negative stock, per SKILL.md) — never drop or auto-correct, just keep processing and warn. No new merge or drop logic is added for either case below; both already resolve exactly as they would today with zero new code:
 
-The combine stage separately scans for duplicate **SKUs alone** (a broader net than `clean_input`'s tuple key) purely to build diagnostics for the UI:
+- **Same SKU, same title/size, different stock** across files → `clean_input()`'s existing `(title, size, sku)` key already keeps only the first occurrence — unchanged. New: a warning surfaces that this happened ("N duplicate SKU(s) had conflicting stock values — kept the first file's numbers"), so it doesn't pass unnoticed.
+- **Same SKU, different title or size** across files → `clean_input()`'s tuple key already treats these as distinct rows and lets both through — unchanged. New: a warning flags it ("N SKU(s) matched but title/size differed"), since this is otherwise invisible and worth a glance before trusting the output.
+- **Same SKU, same title/size, same stock** across files → routine merge (first occurrence kept, as always), reported as an informational count only ("N duplicate SKU(s) merged").
 
-- **Same SKU, same title/size, same stock** across files → routine merge, reported as an informational count ("N duplicate SKU(s) merged").
-- **Same SKU, same title/size, different stock** across files → escalated warning ("N duplicate SKU(s) had conflicting stock values — kept the first file's numbers"), since `clean_input` will silently keep only the first occurrence and this makes that visible.
-- **Same SKU, different title or size** across files → escalated warning of its own ("N SKU(s) matched but title/size differed") — because `clean_input`'s tuple key would treat these as *distinct* rows and let both through, silently double-counting that SKU in the redistribution. This case is a data problem worth surfacing even though no drop happens.
-
-This diagnostic pass looks at the same rows `clean_input` will process but does not change what `clean_input` does.
+The combine stage's only new responsibility here is a read-only diagnostic scan (keyed on SKU alone — a broader net than `clean_input`'s tuple key) that produces the counts and examples above for the UI. It does not influence what `clean_input` keeps or drops.
 
 ## UI changes (web app)
 
