@@ -229,6 +229,12 @@
       padding-left: 20px;
     }
 
+    .warnings.info {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1e40af;
+    }
+
     .downloads {
       display: flex;
       gap: 10px;
@@ -398,15 +404,15 @@
   <div class="container">
     <header>
       <h1>Cortana Stock Redistribution</h1>
-      <p class="subtitle">Upload the weekly stock CSV to compute inter-shop transfers across Madrid, Palma, and Barcelona.</p>
+      <p class="subtitle">Upload one or more weekly stock export files to compute inter-shop transfers across Madrid, Palma, and Barcelona.</p>
     </header>
 
     <section class="card">
       <label class="drop-zone" id="drop-zone">
-        <input type="file" id="file-input" accept=".csv,text/csv" />
+        <input type="file" id="file-input" accept=".csv,text/csv" multiple />
         <div class="drop-zone-icon">CSV</div>
-        <p class="drop-zone-text" id="drop-zone-text">Drop the stock CSV here or click to select</p>
-        <p class="drop-zone-hint">Semicolon-delimited. Needs columns for Title, SKU, Madrid, Palma, Barcelona.</p>
+        <p class="drop-zone-text" id="drop-zone-text">Drop one or more stock export files here or click to select</p>
+        <p class="drop-zone-hint">Comma or semicolon-delimited. Needs columns for Title, SKU, and the Madrid/Palma/Barcelona stock columns — any other columns are ignored.</p>
       </label>
 
       <div class="actions">

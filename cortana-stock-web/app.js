@@ -1,7 +1,8 @@
 const state = {
   pyodide: null,
   processFn: null,
-  file: null,
+  combineFn: null,
+  files: [],
   result: null,
 };
 
@@ -29,14 +30,24 @@ async function bootPyodide() {
   try {
     setStatus("Loading Python runtime…", true);
     state.pyodide = await loadPyodide();
+
     setStatus("Loading redistribution logic…", true);
-    const pySource = await fetch("./redistribute.py").then((r) => {
+    const redistributeSource = await fetch("./redistribute.py").then((r) => {
       if (!r.ok) throw new Error(`Failed to load redistribute.py: ${r.status}`);
       return r.text();
     });
-    state.pyodide.runPython(pySource);
+    state.pyodide.runPython(redistributeSource);
+
+    setStatus("Loading combine logic…", true);
+    const combineSource = await fetch("./combine_exports.py").then((r) => {
+      if (!r.ok) throw new Error(`Failed to load combine_exports.py: ${r.status}`);
+      return r.text();
+    });
+    state.pyodide.runPython(combineSource);
+
     state.processFn = state.pyodide.globals.get("process_csv");
-    setStatus("Ready. Drop a CSV above.", false);
+    state.combineFn = state.pyodide.globals.get("combine_raw_exports_web");
+    setStatus("Ready. Drop file(s) above.", false);
     updateButtons();
   } catch (err) {
     setStatus("", false);
@@ -61,35 +72,38 @@ function clearError() {
 }
 
 function updateButtons() {
-  el.runBtn.disabled = !state.file || !state.processFn;
-  el.clearBtn.disabled = !state.file;
+  el.runBtn.disabled = !state.files.length || !state.processFn || !state.combineFn;
+  el.clearBtn.disabled = !state.files.length;
 }
 
-function handleFile(file) {
-  if (!file) return;
-  if (!file.name.toLowerCase().endsWith(".csv")) {
-    showError("Please choose a .csv file.");
+function handleFiles(fileList) {
+  const files = Array.from(fileList || []);
+  if (!files.length) return;
+  const nonCsv = files.filter((f) => !f.name.toLowerCase().endsWith(".csv"));
+  if (nonCsv.length) {
+    showError(`Please choose .csv files only. Not a CSV: ${nonCsv.map((f) => f.name).join(", ")}`);
     return;
   }
   clearError();
-  state.file = file;
+  state.files = files;
   el.dropZone.classList.add("has-file");
-  el.dropZoneText.innerHTML = `<span class="file-name">${escapeHtml(file.name)}</span>`;
+  const label = files.length === 1 ? "1 file selected" : `${files.length} files selected`;
+  el.dropZoneText.innerHTML = `<span class="file-name">${label}: ${files.map((f) => escapeHtml(f.name)).join(", ")}</span>`;
   updateButtons();
 }
 
-function clearFile() {
-  state.file = null;
+function clearFiles() {
+  state.files = [];
   state.result = null;
   el.fileInput.value = "";
   el.dropZone.classList.remove("has-file");
-  el.dropZoneText.textContent = "Drop the stock CSV here or click to select";
+  el.dropZoneText.textContent = "Drop one or more stock export files here or click to select";
   el.results.classList.add("hidden");
   clearError();
   updateButtons();
 }
 
-el.fileInput.addEventListener("change", (e) => handleFile(e.target.files[0]));
+el.fileInput.addEventListener("change", (e) => handleFiles(e.target.files));
 
 el.dropZone.addEventListener("dragover", (e) => {
   e.preventDefault();
@@ -99,30 +113,42 @@ el.dropZone.addEventListener("dragleave", () => el.dropZone.classList.remove("dr
 el.dropZone.addEventListener("drop", (e) => {
   e.preventDefault();
   el.dropZone.classList.remove("dragging");
-  handleFile(e.dataTransfer.files[0]);
+  handleFiles(e.dataTransfer.files);
 });
 
-el.clearBtn.addEventListener("click", clearFile);
+el.clearBtn.addEventListener("click", clearFiles);
 
 el.runBtn.addEventListener("click", async () => {
-  if (!state.file || !state.processFn) return;
+  if (!state.files.length || !state.processFn || !state.combineFn) return;
   clearError();
   el.runBtn.disabled = true;
-  setStatus("Reading file…", true);
+  setStatus("Reading file(s)…", true);
 
   try {
-    const buf = await state.file.arrayBuffer();
-    const csvText = new TextDecoder("utf-8").decode(buf);
+    const decoder = new TextDecoder("utf-8");
+    const texts = [];
+    for (const f of state.files) {
+      const buf = await f.arrayBuffer();
+      texts.push(decoder.decode(buf));
+    }
+    const names = state.files.map((f) => f.name);
 
-    setStatus("Running redistribution…", true);
+    setStatus("Combining file(s)…", true);
     await new Promise((r) => setTimeout(r, 30));  // let the UI update
 
-    const proxy = state.processFn(csvText);
+    const combineProxy = state.combineFn(names, texts);
+    const combined = combineProxy.toJs({ dict_converter: Object.fromEntries });
+    combineProxy.destroy();
+
+    setStatus("Running redistribution…", true);
+    await new Promise((r) => setTimeout(r, 30));
+
+    const proxy = state.processFn(combined.csv_text);
     const jsResult = proxy.toJs({ dict_converter: Object.fromEntries });
     proxy.destroy();
 
     state.result = jsResult;
-    renderResults(jsResult);
+    renderResults(jsResult, combined.stats);
     setStatus("Done.", false);
   } catch (err) {
     console.error(err);
@@ -136,7 +162,7 @@ el.runBtn.addEventListener("click", async () => {
 el.filterMovers.addEventListener("change", () => renderTable(state.result));
 el.searchInput.addEventListener("input", () => renderTable(state.result));
 
-function renderResults(result) {
+function renderResults(result, combineStats) {
   const stats = result.stats;
 
   const shipmentSummary = stats.shipment_summary || [];
@@ -145,6 +171,7 @@ function renderResults(result) {
   const barcelonaSummary = shipmentSummary.find((s) => s.shop === "Barcelona");
 
   el.summaryGrid.innerHTML = "";
+  addSummary("Files combined", combineStats.files.length);
   addSummary("Input rows", stats.raw_input_rows, `${stats.dropped_zero_rows} zero, ${stats.dropped_duplicate_rows} dup dropped`);
   addSummary("Processed", stats.cleaned_rows);
   addSummary("SKUs to move", stats.skus_with_moves);
@@ -155,6 +182,20 @@ function renderResults(result) {
 
   el.warningsContainer.innerHTML = "";
   const warnings = [];
+  if (combineStats.conflicting_duplicate_skus && combineStats.conflicting_duplicate_skus.length) {
+    warnings.push({
+      title: `${combineStats.conflicting_duplicate_skus.length} duplicate SKU(s) had conflicting stock values across files`,
+      detail: "Kept the first file's numbers for each. Verify these are correct.",
+      items: combineStats.conflicting_duplicate_skus.slice(0, 5),
+    });
+  }
+  if (combineStats.mismatched_duplicate_skus && combineStats.mismatched_duplicate_skus.length) {
+    warnings.push({
+      title: `${combineStats.mismatched_duplicate_skus.length} SKU(s) matched across files but title/size differed`,
+      detail: "Both rows were kept as distinct entries. Verify this is correct.",
+      items: combineStats.mismatched_duplicate_skus.slice(0, 5),
+    });
+  }
   if (stats.corrupt_sku_rows && stats.corrupt_sku_rows.length) {
     warnings.push({
       title: `${stats.corrupt_sku_rows.length} row(s) with scientific-notation SKUs`,
@@ -169,10 +210,18 @@ function renderResults(result) {
       items: stats.negative_input_rows.slice(0, 5).map((r) => `Row ${r.input_row}: ${r.title} — M=${r.m} P=${r.p} B=${r.b}`),
     });
   }
+  if (combineStats.identical_duplicate_skus && combineStats.identical_duplicate_skus.length) {
+    warnings.push({
+      variant: "info",
+      title: `${combineStats.identical_duplicate_skus.length} duplicate SKU(s) merged`,
+      detail: "Same SKU, title, size, and stock appeared in more than one file. Kept one copy.",
+      items: combineStats.identical_duplicate_skus.slice(0, 5),
+    });
+  }
   warnings.forEach(renderWarning);
 
   el.downloads.innerHTML = "";
-  const baseName = state.file.name.replace(/\.csv$/i, "");
+  const baseName = state.files.length === 1 ? state.files[0].name.replace(/\.csv$/i, "") : "combined";
   addDownload(`${baseName}(out).csv`, result.main_csv);
   addDownload(`${baseName} - Madrid envios.csv`, result.shipments.Madrid);
   addDownload(`${baseName} - Palma envios.csv`, result.shipments.Palma);
@@ -195,7 +244,7 @@ function addSummary(label, value, hint) {
 
 function renderWarning(w) {
   const div = document.createElement("div");
-  div.className = "warnings";
+  div.className = w.variant === "info" ? "warnings info" : "warnings";
   div.innerHTML = `
     <strong>${escapeHtml(w.title)}</strong>
     <div>${escapeHtml(w.detail)}</div>
