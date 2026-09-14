@@ -131,21 +131,27 @@ feeds straight up into the trough.
 ### Power bricks must stand at the rear of the niche
 
 Found during implementation, not at design time. Shrinking the drawer band to 9.2
-also shrinks the power niche to 9.2 (81.8 -> 91), and the niche no longer has the
-height it needs. A power strip lying on the niche floor is about 4 cm, and an
-XDJ-700 wall-wart brick standing on it is about 8.5 — 12.5 total, which overshoots
-the 91 ceiling by 3.3 cm. Directly above the niche (x 80.5 - 104.5) sit two well
-floors at z 91: the XDJ-700's across x 80.5 - 96.3 and the Xone:92's across
-x 101.9 - 104.5. The brick would meet solid ply, not air.
+also shrinks the power niche to 9.2 (81.8 -> 91), and v1's arrangement no longer
+fits. v1 stood the wall-wart bricks **on** the power strip: strip about 4 cm, brick
+about 8.5, total 12.5 measured from the niche floor at 81.8, topping out at 94.3.
+That cleared v1's 97 ceiling with room to spare. In v2 it overshoots 91 by 3.3 cm,
+and there is no air above to overshoot into — directly over the niche (x 80.5 -
+104.5) sit two well floors at z 91, the XDJ-700's across x 80.5 - 96.3 and the
+Xone:92's across x 101.9 - 104.5. The brick would meet solid ply.
 
-The trough is the only headroom. A brick set at the **rear** of the niche, inside
-the trough footprint (y 41.2 - 48.2), rises clear to 97 — giving it the same 15.2 cm
-of height v1 had. The trough is 7 cm deep there and the brick is about 6, so it fits.
+**The constraint is that bricks may no longer be stacked on the strip.** Standing a
+brick directly on the niche floor gives 81.8 + 8.5 = 90.3, which clears the 91
+ceiling with 0.7 cm to spare. So the strip lies on the niche floor and the bricks
+stand on the floor beside it, not on top of it.
 
-So: the strip lies on the niche floor toward the front; the bricks stand behind it,
-under the trough. This is a build instruction, not a preference — bricks placed at
-the front of the v2 niche do not fit. Carry it into the build notes and the hardware
-list.
+Place the bricks at the **rear** of the niche, within the trough footprint
+(y 41.2 - 48.2). That is not needed for the brick to fit — it fits anywhere on the
+floor — but it keeps the open trough above them free as the route for the mains lead
+out through the niche cutout at 83 - 95. The trough is 7 cm deep there and a brick
+about 6.
+
+Carry into the build notes and the hardware list. The margin is 7 mm, so a taller
+brick than 8.5 cm will not fit at all: worth measuring the actual units.
 
 Because `BACK_INSET` is 0, the back panel is the rear face of the piece. The console
 must stand a few centimetres off the wall for the trough to vent and for cables to
@@ -209,8 +215,8 @@ already mirrors v1's by hand. The README's regenerate block gains the v2 command
 - Bay closes: 3.0 + 45.3 + 6 + 21.8 + 6 + 32.0 + 6 + 21.8 + 3.1 = `BAY_W` 145.0.
 - Shin clearance closes: the shin line crosses z = 21.8 at y = -1.0, so a 15.0
   setback leaves 16.0 cm; compartment depth `INT_D` 48.2 - 15.0 = 33.2 >= 31.4 (LP).
-- Power niche closes only at the rear: strip 4 + brick 8.5 = 12.5 > niche height 9.2,
-  so bricks must sit under the trough (ceiling 97), not under a well floor (91).
+- Power niche closes only unstacked: strip 4 + brick 8.5 stacked = 12.5 > niche
+  height 9.2, but a floor-standing brick is 8.5 <= 9.2, clearing z 91 by 0.7.
 - Both variants regenerate from a clean checkout. v1's `drawing-*.svg` must come
   back byte-identical to the committed v1.6 files (`draw_books` is seeded, so the
   drawings are deterministic); the HTML and PDF will differ by the `date.today()`
