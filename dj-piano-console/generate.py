@@ -359,11 +359,22 @@ def side_section():
     else:
         # mixer's rear in its well -> back into the trough (z 91-97) -> down along the back panel -> into the power niche
         d.poly([(GEAR_Y + 35.8, Z_WELL_FLOOR + 5), (xone[4] + 3, Z_WELL_FLOOR + 3), (Y_BACK0 - 1, Z_FIX_TOP + 2), (20, Z_FIX_TOP + 2)], stroke="#C0392B", sw=1.2)
-    d.poly([(TRAY_D - 3, 69), (Y_BACK0 + 0.5, 70.5), (46.5, 72), (46.5, 87.5), (25, 88.3)], stroke="#C0392B", sw=1.0)
-    d.poly([(35, Z_FIX_TOP + 2), (47.5, 84.5), (47.5, 10), (50, 8)], stroke="#333", sw=1.2)
-    d.text(36, 11.5, "mains lead to wall socket", size=7.5, fill=NOTE, italic=True)
+    if VARIANT == 1:
+        d.poly([(TRAY_D - 3, 69), (Y_BACK0 + 0.5, 70.5), (46.5, 72), (46.5, 87.5), (25, 88.3)], stroke="#C0392B", sw=1.0)
+        d.poly([(35, Z_FIX_TOP + 2), (47.5, 84.5), (47.5, 10), (50, 8)], stroke="#333", sw=1.2)
+        d.text(36, 11.5, "mains lead to wall socket", size=7.5, fill=NOTE, italic=True)
+    else:
+        # keyboard lead: behind the tray and straight out of the tray cutout (66 -> 74) -- no chase to climb in v2
+        d.poly([(TRAY_D - 3, 71.5), (44.0, 71.8), (Y_BACK0 - 0.3, 72.2)], stroke="#C0392B", sw=1.0)
+        # mains: off the end of the strip, out of the niche cutout (83 -> 95) to the wall behind
+        d.poly([(35, Z_FIX_TOP + 3.2), (41, 86.3), (Y_BACK0 - 0.3, 87.9)], stroke="#333", sw=1.2)
+        d.text(D + 2, 88, "mains lead to wall socket", size=7.5, anchor="start", fill=NOTE, italic=True)
     d.rect(12, 0, 12, 5, fill="#555", stroke="none")
-    d.poly([(24, 3), (47.0, 3), (47.0, CUT_Z0 + 4), (Y_BACK0, CUT_Z0 + 4), (TRAY_D - 3, 68.5)], stroke="#8E44AD", sw=1.0, dash="2,2")
+    if VARIANT == 1:
+        d.poly([(24, 3), (47.0, 3), (47.0, CUT_Z0 + 4), (Y_BACK0, CUT_Z0 + 4), (TRAY_D - 3, 68.5)], stroke="#8E44AD", sw=1.0, dash="2,2")
+    else:
+        # pedal lead: up the set-back void, the one clear path from the recess to the tray now the chase is gone, then up behind the tray
+        d.poly([(24, 3), (29, 16), (14, 19), (14, 59.6), (45, 60.2), (45, 68.8), (TRAY_D - 3, 69.2)], stroke="#8E44AD", sw=1.0, dash="2,2")
     # seated player
     d.circle(-50, 113, 7.5, stroke=P, sw=1.3)
     d.poly([(-51, 105), (-52, 51)], stroke=P, sw=1.5)
