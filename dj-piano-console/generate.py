@@ -5,6 +5,9 @@ import os, html as H, random, datetime
 OUT = os.path.dirname(os.path.abspath(__file__))
 os.makedirs(OUT, exist_ok=True)
 
+VARIANT = int(os.environ.get("VARIANT", "1"))   # 1 = gear on top (v1.6), 2 = flush-mounted
+SUFFIX = "" if VARIANT == 1 else f"-v{VARIANT}"
+
 # ---------------- parameters (cm) ----------------
 T = 1.8; TT = 3.0
 W = 185.0; D = 50.0
@@ -56,11 +59,55 @@ GEAR = [("Turntable", 45.3, 35.3, 16.2), ("XDJ-700", 21.8, 30.6, 11.1),
         ("Xone:92", 32.0, 35.8, 10.7), ("XDJ-700", 21.8, 30.6, 11.1)]
 GEAR_MARGIN, GEAR_GAP, GEAR_Y = 3.0, 6.0, 2.0
 
+# ---------------- v2: flush-mounted gear ----------------
+WELL_DROP = 9.0                           # clearance the hardware needs below the surface
+Z_WELL_FLOOR = H_TOP - WELL_DROP          # 91.0
+FASCIA_H = Z_TOP_UNDER - Z_WELL_FLOOR     # 6.0 -> apparent slab TT + FASCIA_H = 9.0
+WELL_CLEAR = 0.2                          # cut-out clearance per side
+BOOK_SETBACK = 0.0                        # v1: book zone flush with the front plane
+if VARIANT == 2:
+    GEAR_Y = 5.0                          # front rail, was 2.0
+    BACK_INSET = 0.0                      # back panel moves to the rear face
+    Y_BACK0 = D - BACK_INSET - T          # 48.2
+    Y_BACK1 = D - BACK_INSET              # 50.0
+    INT_D = Y_BACK0                       # 48.2
+    DRW_H = Z_WELL_FLOOR - Z_FIX_TOP      # 9.2, was 15.2
+    BOOK_SETBACK = 15.0                   # seated shin clearance; see the spec
+Z_DRW_TOP = Z_WELL_FLOOR if VARIANT == 2 else Z_TOP_UNDER
+BOOK_D = INT_D - BOOK_SETBACK             # 33.2 in v2, 43.2 in v1
+
 def gear_positions():
     x = X_BAY0 + GEAR_MARGIN; out = []
     for n, w, d, h in GEAR:
         out.append((n, x, w, d, h)); x += w + GEAR_GAP
     return out
+
+def well_positions():
+    """(name, x, w, y0, y1, floor_z) per flush-mounted unit.
+
+    Front edges all sit on GEAR_Y so the front rail reads as one straight line;
+    the cut-out clearance is taken at the sides and the back only.
+    """
+    out = []
+    for n, gx, gw, gd, gh in gear_positions():
+        out.append((n, gx - WELL_CLEAR, gw + 2 * WELL_CLEAR,
+                    GEAR_Y, GEAR_Y + gd + 2 * WELL_CLEAR, Z_WELL_FLOOR))
+    return out
+
+def _eq(a, b): return abs(a - b) < 1e-9
+
+if VARIANT == 2:
+    assert _eq(Z_FIX_TOP + DRW_H, Z_WELL_FLOOR) and _eq(Z_WELL_FLOOR, 91.0)
+    assert _eq(Z_WELL_FLOOR + FASCIA_H, Z_TOP_UNDER) and _eq(Z_TOP_UNDER, 97.0)
+    assert _eq(Z_TOP_UNDER + TT, H_TOP)
+    _deep = max(w[4] for w in well_positions())          # deepest well back edge
+    assert _eq(_deep, 41.2), _deep                        # the Xone:92
+    assert _eq(INT_D - _deep, 7.0)                        # minimum back rail
+    assert _eq(Y_BACK1, D)                                # back panel at the rear face
+    _last = gear_positions()[-1]
+    assert _last[1] + _last[2] <= X_BAY1 - 3.0            # right margin holds
+    assert _eq(BOOK_D, 33.2)
+    assert BOOK_D >= 31.4                                 # a 12" LP sleeve still fits
 
 OAK, OAK2, OAKE = "#EAD9B9", "#D6BE94", "#7A5F32"
 VOID, GEARC, INK, DIMC, GHOST = "#F8F5EE", "#3B3B3B", "#1E1E1E", "#1C5BBF", "#9A9A9A"
@@ -546,7 +593,7 @@ if __name__ == "__main__":
     import sys
     svgs = {"front": front_elevation(), "side": side_section(), "plan": plan_view(), "detail": detail_tray()}
     for k, v in svgs.items():
-        with open(os.path.join(OUT, f"drawing-{k}.svg"), "w") as f: f.write(v)
-    render = sys.argv[1] if len(sys.argv) > 1 else os.path.join(OUT, "render-cg.png")
-    with open(os.path.join(OUT, "dj-piano-console-spec.html"), "w") as f: f.write(build_html(svgs, render))
+        with open(os.path.join(OUT, f"drawing-{k}{SUFFIX}.svg"), "w") as f: f.write(v)
+    render = sys.argv[1] if len(sys.argv) > 1 else os.path.join(OUT, f"render-cg{SUFFIX}.png")
+    with open(os.path.join(OUT, f"dj-piano-console{SUFFIX}-spec.html"), "w") as f: f.write(build_html(svgs, render))
     print("ok", OUT)
