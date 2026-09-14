@@ -335,7 +335,7 @@ def side_section():
     d.rect(BOOK_SETBACK + 1.5, Z_BOT_TOP + SHELF_UP + T, 20, 15.5, fill="#6E8B74", stroke="none")
     if VARIANT == 2:
         d.dim_h(0, BOOK_SETBACK, 24.5, f"{BOOK_SETBACK:g} setback", ext=Z_BOT_TOP, above=False)
-        d.leader(BOOK_SETBACK, 30, -26, 114, f"book zone set back {BOOK_SETBACK:g} cm: the seated shin crosses this plane about 1 cm clear of the panel edge in v1", anchor="end", italic=True)  # -26 mirrors R, defined later in this function
+        d.leader(BOOK_SETBACK, 30, -26, 114, f"book zone set back {BOOK_SETBACK:g} cm for shin clearance", anchor="end", italic=True)  # -26 mirrors R, defined later in this function
     # tray stowed + slide + apron
     d.rect(0, Z_TRAY_UNDER, TRAY_D, TRAY_T)
     d.rect(1.5, Z_TRAY_TOP, SLIDE_LEN, SLIDE_H, fill="#C4C4C4", stroke="none", op=0.7)
@@ -381,7 +381,7 @@ def side_section():
         d.leader(47.5, 60, R, 154, "cable chase 5 cm behind the inset back panel", anchor="end", italic=True)
         d.leader(Y_BACK0 + 0.9, 40, R, 146, "back panel 18 mm, inset 5 cm", anchor="end", italic=True)
     else:
-        d.leader(xone[4] + 2, Z_WELL_FLOOR + 3, R, 154, "cable trough under the back rail, 7 cm deep, runs the full bay and vents the Xone", anchor="end", italic=True)
+        d.leader(xone[4] + 2, Z_WELL_FLOOR + 3, R, 154, "cable trough under the back rail, 7 cm deep", anchor="end", italic=True)
         d.leader(Y_BACK0 + 0.9, 40, R, 146, "back panel 18 mm, flush with the rear face", anchor="end", italic=True)
     d.leader(20, Z_FIX_TOP + 2, R, 138, "power niche: strip and bricks, vented door", anchor="end", italic=True)
     d.leader(Y_BACK0 + 0.9, NICHE_CUT_Z0 + 6, R, 122, "back panel cut away behind the niche", anchor="end", italic=True)
