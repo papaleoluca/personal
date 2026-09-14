@@ -539,12 +539,16 @@ def parts_rows():
          f"Four cut-outs for the gear, all front edges {GEAR_Y:g} cm from the front edge. Sizes per the plan; 2 mm clearance at sides and rear, none at the front. Finger notches r 20 mm at two corners of each. Edges eased, not lipped."),
     ]
     if VARIANT == 2:
+        _wp = well_positions()
+        _well_wid = ", ".join(f"{n} {w:g}" for n, x, w, y0, y1, fz in _wp)
+        _well_dep = ", ".join(f"{n} {y1 - y0:g}" for n, x, w, y0, y1, fz in _wp)
+        _well_wxd = ", ".join(f"{n} {w:g} × {y1 - y0:g}" for n, x, w, y0, y1, fz in _wp)
         rows += [
             ("Bay", "Slab fascia", 1, f"{BAY_W:g} × {FASCIA_H:g}", 60, "Solid oak", f"Front face, returned on both ends. Bottom edge at {Z_WELL_FLOOR:g}, flush with the well floors. Makes the top read as a {TT + FASCIA_H:g} cm slab."),
-            ("Bay", "Well side wall", 8, f"{FASCIA_H:g} × well depth", 18, "Oak-veneered ply", "Two per well, hung from the underside of the top board down to 91. Glued to the top board: this is what stiffens the webs between the wells."),
-            ("Bay", "Well rear wall", 4, f"{FASCIA_H:g} × well width", 18, "Oak-veneered ply", "One per well, slotted for cables into the trough. Slot the Xone:92's full width for airflow."),
-            ("Bay", "Well floor", 4, "well width × well depth", 18, "Oak-veneered ply", f"Top face at {Z_WELL_FLOOR:g}. On adjustable cleats, slotted +/- 10 mm, so the flush line is set against the real units at fit-out."),
-            ("Bay", "Well floor cleat", 8, "20 × 14 mm × well depth", 20, "Solid oak", "Two per well, slotted screw holes."),
+            ("Bay", "Well side wall", 8, f"{FASCIA_H:g} high, depth per well", 18, "Oak-veneered ply", f"Two per well, hung from the underside of the top board down to {Z_WELL_FLOOR:g}. Glued to the top board: this is what stiffens the webs between the wells. Depth per well: {_well_dep} cm. See Detail B for the section."),
+            ("Bay", "Well rear wall", 4, f"{FASCIA_H:g} high, width per well", 18, "Oak-veneered ply", f"One per well, slotted for cables into the trough. Slot the Xone:92's full width for airflow. Width per well: {_well_wid} cm. See Detail B for the section."),
+            ("Bay", "Well floor", 4, "width × depth per well", 18, "Oak-veneered ply", f"Top face at {Z_WELL_FLOOR:g}. On adjustable cleats, slotted +/- 10 mm, so the flush line is set against the real units at fit-out. Width × depth per well: {_well_wxd} cm. See Detail B for the section."),
+            ("Bay", "Well floor cleat", 8, "20 × 14 mm, length per well", 20, "Solid oak", f"Two per well, slotted screw holes. Length per well: {_well_dep} cm. See Detail B for the section."),
         ]
     rows += [
         ("Bay", "Bay bottom panel", 1, f"{BAY_W:g} × {Y_BACK1 - BOOK_SETBACK:g}", 18, "Oak-veneered ply, front edge lipped",
@@ -553,8 +557,9 @@ def parts_rows():
          f"Top face at 21.8 cm. Front edge set back {BOOK_SETBACK:g} cm from the front plane for shin clearance; the recess is therefore open from the floor to the tray underside across that {BOOK_SETBACK:g} cm. Carries the books; stiffened by the divider and the back panel, no rail underneath."),
         ("Bay", "Fixed mid panel", 1, f"{BAY_W:g} × {INT_D:g}", 18, "Oak-veneered ply, front edge lipped", "Top face at 81.8 cm. Ceiling of the keyboard slot, floor of the drawer band."),
         ("Bay", "Bay back panel", 1, f"{BAY_W:g} × {Z_TOP_UNDER - Z_BOT_TOP:g}", 18, "Oak-veneered ply",
-         ("Inset 5 cm. " if VARIANT == 1 else "Flush with the rear face. Vent cutout behind the trough at 91 to 97. ")
-         + f"Cutout {CUT_W:g} × {CUT_H:g} cm behind the tray at {CUT_Z0:g} to {CUT_Z0 + CUT_H:g} cm; cutout {NICHE_W:g} × {NICHE_CUT_H:g} cm behind the niche at {NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H:g} cm."),
+         ("Inset 5 cm. " if VARIANT == 1 else "Flush with the rear face. ")
+         + f"Cutout {CUT_W:g} × {CUT_H:g} cm behind the tray at {CUT_Z0:g} to {CUT_Z0 + CUT_H:g} cm; cutout {NICHE_W:g} × {NICHE_CUT_H:g} cm behind the niche at {NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H:g} cm."
+         + ("" if VARIANT == 1 else f" That niche cutout's upper {NICHE_CUT_Z0 + NICHE_CUT_H - Z_WELL_FLOOR:g} cm ({Z_WELL_FLOOR:g} to {NICHE_CUT_Z0 + NICHE_CUT_H:g}) also opens the trough behind it — the trough's only vent and cable exit.")),
         ("Bay", "Book zone divider", 1, f"{BOOK_D:g} × {Z_TRAY_UNDER - Z_BOT_TOP - 0.5:g}", 18, "Oak-veneered ply, front edge lipped", "Centred. Glued and screwed to bottom and back panel along its length; 5 mm gap under the tray."),
         ("Bay", "Drawer band divider", 2, f"{INT_D:g} × {DRW_H:g}", 18, "Oak-veneered ply, front edge lipped", "Frame the 24 cm power niche. Optional 6 × 4 cm pass-through at the rear of each for a charging lead."),
         ("Bay", "Power niche door", 1, f"{NICHE_W - 0.4:g} × {DRW_H - 0.4:g}", 18, "Solid oak, grain continuous with the drawer fronts", "Flush inset, concealed hinges, push-to-open latch, 1 cm vent gap at the bottom edge."),
@@ -567,6 +572,11 @@ def parts_rows():
         ("All", "Solid oak lipping", "~28 m", "5 × 18 mm", "", "Solid oak", "All exposed ply edges."),
     ]
     return rows
+
+_STRIP_H = 4.0                                  # typical power-strip height, cm
+_BRICK_H = 8.5                                  # typical wall-wart brick height, cm -- measure the actual units
+_BRICK_TOP = Z_FIX_TOP + _BRICK_H               # a floor-standing brick's top, cm
+_BRICK_MARGIN_MM = round((Z_WELL_FLOOR - _BRICK_TOP) * 10, 1)   # clearance to the well floor above, mm
 
 HARDWARE = [
     ("Keyboard tray slides", "1 pair", "Heavy-duty full-extension ball-bearing, 400 mm, rated 100 kg or more per pair, with hold-open detent. Accuride 3634 (400 mm) or Fulterer FR 5000 (400 mm). Side mount at 63 to 68 cm."),
@@ -582,8 +592,8 @@ HARDWARE = [
      "6-way with switch, up to 40 cm long, or two 4-way strips side by side. Lies on the niche floor with sockets facing up; bricks stand on it. Niche is 24 wide × 15 tall × 48 deep including the chase."
      if VARIANT == 1 else
      f"6-way with switch, up to 40 cm long, or two 4-way strips side by side. Lies on the niche floor with sockets facing up. Niche is 24 wide × {DRW_H:g} tall × {INT_D:g} deep, open at the top into the cable trough. "
-     f"Bricks no longer stack on the strip: strip (about 4 cm) plus a stacked brick (about 8.5 cm) would reach about 12.5 cm, well above this niche's ceiling. Stand each brick directly on the niche floor beside the strip instead — an 8.5 cm brick tops out at {Z_FIX_TOP + 8.5:g}, clearing the {Z_WELL_FLOOR:g} cm well floor above by 7 mm — placed toward the rear of the niche, within the trough footprint ({max(w[4] for w in well_positions()):g} to {INT_D:g} cm from the front), so the open trough stays clear as the route for the mains lead out through the niche cutout at {NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H:g} cm. "
-     "Margin is 7 mm: measure the actual bricks before building, since anything taller than 8.5 cm will not fit at all."),
+     f"Bricks no longer stack on the strip: strip (about {_STRIP_H:g} cm) plus a stacked brick (about {_BRICK_H:g} cm) would reach about {_STRIP_H + _BRICK_H:g} cm, well above this niche's ceiling. Stand each brick directly on the niche floor beside the strip instead — an {_BRICK_H:g} cm brick tops out at {_BRICK_TOP:g}, clearing the {Z_WELL_FLOOR:g} cm well floor above by {_BRICK_MARGIN_MM:g} mm — placed toward the rear of the niche, within the trough footprint ({max(w[4] for w in well_positions()):g} to {INT_D:g} cm from the front), so the open trough stays clear as the route for the mains lead out through the niche cutout at {NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H:g} cm. "
+     f"Margin is {_BRICK_MARGIN_MM:g} mm: measure the actual bricks before building, since anything taller than {_BRICK_H:g} cm will not fit at all."),
     ("Niche door hardware", "1 set", "Two concealed hinges (Blum Clip top or similar) and a push-to-open latch (Blum Tip-On), so the door needs no handle."),
     ("Cable slot brush strip", "1 (optional)", "Black brush grommet strip 115 cm, for a 60 mm slot, to line the slot."),
     ("Drawer pass-through grommets", "2 (optional)", "Rubber or oak-lined 60 × 40 mm grommets in the drawer-band dividers, for charging leads from the strip into the drawers."),
