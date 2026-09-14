@@ -1,0 +1,105 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#f3f1ec;overflow:hidden}canvas{display:block}</style></head><body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const W=1600,H=1200;let OX=0; // x offset (cm) applied by box()/cyl(), used to shift the bay parts
+const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+renderer.setSize(W,H,false);renderer.setPixelRatio(1);
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;
+document.body.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xf3f1ec);
+const cam=new THREE.PerspectiveCamera(35,W/H,0.05,60);
+cam.position.set(-0.6,1.28,3.3);cam.lookAt(0.925,0.76,-0.25);
+scene.add(new THREE.HemisphereLight(0xffffff,0xcdbba4,0.6));
+const sun=new THREE.DirectionalLight(0xfff3e2,1.2);sun.position.set(-2.8,3.8,2.6);sun.target.position.set(0.925,0.6,-0.25);scene.add(sun.target);
+sun.castShadow=true;sun.shadow.mapSize.set(4096,4096);const sc=sun.shadow.camera;sc.left=-2.4;sc.right=2.4;sc.top=2.4;sc.bottom=-2.4;sc.near=0.5;sc.far=14;sun.shadow.bias=-0.0003;sun.shadow.normalBias=0.015;scene.add(sun);
+const fill=new THREE.DirectionalLight(0xe6eeff,0.4);fill.position.set(3.5,2.2,3);scene.add(fill);
+const rim=new THREE.DirectionalLight(0xffffff,0.25);rim.position.set(0.9,3,-3);scene.add(rim);
+function woodTex(vertical,base,streakDark,streakLight){const c=document.createElement('canvas');c.width=1024;c.height=1024;const g=c.getContext('2d');g.fillStyle=base;g.fillRect(0,0,1024,1024);
+ for(let i=0;i<520;i++){const y=Math.random()*1024;const w=0.8+Math.random()*3.2;const a=0.05+Math.random()*0.2;g.strokeStyle=(Math.random()<0.5?streakDark:streakLight).replace('A',a.toFixed(2));g.lineWidth=w;g.beginPath();g.moveTo(-60,y);for(let x=0;x<=1100;x+=40){g.lineTo(x,y+Math.sin(x/160+i)*5+(Math.random()-0.5)*1.5);}g.stroke();}
+ const id=g.getImageData(0,0,1024,1024);const d=id.data;for(let i=0;i<d.length;i+=4){const n=(Math.random()-0.5)*9;d[i]+=n;d[i+1]+=n;d[i+2]+=n;}g.putImageData(id,0,0);
+ const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.encoding=THREE.sRGBEncoding;t.anisotropy=8;if(vertical){t.center.set(0.5,0.5);t.rotation=Math.PI/2;}return t;}
+const oakH=new THREE.MeshStandardMaterial({map:woodTex(false,'#dcbf92','rgba(170,132,82,A)','rgba(240,222,190,A)'),roughness:0.7});
+const oakV=new THREE.MeshStandardMaterial({map:woodTex(true,'#dcbf92','rgba(170,132,82,A)','rgba(240,222,190,A)'),roughness:0.7});
+const dark=new THREE.MeshStandardMaterial({color:0x1e1e1e,roughness:0.45});const spk=new THREE.MeshStandardMaterial({color:0x141414,roughness:0.65});
+const darker=new THREE.MeshStandardMaterial({color:0x0e0e0e,roughness:0.45});
+const steel=new THREE.MeshStandardMaterial({color:0xa8a8a8,roughness:0.3,metalness:0.7});
+const white=new THREE.MeshStandardMaterial({color:0xf4f4f2,roughness:0.45});
+const grey=new THREE.MeshStandardMaterial({color:0x8a8a8a,roughness:0.5});
+function box(w,h,d,x,y,z,m){const mesh=new THREE.Mesh(new THREE.BoxGeometry(w/100,h/100,d/100),m);mesh.position.set((x+OX)/100,y/100,z/100);mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);return mesh;}
+function cyl(r,h,x,y,z,m,axisZ){const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r/100,r/100,h/100,48),m);if(axisZ)mesh.rotation.x=Math.PI/2;mesh.position.set((x+OX)/100,y/100,z/100);mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);return mesh;}
+// room
+const floorTex=(()=>{const c=document.createElement('canvas');c.width=1024;c.height=1024;const g=c.getContext('2d');g.fillStyle='#e9dfcd';g.fillRect(0,0,1024,1024);for(let i=0;i<300;i++){const y=Math.random()*1024;g.strokeStyle=`rgba(200,180,150,${(0.04+Math.random()*0.1).toFixed(2)})`;g.lineWidth=1+Math.random()*2;g.beginPath();g.moveTo(0,y);g.lineTo(1024,y+(Math.random()-0.5)*6);g.stroke();}for(let y=0;y<1024;y+=128){g.strokeStyle='rgba(150,125,95,0.35)';g.lineWidth=2;g.beginPath();g.moveTo(0,y);g.lineTo(1024,y);g.stroke();}const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(4,4);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;return t;})();
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.MeshStandardMaterial({map:floorTex,roughness:0.6}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+const wall=new THREE.Mesh(new THREE.PlaneGeometry(14,5),new THREE.MeshStandardMaterial({color:0xf5f3ef,roughness:0.95}));wall.position.set(0.925,2.5,-0.5);wall.receiveShadow=true;scene.add(wall);
+box(1400,8,1.2,92.5,4,-49.4,white); // skirting
+// dims (cm)
+const W_=185,D=50,T=1.8,TT=3,WING=20,CAP=20,BAY0=20,BAY1=165;
+const recCols=[0x3b2f2f,0x6b4a3a,0xd9cbb3,0x2f3a4a,0xa3927a,0x8c2f2f,0x1f1f1f,0xc7b299,0x4a6b5a,0xe0d5c0,0x2f2f2f,0x7a5a8a,0x8a5a44,0x4a5a6a,0xbf8f3f,0x5a7a9a,0x222a33,0xd8a070];
+function records(x0,zBot,fillFrac){const n=Math.floor((WING-2*T-0.6)/0.6*fillFrac);for(let i=0;i<n;i++){const m=new THREE.MeshStandardMaterial({color:recCols[Math.floor(Math.random()*recCols.length)],roughness:0.85});const t=0.42+Math.random()*0.25;const set=Math.random()*2.5;box(t,31.3,31.3,x0+T+0.3+i*0.6,zBot+15.7,-1.5-set-15.65,m);}}
+for(const x0 of [0,W_-WING]){
+ box(T,127,D,x0+0.9,63.5,-25,oakV);box(T,127,D,x0+WING-0.9,63.5,-25,oakV);
+ box(WING-2*T,119.2,T,x0+WING/2,67.4,-49.1,oakH);
+ box(WING-2*T,T,48.2,x0+WING/2,6.9,-24.1,oakH);
+ box(WING-2*T,6,T,x0+WING/2,3,-3.9,oakH);
+ const o=38.53;let z=7.8;
+ for(let i=0;i<3;i++){records(x0,z,i<2?1:0.6);z+=o;if(i<2){box(WING-2*T,T,48.2,x0+WING/2,z+0.9,-24.1,oakH);z+=T;}}
+ const cx=x0===0?CAP/2:W_-CAP/2;
+ box(CAP,TT,D,cx,128.5,-25,oakH);
+ // speaker on pad
+ box(16,1.6,20,cx,130.8,-35,darker);
+ box(18,29,24,cx,131.6+14.5,-35,spk);
+ cyl(5.6,0.6,cx,131.6+10.5,-23-0.3,darker,true);cyl(4.6,0.5,cx,131.6+10.5,-22.6,new THREE.MeshStandardMaterial({color:0x3a3a3a,roughness:0.9}),true);
+ cyl(2.3,0.5,cx,131.6+23.5,-22.9,darker,true);
+}
+OX=BAY0-14.5; // bay parts below were laid out for a 14.5 wing; shift them
+// bay carcass
+box(145,T,45,87,20.9,-22.5,oakH);
+box(145,75.2,T,87,59.4,-44.1,oakH);
+box(T,38.9,43.2,87,41.25,-21.6,oakV);
+box(71.4,T,40,123.7,42.2,-21,oakH);
+box(145,T,43.2,87,80.9,-21.6,oakH);
+// tray + slides + aprons
+box(137.6,T,42,87,62.1,-21,oakH);
+box(1.9,5,40,BAY0+0.95,65.5,-21.5,grey);box(1.9,5,40,BAY1-0.95,65.5,-21.5,grey);
+box(T,6.8,42,BAY0+1.9+0.9,64.6,-21,oakV);box(T,6.8,42,BAY1-1.9-0.9,64.6,-21,oakV);
+box(137.6,5,T,87,65.5,-41.1,oakH);
+// keyboard
+box(133,12,35,87,69,-18.5,darker);
+box(124,1.4,13.5,87,75.5,-9.5,white);
+for(let i=0;i<52;i++){const p=i%7;if(p===2||p===6)continue;box(1.0,1.2,8.2,87-62+i*2.385+1.2,76.4,-12.2,darker);}
+box(120,0.6,10,87,75.3,-25,new THREE.MeshStandardMaterial({color:0x333333,roughness:0.6}));
+// drawers + niche
+box(58.3,14.8,T,43.85,89.4,-0.9,oakH);box(58.3,14.8,T,130.15,89.4,-0.9,oakH);
+box(23.6,14.8,T,87,89.4,-0.9,oakH);
+box(T,15.2,43.2,74.1,89.4,-21.6,oakV);box(T,15.2,43.2,99.9,89.4,-21.6,oakV);
+// drawer gaps and finger pulls
+for(const gx of [14.6,73.1,75.1,98.9,100.9,159.4]){box(0.25,15.2,1.0,gx,89.4,-0.4,darker);}
+box(145,0.25,1.0,87,81.9,-0.4,darker);box(145,0.25,1.0,87,96.9,-0.4,darker);
+box(42,0.7,0.8,43.85,95.9,-0.2,darker);box(42,0.7,0.8,130.15,95.9,-0.2,darker);
+// top + slot
+box(145,TT,D,87,98.5,-25,oakH);
+box(115,0.5,6,87,100.05,-44,darker);
+// gear
+const gearY=100;
+const tt=box(45.3,16.2,35.3,40.15,gearY+8.1,-19.65,darker);
+cyl(15,1.0,35.5,gearY+16.2+0.5,-20.5,steel,false);
+cyl(14.2,0.4,35.5,gearY+16.2+1.2,-20.5,new THREE.MeshStandardMaterial({color:0x111111,roughness:0.8}),false);
+box(2.2,1.5,2.2,56,gearY+16.2+0.75,-33,steel);box(1.0,1.0,20,56,gearY+16.2+2.5,-22,steel);
+box(21.8,11.1,30.6,79.7,gearY+5.55,-17.3,dark);box(15,0.4,9,79.7,gearY+11.1+0.2,-25,new THREE.MeshStandardMaterial({color:0x4a6a8a,roughness:0.4,emissive:0x203040}));cyl(7,0.6,79.7,gearY+11.1+0.3,-9.5,darker,false);
+box(32,10.7,35.8,112.6,gearY+5.35,-19.9,dark);for(let i=0;i<4;i++){box(1.2,0.8,9,112.6-9+i*6,gearY+10.7+0.4,-8,grey);}for(let r=0;r<5;r++)for(let i=0;i<4;i++){cyl(1.0,0.8,112.6-9+i*6,gearY+10.7+0.4,-16-r*4.2,grey,false);}
+box(21.8,11.1,30.6,145.5,gearY+5.55,-17.3,dark);box(15,0.4,9,145.5,gearY+11.1+0.2,-25,new THREE.MeshStandardMaterial({color:0x4a6a8a,roughness:0.4,emissive:0x203040}));cyl(7,0.6,145.5,gearY+11.1+0.3,-9.5,darker,false);
+// books
+const bookCols=[0x8a5a2b,0x3f6b4f,0x6b4a7a,0x2f4f6f,0xb59a4a,0x9a3a2a,0x333333,0xc98a4a,0xe8e0d0,0x223344,0x7a2f22,0x1f5f5f,0xd9c7a0,0x5a3a6a];
+function books(x0,x1,y0,hmin,hmax,seedShift){let x=x0;while(true){const w=1.4+Math.random()*3;const h=hmin+Math.random()*(hmax-hmin);if(x+w>x1)break;const d=14+Math.random()*8;box(w,h,d,x+w/2,y0+h/2,-2-Math.random()*3-d/2,new THREE.MeshStandardMaterial({color:bookCols[Math.floor(Math.random()*bookCols.length)],roughness:0.85}));x+=w+0.15;}}
+books(17.5,62,21.8,21,31,1);
+// a couple of LPs leaning in the left compartment
+for(let i=0;i<3;i++){box(0.6,31.3,31.3,64+i*0.8,21.8+15.7,-4-15.65,new THREE.MeshStandardMaterial({color:recCols[i*3%recCols.length],roughness:0.85}));}
+books(90.5,150,21.8,14,18,2);
+books(90.5,140,43.1,13,16.5,3);
+// headphone hook + headphones (right wing outer face)
+OX=0;
+box(1.2,1.2,4,W_+0.6,105,-6,darker);
+cyl(1.0,7,W_+1.5,102,-6,darker,false);
+renderer.render(scene,cam);window.__done=true;
+</script></body></html>

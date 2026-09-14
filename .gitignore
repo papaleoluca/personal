@@ -218,3 +218,6 @@ __marimo__/
 
 # Backup files
 *.bak
+
+# dj-piano-console: keep the concept render (small, and embedded in the PDF)
+!dj-piano-console/render-cg.png
