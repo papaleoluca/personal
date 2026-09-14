@@ -617,11 +617,30 @@ def build_html(svgs, render_path=None):
         gear_rows.append((n, f"{gw:g} × {gd:g} × {gh:g}", f"{gx - X_BAY0:g} to {gx - X_BAY0 + gw:g}"))
     zones = [
         ("Speaker caps", "127 to 130", f"Two 5-inch monitors on isolation pads, one per wing. Cap {CAP_W:g} × {D:g} cm, 30 mm oak, flush with the column on every side. A KRK Rokit 5 (18.5 wide) leaves 7 mm each side."),
-        ("DJ surface", "100 (top 97 to 100)", "Turntable, XDJ-700, Xone:92, XDJ-700 left to right, within a 145 cm span, 2 cm back from the front edge. Cable slot 115 × 6 cm behind the gear, wide enough for plugs and the XDJ power bricks."),
-        ("Drawer band", "81.8 to 97", "Two flush drawers of 58.7 cm (cables and adapters left, headphones right) with a 24 cm power niche between them: push-to-open door, strip and wall-wart bricks inside, open at the back into the cable chase."),
+        ("DJ surface",
+         "100 (top 97 to 100)" if VARIANT == 1 else f"100 (slab {Z_WELL_FLOOR:g} to 100)",
+         ("Turntable, XDJ-700, Xone:92, XDJ-700 left to right, within a 145 cm span, 2 cm back from the front edge. Cable slot 115 × 6 cm behind the gear, wide enough for plugs and the XDJ power bricks."
+          if VARIANT == 1 else
+          f"Turntable, XDJ-700, Xone:92, XDJ-700 left to right within the 145 cm bay, each sunk {WELL_DROP:g} cm into the slab with its faceplate flush. Front rail {GEAR_Y:g} cm, oak webs about 5.6 cm between units. Dust covers cannot be fitted.")),
+        ("Drawer band",
+         "81.8 to 97" if VARIANT == 1 else f"81.8 to {Z_WELL_FLOOR:g}",
+         ("Two flush drawers of 58.7 cm (cables and adapters left, headphones right) with a 24 cm power niche between them: push-to-open door, strip and wall-wart bricks inside, open at the back into the cable chase."
+          if VARIANT == 1 else
+          f"Two flush drawers of 58.7 cm ({DRW_H:g} cm high) with a 24 cm power niche between them: push-to-open door, strip and bricks inside, open at the top into the cable trough.")),
+    ]
+    if VARIANT == 2:
+        zones.append(("Cable trough", f"{Z_WELL_FLOOR:g} to {Z_TOP_UNDER:g}", "Continuous under the back rail, full 145 cm bay, 7 cm deep behind the Xone:92 and 12.2 behind the XDJs. Every well slots into it. Also the mixer's ventilation path."))
+    zones += [
         ("Keyboard slot", "63 to 80", "Pull-out tray, top face at 63 cm, 40 cm extension on heavy-duty slides. Keyboard 133 × 35 × 12 stowed inside, 5 cm air above it."),
-        ("Book compartments", "21.8 to 61.2", "Two openings 71.6 wide × 39.4 tall × 43.2 deep, one adjustable shelf each. Tall enough for LPs and art books."),
-        ("Recess", "0 to 20", "Open across the whole bay and through to the wall: sustain pedal and feet when seated, toe space when standing."),
+        ("Book compartments", "21.8 to 61.2",
+         ("Two openings 71.6 wide × 39.4 tall × 43.2 deep, one adjustable shelf each. Tall enough for LPs and art books."
+          if VARIANT == 1 else
+          f"Two openings 71.6 wide × 39.4 tall × {BOOK_D:g} deep, one adjustable shelf each. Front plane set back {BOOK_SETBACK:g} cm from the console face for seated shin clearance. Still takes a 31.4 cm LP sleeve, with 1.8 cm to spare.")),
+        ("Recess",
+         "0 to 20" if VARIANT == 1 else "0 to 20 (to 61.2 at the front)",
+         ("Open across the whole bay and through to the wall: sustain pedal and feet when seated, toe space when standing."
+          if VARIANT == 1 else
+          f"Open across the whole bay and through to the wall: sustain pedal and feet when seated, toe space when standing. The front {BOOK_SETBACK:g} cm stands open right up to the tray underside, so the shins clear the shelving.")),
         ("Wing columns", "7.8 to 127", f"Three openings per wing, {WING_INT_W:g} wide × 38.5 tall × 48.2 deep, records spine-out, about {REC_PER} per opening at 6 mm each, about {REC_TOTAL} in total."),
     ]
     render_block = ""
@@ -656,26 +675,50 @@ def build_html(svgs, render_path=None):
         ("Wings", f"{WING_W:g} wide each, {WING_INT_W:g} clear inside, full height to {Z_CAP_UNDER:g}, cap {CAP_W:g} × {D:g} × 3 on top."),
         ("Keyboard tray", f"Top face {Z_TRAY_TOP:g}, underside {Z_TRAY_UNDER:g}, extension {EXT:g}, tray {TRAY_PANEL_W:g} × {TRAY_D:g}. Key tops about 74 (piano height)."),
         ("Recess", f"{RECESS_H:g} clear, full bay width, open to the wall."),
-        ("Depth budget", f"{INT_D:g} usable inside the bay, 1.8 back panel, {BACK_INSET:g} chase. Wings use the full depth ({D - T:g} inside)."),
-        ("Panel thickness", "18 mm carcass, 30 mm top and caps, 15 mm drawer boxes."),
+        ("Depth budget",
+         f"{INT_D:g} usable inside the bay, 1.8 back panel, {BACK_INSET:g} chase. Wings use the full depth ({D - T:g} inside)."
+         if VARIANT == 1 else
+         f"{INT_D:g} usable inside the bay, 1.8 back panel flush with the rear face. Front rail {GEAR_Y:g}, deepest well 36.2, back rail 7.0. Wings use the full depth ({D - T:g} inside)."),
+        ("Panel thickness", "18 mm carcass, 30 mm top and caps, 15 mm drawer boxes." if VARIANT == 1 else "18 mm carcass, 30 mm top and caps over a 60 mm fascia, 15 mm drawer boxes."),
         ("Storage", f"About {REC_TOTAL} records in the wings (six openings, 6 mm per sleeve; {REC_TOTAL_S} if mostly single sleeves), two book compartments of 71.6 cm, two drawers. Each book compartment holds about 110 more LPs if wanted."),
         ("Weight, empty", "Roughly 120 to 130 kg. Loaded with records, books and gear about 250 kg. Spread over the two wings and the floating bay."),
     ]
     ergo = [
-        "Seated at the keyboard: tray at 63 cm puts the key tops at about 74 cm, the same as an acoustic piano. Clear height under the tray is 61.2 cm; use a stool of 44 to 46 cm. The tray extends 40 cm so the knees sit under the tray and the feet and pedal go into the 20 cm recess. Nothing projects below the tray at the front.",
-        "Standing at the decks: surface at 100 cm, mixer faders at about 111 cm. Toes go under the floating bay.",
+        ("Seated at the keyboard: tray at 63 cm puts the key tops at about 74 cm, the same as an acoustic piano. Clear height under the tray is 61.2 cm; use a stool of 44 to 46 cm. The tray extends 40 cm so the knees sit under the tray and the feet and pedal go into the 20 cm recess. Nothing projects below the tray at the front."
+         + ("" if VARIANT == 1 else f" The book zone is set back {BOOK_SETBACK:g} cm from the front plane, so the shins clear it; in v1 they passed within about 1 cm of the bottom panel's front edge.")),
+        ("Standing at the decks: surface at 100 cm, mixer faders at about 111 cm. Toes go under the floating bay."
+         if VARIANT == 1 else
+         "Standing at the decks: surface at 100 cm, every faceplate flush with it. Toes go under the floating bay. Reaching into a well for a rear socket means lifting the unit out by its finger notches."),
         "Speakers: cap tops at 130 cm put a 5-inch monitor's tweeter at about 152 cm, a little below standing ear height; the isolation pads add a slight upward tilt. Toe them in toward the centre.",
-        "Cables: everything on the top drops through the slot into the 5 cm chase and straight into the power niche behind the drawer band, where the switched strip and the wall-wart bricks sit at standing height. The keyboard's mains lead and the pedal cable share the chase through the cutout behind the tray; leave a 60 cm slack loop for the tray travel. The strip's own lead runs down the chase to the wall socket.",
+        ("Cables: everything on the top drops through the slot into the 5 cm chase and straight into the power niche behind the drawer band, where the switched strip and the wall-wart bricks sit at standing height. The keyboard's mains lead and the pedal cable share the chase through the cutout behind the tray; leave a 60 cm slack loop for the tray travel. The strip's own lead runs down the chase to the wall socket."
+         if VARIANT == 1 else
+         "Cables: each unit's leads leave through a slot in the rear wall of its well into the trough under the back rail, run along the bay and drop into the power niche, where the switched strip and the bricks sit. The keyboard's mains lead and the pedal cable keep their cutout behind the tray; leave a 60 cm slack loop for the tray travel. Stand the console a few centimetres off the wall: the back panel is flush with the rear face, and the trough vents through it."),
     ]
     build = [
         f"Build the two wings first as closed columns (open front) {WING_W:g} × {D:g} × {Z_CAP_UNDER:g}. Their inner panels are the bay side walls, so drill them for the tray slides (cabinet member at 63 to 68 cm, 1.5 cm from the front) and for the bay panel fixings before assembly.",
-        "Tie the wings together with the bay panels: bottom (top face 21.8), fixed mid panel (top face 81.8), top (97 to 100) and the back panel. Dowels and glue at visible joints; concealed confirmats behind the drawers and the tray where they will not be seen.",
+        ("Tie the wings together with the bay panels: bottom (top face 21.8), fixed mid panel (top face 81.8), top (97 to 100) and the back panel. Dowels and glue at visible joints; concealed confirmats behind the drawers and the tray where they will not be seen."
+         if VARIANT == 1 else
+         f"Tie the wings together with the bay panels: bottom (top face 21.8), fixed mid panel (top face 81.8), top ({Z_WELL_FLOOR:g} to {H_TOP:g}) and the back panel. Dowels and glue at visible joints; concealed confirmats behind the drawers and the tray where they will not be seen."),
         "The bay bottom spans 145 cm with no leg. The book divider is glued and screwed along its full length to the bottom and back panels, and the back panel is glued along the rear edge: together they act as the stiffeners. Do not add a rail under the front edge; the recess must stay 20 cm clear.",
-        "The bay back panel is inset 5 cm to form the cable chase. It is open at the bottom into the recess and closed at the sides by the wing panels and at the top by the top. The wing back panels are flush with the rear edge.",
-        "Rout the slot in the top before finishing: 115 × 6 cm, 41 cm from the front edge, centred on the bay, ends rounded, edges eased. Six centimetres lets the XDJ-700 power bricks and Schuko plugs pass without turning. Optional brush strip.",
+    ]
+    if VARIANT == 2:
+        build.append(f"Set the bay bottom panel, the book divider and both adjustable shelves back {BOOK_SETBACK:g} cm from the front plane. The panel's front edge is unsupported and unlipped at {Z_BOT_TOP:g}; lip it and ease it, it is at shin height.")
+    build += [
+        ("The bay back panel is inset 5 cm to form the cable chase. It is open at the bottom into the recess and closed at the sides by the wing panels and at the top by the top. The wing back panels are flush with the rear edge."
+         if VARIANT == 1 else
+         f"The bay back panel is flush with the rear face. The cable trough is formed by leaving the band from {Z_WELL_FLOOR:g} to {Z_TOP_UNDER:g} open behind the wells, from wing to wing. Stand the console a few centimetres off the wall: that gap is what lets the trough vent and the cables exit, since the back panel itself sits flush with the rear face."),
+        ("Rout the slot in the top before finishing: 115 × 6 cm, 41 cm from the front edge, centred on the bay, ends rounded, edges eased. Six centimetres lets the XDJ-700 power bricks and Schuko plugs pass without turning. Optional brush strip."
+         if VARIANT == 1 else
+         "Cut the four gear wells in the top before finishing, and dry-fit every unit before the fascia goes on. The flush line is set by the cleats, so cut the cut-outs to the units and leave the floor heights to fit-out."),
+    ]
+    if VARIANT == 2:
+        build.append(f"Glue the well side walls to the underside of the top board before the fascia goes on. Each web between two wells is then a {TT*10:g} mm cap on two {FASCIA_H*10:g} mm walls, which is what carries the span; a bare {TT*10:g} mm web is not stiff enough to lean on.")
+    build += [
         "Keyboard tray: side-mounted heavy-duty slides above the tray surface, screwed into the solid oak aprons (detail A). Confirm the keyboard's actual footprint and connector positions before cutting the tray and the back-panel cutout.",
         "Drawers on undermount runners with flush inset fronts, 2 mm gaps, finger pull routed under the top edge. Run the grain across both fronts and the niche door as one board.",
-        "Power niche: cut the back panel away behind it (24 × 12 cm at 83 to 95) so niche and chase are one space. Door on concealed hinges with a push latch and a 1 cm gap at the bottom for air. The strip lies on the mid panel with sockets up; leads from the slot and from the keyboard arrive through the chase. Optional: a 6 × 4 cm hole through each divider at the rear, with a matching notch in the drawer side, lets a lead from the strip charge headphones or a phone inside the drawers; leave a 45 cm loop for the drawer travel. Bricks stay in the niche.",
+        ("Power niche: cut the back panel away behind it (24 × 12 cm at 83 to 95) so niche and chase are one space. Door on concealed hinges with a push latch and a 1 cm gap at the bottom for air. The strip lies on the mid panel with sockets up; leads from the slot and from the keyboard arrive through the chase. Optional: a 6 × 4 cm hole through each divider at the rear, with a matching notch in the drawer side, lets a lead from the strip charge headphones or a phone inside the drawers; leave a 45 cm loop for the drawer travel. Bricks stay in the niche."
+         if VARIANT == 1 else
+         f"Power niche: {NICHE_W:g} × {DRW_H:g}, opening upward into the trough above it rather than rearward into a chase. Door on concealed hinges with a push latch and a 1 cm gap at the bottom edge for air. The strip lies on the niche floor with sockets up. Bricks no longer stack on the strip: stand each brick on the niche floor beside it instead, toward the rear of the niche within the trough footprint (y {max(w[4] for w in well_positions()):g} to {INT_D:g} from the front) — an {_BRICK_H:g} cm brick clears the well floor above by {_BRICK_MARGIN_MM:g} mm, so measure the actual bricks before building: anything taller will not fit. The back-panel cutout behind the niche ({NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H:g}, x {NICHE_X:g} to {NICHE_X + NICHE_W:g}) spans niche and trough, but only its upper {NICHE_CUT_Z0 + NICHE_CUT_H - Z_WELL_FLOOR:g} cm is above the well floor at {Z_WELL_FLOOR:g} — that upper strip is the trough's only vent and cable exit; the trough itself runs the full 145 cm bay and is not otherwise vented."),
         "Adjustable shelves on 5 mm pins, holes at 32 mm pitch. Finish the underside of the tray: it is the ceiling of the book compartments.",
         "Level on the eight feet so the tray runs true, then fix each wing to the wall with a concealed anti-tip bracket.",
     ]
@@ -694,15 +737,13 @@ def build_html(svgs, render_path=None):
 </div>
 <div class="page"><h2>Ergonomics</h2><ul>{"".join(f"<li>{H.escape(e)}</li>" for e in ergo)}</ul>
 <h2 style="margin-top:12pt">Gear layout on the top</h2>{table(["Device", "W × D × H (cm)", "Position from left wing inner face (cm)"], gear_rows)}
-<p class="muted">Positions assume a Technics-size turntable (45.3 × 35.3), an Allen &amp; Heath Xone:92 and two Pioneer XDJ-700 with 6 cm gaps and 3 cm end margins. Re-measure your own units before fixing anything; the slot and top do not depend on it.</p>
+<p class="muted">Positions assume a Technics-size turntable (45.3 × 35.3), an Allen &amp; Heath Xone:92 and two Pioneer XDJ-700 with 6 cm gaps and 3 cm end margins. {"Re-measure your own units before fixing anything; the slot and top do not depend on it." if VARIANT == 1 else "Re-measure your own units before cutting: each well is templated to its unit with only 2 mm clearance per side, so the cut-outs depend on it directly."}</p>
 <h2 style="margin-top:12pt">Variants left open</h2><ul>{"".join(f"<li>{H.escape(v)}</li>" for v in variants)}</ul>
 </div>
 <div class="page drawing"><h2>1. Front elevation</h2>{svgs['front'].replace('<svg ', '<svg style="height:168mm" ', 1)}</div>
 <div class="page drawing"><h2>2. Side section through the bay, cut through the power niche and the mixer, looking toward the right wing</h2>{svgs['side'].replace('<svg ', '<svg style="height:165mm" ', 1)}</div>
 <div class="page drawing"><h2>3. Plan of the top</h2>{svgs['plan'].replace('<svg ', '<svg style="height:66mm" ', 1)}
-<h2 style="margin-top:14pt">4. Detail A: tray edge, slide and apron (section looking from the front, left side)</h2>{svgs['detail'].replace('<svg ', '<svg style="height:82mm" ', 1)}
-{("<h2 style='margin-top:14pt'>5. Detail B: gear well (section through the front rail)</h2>" + svgs['well'].replace('<svg ', '<svg style="height:70mm" ', 1)) if 'well' in svgs else ''}
-</div>
+<h2 style="margin-top:14pt">4. Detail A: tray edge, slide and apron (section looking from the front, left side)</h2>{svgs['detail'].replace('<svg ', '<svg style="height:82mm" ', 1)}{("\n<h2 style='margin-top:14pt'>5. Detail B: gear well (section through the front rail)</h2>" + svgs['well'].replace('<svg ', '<svg style="height:70mm" ', 1)) if 'well' in svgs else ''}</div>
 <div class="page parts"><h2>Parts list</h2>
 {table(["Group", "Part", "Qty", "Size L × W (cm)", "Thk (mm)", "Material", "Notes"], parts_rows())}
 </div>
