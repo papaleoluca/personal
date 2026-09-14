@@ -218,7 +218,11 @@ def front_elevation():
         d.rect(cx, Z_CAP_UNDER, CAP_W, TT)
         speaker(d, cx + (CAP_W - SPK_W) / 2, H_WING, SPK_W, SPK_H)
     # bay carcass
-    d.rect(X_BAY0, RECESS_H, BAY_W, T)
+    if VARIANT == 1:
+        d.rect(X_BAY0, RECESS_H, BAY_W, T)
+    else:
+        d.rect(X_BAY0, RECESS_H, BAY_W, T, fill="#EFE9DC", stroke=GHOST, sw=0.8, dash="4,3")
+        d.text(W / 2, RECESS_H - 4.2, f"book zone set back {BOOK_SETBACK:g} cm for knee and shin clearance", size=8, fill=NOTE, italic=True)
     rx = X_BAY0 + OPEN_W + DIV_T
     draw_books(d, X_BAY0 + 2.5, Z_BOT_TOP, 44, 22, 31.5, 1)
     d.rect(rx + 0.1, Z_BOT_TOP + SHELF_UP, OPEN_W - 0.2, T)
@@ -238,21 +242,32 @@ def front_elevation():
     d.rect(X_BAY0, Z_FIX_TOP, BAY_W, DRW_H, fill="#6B5A40", stroke="none")
     for ox in (X_BAY0, NICHE_X + NICHE_W + T):
         d.rect(ox + GAP, Z_FIX_TOP + GAP, DRW_W - 2 * GAP, DRW_H - 2 * GAP, fill=OAK)
-        d.line(ox + 8, Z_TOP_UNDER - 1.7, ox + DRW_W - 8, Z_TOP_UNDER - 1.7, stroke=OAKE, sw=1.2)
+        d.line(ox + 8, Z_DRW_TOP - 1.7, ox + DRW_W - 8, Z_DRW_TOP - 1.7, stroke=OAKE, sw=1.2)
     d.rect(NICHE_X - T, Z_FIX_TOP, T, DRW_H); d.rect(NICHE_X + NICHE_W, Z_FIX_TOP, T, DRW_H)
     d.rect(NICHE_X + GAP, Z_FIX_TOP + GAP, NICHE_W - 2 * GAP, DRW_H - 2 * GAP, fill=OAK)
     cxn, czn = NICHE_X + NICHE_W / 2, Z_FIX_TOP + DRW_H / 2 + 0.8
     d.circle(cxn, czn, 1.7, stroke=OAKE, sw=1.1); d.line(cxn, czn, cxn, czn + 2.4, stroke=OAKE, sw=1.4)
     d.text(cxn, Z_FIX_TOP + 2.4, "power niche", size=7, fill=NOTE)
-    d.rect(X_BAY0, Z_TOP_UNDER, BAY_W, TT)
-    # gear
-    for n, gx, gw, gd, gh in gear_positions():
-        d.rect(gx, H_TOP, gw, gh, fill=GEARC, stroke="none")
-        d.text(gx + gw / 2, H_TOP + gh + 3.6, n, size=9)
-    tt = gear_positions()[0]
-    d.rect(tt[1] + 3, H_TOP + tt[4] - 2.4, tt[2] - 6, 1.3, fill="#8a8a8a", stroke="none")
+    if VARIANT == 1:
+        d.rect(X_BAY0, Z_TOP_UNDER, BAY_W, TT)
+        # gear
+        for n, gx, gw, gd, gh in gear_positions():
+            d.rect(gx, H_TOP, gw, gh, fill=GEARC, stroke="none")
+            d.text(gx + gw / 2, H_TOP + gh + 3.6, n, size=9)
+        tt = gear_positions()[0]
+        d.rect(tt[1] + 3, H_TOP + tt[4] - 2.4, tt[2] - 6, 1.3, fill="#8a8a8a", stroke="none")
+    else:
+        # 9 cm slab (3 cm oak top board over a 6 cm fascia), wells cut through both
+        d.rect(X_BAY0, Z_WELL_FLOOR, BAY_W, FASCIA_H + TT)
+        for n, wx, ww, wy0, wy1, wfz in well_positions():
+            d.rect(wx, wfz, ww, WELL_DROP, fill=GEARC, stroke="none")
+            d.text(wx + ww / 2, H_TOP + 3.6, n, size=9)
+        d.line(X_BAY0, Z_TOP_UNDER, X_BAY1, Z_TOP_UNDER, stroke=OAKE, sw=0.6, dash="4,3")
     # notes
-    d.text(W / 2, 123.6, f"Cable slot {SLOT_Y1 - SLOT_Y0:g} × {SLOT_X1 - SLOT_X0:g} cm routed in the top behind the gear; leads, plugs and the XDJ bricks pass down into the chase and the power niche", size=9, fill=NOTE, italic=True)
+    if VARIANT == 1:
+        d.text(W / 2, 123.6, f"Cable slot {SLOT_Y1 - SLOT_Y0:g} × {SLOT_X1 - SLOT_X0:g} cm routed in the top behind the gear; leads, plugs and the XDJ bricks pass down into the chase and the power niche", size=9, fill=NOTE, italic=True)
+    else:
+        d.text(W / 2, 123.6, "Gear sunk 9 cm into the slab, faceplates flush. Each well slots at the rear into a continuous cable trough under the back rail; no dust covers can be fitted", size=9, fill=NOTE, italic=True)
     d.text(X_BAY0 + DRW_W / 2, Z_FIX_TOP + DRW_H / 2, "Drawer: cables, adapters, needles", size=9, dy=3)
     d.text(NICHE_X + NICHE_W + T + DRW_W / 2, Z_FIX_TOP + DRW_H / 2, "Drawer: headphones", size=9, dy=3)
     d.text(W / 2, 77.4, "Keyboard 133 × 35 × 12 stowed on the pull-out tray (extends 40 cm, see section)", size=9, fill=NOTE, italic=True)
@@ -270,7 +285,8 @@ def front_elevation():
     # height dims (right)
     xr = W + 8
     d.dim_v(0, RECESS_H, xr, "20", ext=X_BAY1); d.dim_v(Z_BOT_TOP, Z_TRAY_UNDER, xr, "39.4", ext=X_BAY1)
-    d.dim_v(Z_TRAY_TOP, Z_CAV_TOP, xr, "17", ext=X_BAY1); d.dim_v(Z_FIX_TOP, Z_TOP_UNDER, xr, "15.2", ext=X_BAY1)
+    d.dim_v(Z_TRAY_TOP, Z_CAV_TOP, xr, "17", ext=X_BAY1); d.dim_v(Z_FIX_TOP, Z_DRW_TOP, xr, f"{DRW_H:g}", ext=X_BAY1)
+    if VARIANT == 2: d.dim_v(Z_WELL_FLOOR, H_TOP, xr, f"{FASCIA_H + TT:g} slab", ext=X_BAY1)
     d.dim_v(H_TOP, Z_CAP_UNDER, xr, "27", ext=X_BAY1)
     d.dim_v(0, Z_TRAY_TOP, W + 20, "63 tray top"); d.dim_v(0, H_TOP, W + 31, "100 DJ surface"); d.dim_v(0, H_WING, W + 42, "130 cap top")
     # left: wing openings
