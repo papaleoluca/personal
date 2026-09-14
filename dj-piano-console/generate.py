@@ -335,7 +335,6 @@ def side_section():
     d.rect(BOOK_SETBACK + 1.5, Z_BOT_TOP + SHELF_UP + T, 20, 15.5, fill="#6E8B74", stroke="none")
     if VARIANT == 2:
         d.dim_h(0, BOOK_SETBACK, 24.5, f"{BOOK_SETBACK:g} setback", ext=Z_BOT_TOP, above=False)
-        d.leader(BOOK_SETBACK, 30, -26, 114, f"book zone set back {BOOK_SETBACK:g} cm for shin clearance", anchor="end", italic=True)  # -26 mirrors R, defined later in this function
     # tray stowed + slide + apron
     d.rect(0, Z_TRAY_UNDER, TRAY_D, TRAY_T)
     d.rect(1.5, Z_TRAY_TOP, SLIDE_LEN, SLIDE_H, fill="#C4C4C4", stroke="none", op=0.7)
