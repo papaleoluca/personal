@@ -26,6 +26,7 @@ v1.6 is not superseded. Both versions must remain generable and comparable.
 - Approved envelope held exactly: 185 x 50 x 130, top surface at 100.
 - Piano tray, wings, record capacity and speaker caps carried over untouched.
 - Drawers retained, even if shallower.
+- Seated shin clearance at the book compartments (raised by Luca on review of the v1 section).
 - Cables and mixer heat handled deliberately, not left to the carpenter.
 - One generator still producing both versions — `generate.py` stays the single
   source of truth, as the README promises.
@@ -57,6 +58,8 @@ Well floors sit at `H_TOP - WELL_DROP` = 100 - 9 = **91.0**. Everything follows:
 | back rail (min) | — | **7.0** | 48.2 - 41.2, behind the Xone |
 | `DRW_H` | 15.2 | **9.2** | `Z_WELL_FLOOR - Z_FIX_TOP` |
 | drawer box depth | 43.2 | **48.2** | wells stop at 91, so drawers run full depth |
+| `BOOK_SETBACK` | 0 | **15.0** | book zone front plane, for shin clearance |
+| book compartment depth | 43.2 | **33.2** | `INT_D - BOOK_SETBACK`; a 31.4 cm LP fits with 1.8 spare |
 
 Unchanged: `W` 185, `D` 50, `H_TOP` 100, `H_WING` 130, `WING_W` / `CAP_W` 20,
 `BAY_W` 145, `T` 1.8, `Z_FIX_TOP` 81.8, `Z_CAV_TOP` 80, `Z_TRAY_TOP` 63,
@@ -129,6 +132,37 @@ Because `BACK_INSET` is 0, the back panel is the rear face of the piece. The con
 must stand a few centimetres off the wall for the trough to vent and for cables to
 exit. This is a placement note for the spec sheet, not a construction detail.
 
+### Book zone setback
+
+Reviewing the v1 section, Luca flagged that a seated player's shins pass very close
+to the book compartments. They do. The shin line in the section runs knee (-8, 54)
+to ankle (2, 8), so it crosses:
+
+| height | shin at y | clearance to the shelf front edge at y = 0 |
+|---|---|---|
+| 54 (knee) | -8.0 | 8.0 |
+| 43.1 (upper shelf) | -5.6 | 5.6 |
+| 30 | -2.8 | 2.8 |
+| **21.8 (compartment floor)** | **-1.0** | **1.0** |
+
+The pinch is not the books — it is the front edge of the bay bottom panel at 21.8,
+which the shin passes at the moment it angles into the recess. One centimetre. The
+figure in the drawing is an illustration rather than a measured model, but the
+conclusion does not depend on it: any seated player with their feet in the recess
+runs their shins through that plane.
+
+Fix: set the whole book zone back **15.0 cm** — bay bottom panel, book divider and
+both adjustable shelves, not merely the books. That leaves 16.0 cm at the pinch.
+
+Consequence to accept: the front 15 cm then stands open from the floor to the tray
+underside at 61.2, so the 20 cm foot recess grows into an L. This reads as the bay
+floating and is consistent with the reference photos.
+
+This is affordable only because moving the back panel already bought 5 cm. The
+compartment lands at 48.2 - 15.0 = 33.2 deep, and a 31.4 cm LP sleeve fits with 1.8
+to spare. v1.6 could not take this change: at 43.2 interior a 15 cm setback leaves
+28.2 and LPs stop fitting. **v2 only** — whether to revisit v1 is deferred.
+
 ### Consequence: no dust covers
 
 v1 lists the turntable at 45.3 x 35.3 x **16.2** — that height includes the dust
@@ -154,6 +188,8 @@ already mirrors v1's by hand. The README's regenerate block gains the v2 command
 - Depth closes: `GEAR_Y` 5.0 + deepest well 36.2 (Xone + clearance) + back rail 7.0
   = `INT_D` 48.2; + `T` 1.8 = `D` 50.0.
 - Bay closes: 3.0 + 45.3 + 6 + 21.8 + 6 + 32.0 + 6 + 21.8 + 3.1 = `BAY_W` 145.0.
+- Shin clearance closes: the shin line crosses z = 21.8 at y = -1.0, so a 15.0
+  setback leaves 16.0 cm; compartment depth `INT_D` 48.2 - 15.0 = 33.2 >= 31.4 (LP).
 - Both variants regenerate from a clean checkout. v1's `drawing-*.svg` must come
   back byte-identical to the committed v1.6 files (`draw_books` is seeded, so the
   drawings are deterministic); the HTML and PDF will differ by the `date.today()`

@@ -15,6 +15,7 @@
 - All dimensions in centimetres. Envelope is fixed at 185 × 50 × 130; top surface at 100.
 - `WELL_DROP = 9.0` — given by Luca, the clearance the hardware needs below the top surface. Everything else derives from it.
 - Derived, exact: `Z_WELL_FLOOR` 91.0, `FASCIA_H` 6.0, `DRW_H` 9.2, `GEAR_Y` 5.0, `BACK_INSET` 0.0, `INT_D` 48.2, min back rail 7.0.
+- `BOOK_SETBACK = 15.0` — the book zone (bay bottom panel, divider, both shelves) sets back 15 cm from the front plane for seated shin clearance. `BOOK_D = INT_D - BOOK_SETBACK = 33.2`. This ripples through Tasks 1, 2, 3, 6 and 7; do not miss it.
 - Name the new fascia `FASCIA_H`. Do **not** call it `APRON_*` — `APRON_UP` / `APRON_H` already mean the piano tray apron (`generate.py:20`).
 - Never edit anything under `codebase/`. This work is confined to `personal/`.
 - v1 invariant, checked after every task: `VARIANT` unset must reproduce `drawing-{front,side,plan,detail}.svg` byte-identically against git.
@@ -47,6 +48,8 @@ if VARIANT == 2:
     assert _eq(Y_BACK1, D)                                # back panel at the rear face
     _last = gear_positions()[-1]
     assert _last[1] + _last[2] <= X_BAY1 - 3.0            # right margin holds
+    assert _eq(BOOK_D, 33.2)
+    assert BOOK_D >= 31.4                                 # a 12" LP sleeve still fits
 ```
 
 - [ ] **Step 2: Run to verify it fails**
@@ -73,6 +76,7 @@ WELL_DROP = 9.0                           # clearance the hardware needs below t
 Z_WELL_FLOOR = H_TOP - WELL_DROP          # 91.0
 FASCIA_H = Z_TOP_UNDER - Z_WELL_FLOOR     # 6.0 -> apparent slab TT + FASCIA_H = 9.0
 WELL_CLEAR = 0.2                          # cut-out clearance per side
+BOOK_SETBACK = 0.0                        # v1: book zone flush with the front plane
 if VARIANT == 2:
     GEAR_Y = 5.0                          # front rail, was 2.0
     BACK_INSET = 0.0                      # back panel moves to the rear face
@@ -80,7 +84,9 @@ if VARIANT == 2:
     Y_BACK1 = D - BACK_INSET              # 50.0
     INT_D = Y_BACK0                       # 48.2
     DRW_H = Z_WELL_FLOOR - Z_FIX_TOP      # 9.2, was 15.2
+    BOOK_SETBACK = 15.0                   # seated shin clearance; see the spec
 Z_DRW_TOP = Z_WELL_FLOOR if VARIANT == 2 else Z_TOP_UNDER
+BOOK_D = INT_D - BOOK_SETBACK             # 33.2 in v2, 43.2 in v1
 ```
 
 Add below `gear_positions()` (after `generate.py:63`):
@@ -197,11 +203,26 @@ Replace `generate.py:226` (which hardcodes `"15.2"`):
 
 This also removes a latent wart in v1, where the label was a literal that would silently lie if `DRW_H` ever moved.
 
-- [ ] **Step 6: Run to verify it passes**
+- [ ] **Step 6: Ghost the set-back bottom panel**
+
+In a front elevation the bay bottom panel is now 15 cm behind the front plane, so it
+should read as a receding edge rather than a face. At the `# bay carcass` comment,
+replace `d.rect(X_BAY0, RECESS_H, BAY_W, T)`:
+
+```python
+    if VARIANT == 1:
+        d.rect(X_BAY0, RECESS_H, BAY_W, T)
+    else:
+        d.rect(X_BAY0, RECESS_H, BAY_W, T, fill="#EFE9DC", stroke=GHOST, sw=0.8, dash="4,3")
+        d.text(W / 2, RECESS_H - 4.2, f"book zone set back {BOOK_SETBACK:g} cm for knee and shin clearance", size=8, fill=NOTE, italic=True)
+```
+
+- [ ] **Step 7: Run to verify it passes**
 
 ```bash
 cd ~/Desktop/claude/personal/dj-piano-console
 python3 generate.py && VARIANT=2 python3 generate.py
+grep -c 'set back' drawing-front-v2.svg        # expect 1
 grep -c '9 slab' drawing-front-v2.svg          # expect 1
 grep -c '>9.2<' drawing-front-v2.svg           # expect 1
 git diff --stat -- drawing-front.svg           # expect empty
@@ -209,11 +230,11 @@ open drawing-front-v2.svg
 ```
 Eyeball: the slab reads 9 cm deep across the bay, four dark wells sit in it flush at 100, the drawer band below is visibly shallower than v1.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add dj-piano-console/generate.py dj-piano-console/drawing-front-v2.svg
-git commit -m "Draw the v2 slab and gear wells in the front elevation"
+git commit -m "Draw the v2 slab, gear wells and set-back book zone in the front elevation"
 ```
 
 ---
@@ -300,11 +321,42 @@ Replace `generate.py:307`:
 
 Also branch `generate.py:302` ("back panel 18 mm, inset 5 cm") so v1 keeps its wording.
 
-- [ ] **Step 7: Run to verify it passes**
+- [ ] **Step 7: Set the book zone back**
+
+This is where the setback is visible and where it must be got right. Four rects move
+back by `BOOK_SETBACK`; all are in `side_section` between the `# carcass` and
+`# tray stowed` comments:
+
+```python
+    d.rect(BOOK_SETBACK, RECESS_H, Y_BACK1 - BOOK_SETBACK, T)              # bay bottom panel
+    d.rect(BOOK_SETBACK + 1.0, Z_BOT_TOP + SHELF_UP, BOOK_D - 1.0, T)      # adjustable shelf
+    d.rect(BOOK_SETBACK + 1.5, Z_BOT_TOP, 22, 17, fill="#A67C52", stroke="none")
+    d.rect(BOOK_SETBACK + 1.5, Z_BOT_TOP + SHELF_UP + T, 20, 15.5, fill="#6E8B74", stroke="none")
+```
+
+With `BOOK_SETBACK = 0.0` in v1 these are algebraically identical to the current
+lines except the shelf, which becomes `BOOK_D - 1.0 = 42.2` where v1 hardcodes
+`40.0`. Keep v1 byte-identical: guard the shelf line, or write `(BOOK_D - 1.0) if
+VARIANT == 2 else 40.0`. Verify with the `git diff --stat` in the next step — if
+`drawing-side.svg` moves, this is why.
+
+Then dimension it and say why:
+
+```python
+    if VARIANT == 2:
+        d.dim_h(0, BOOK_SETBACK, 24.5, f"{BOOK_SETBACK:g} setback", ext=Z_BOT_TOP, above=False)
+        d.leader(BOOK_SETBACK, 30, R, 114, f"book zone set back {BOOK_SETBACK:g} cm: the seated shin crosses this plane about 1 cm clear of the panel edge in v1", anchor="end", italic=True)
+```
+
+The seated figure is already drawn and does not move. Its whole value now is that it
+shows the shin clearing the set-back panel, so check that by eye.
+
+- [ ] **Step 8: Run to verify it passes**
 
 ```bash
 cd ~/Desktop/claude/personal/dj-piano-console
 python3 generate.py && VARIANT=2 python3 generate.py
+grep -c 'setback' drawing-side-v2.svg          # expect >= 1
 grep -c '48.2 interior' drawing-side-v2.svg    # expect 1
 grep -c 'front rail' drawing-side-v2.svg       # expect >= 1
 git diff --stat -- drawing-side.svg            # expect empty
@@ -312,11 +364,11 @@ open drawing-side-v2.svg
 ```
 Eyeball: front rail solid from 91 to 100; the well floor visible at 91; the band from 91 to 97 behind the well open through to the back panel.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add dj-piano-console/generate.py dj-piano-console/drawing-side-v2.svg
-git commit -m "Draw the v2 slab section, sunk mixer and cable trough in the side section"
+git commit -m "Draw the v2 slab section, cable trough and set-back book zone in the side section"
 ```
 
 ---
@@ -520,7 +572,19 @@ Then, for `VARIANT == 2` only, append:
          + f"Cutout {CUT_W:g} × {CUT_H:g} cm behind the tray at {CUT_Z0:g} to {CUT_Z0 + CUT_H:g} cm; cutout {NICHE_W:g} × {NICHE_CUT_H:g} cm behind the niche at {NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H:g} cm."),
 ```
 
-- [ ] **Step 4: Fix the drawer box row**
+- [ ] **Step 4: Fix the book zone depths**
+
+Three rows still quote the full interior depth. `generate.py:397` (bay bottom panel)
+sizes as `BAY_W x Y_BACK1`; `:400` (book zone divider) uses `INT_D`; `:403`
+(adjustable shelf) hardcodes `40`. All three become `BOOK_D`-based:
+
+```python
+        ("Bay", "Bay bottom panel", 1, f"{BAY_W:g} x {Y_BACK1 - BOOK_SETBACK:g}", 18, "Oak-veneered ply, front edge lipped", f"Top face at 21.8 cm. Front edge set back {BOOK_SETBACK:g} cm from the front plane for shin clearance; the recess is therefore open from the floor to the tray underside across that 15 cm. Carries the books; stiffened by the divider and the back panel, no rail underneath."),
+        ("Bay", "Book zone divider", 1, f"{BOOK_D:g} x {Z_TRAY_UNDER - Z_BOT_TOP - 0.5:g}", 18, "Oak-veneered ply, front edge lipped", "Centred. Glued and screwed to bottom and back panel along its length; 5 mm gap under the tray."),
+        ("Bay", "Adjustable shelf", 2, f"{OPEN_W - 0.2:g} x {BOOK_D - 1.0:g}", 18, "Oak-veneered ply, front edge lipped", "One per book compartment, on 5 mm pins."),
+```
+
+- [ ] **Step 5: Fix the drawer box row**
 
 `generate.py:405` hardcodes "40 deep × 12 high". With `DRW_H` at 9.2 a 12 cm box no longer fits, and the box can now run deeper than v1's 40 because the wells stop at 91:
 
@@ -528,7 +592,7 @@ Then, for `VARIANT == 2` only, append:
         ("Bay", "Drawer box", 2, "45 deep × 7 high, width per runner spec" if VARIANT == 2 else "40 deep × 12 high, width per runner spec", 15, "Birch ply, 6 mm bottom", "For the 58.7 cm openings, sized to the runners. Notch the niche-side wall 6 × 4 cm at the rear if the pass-through is used."),
 ```
 
-- [ ] **Step 5: Fix the hardware list**
+- [ ] **Step 6: Fix the hardware list**
 
 In `HARDWARE` (`generate.py:413`), three entries are wrong for v2. Make the list a function of `VARIANT`, or post-filter it:
 - "Cable slot brush strip" — drop for v2, there is no slot.
@@ -537,21 +601,22 @@ In `HARDWARE` (`generate.py:413`), three entries are wrong for v2. Make the list
 
 Add for v2: `("Well floor cleats and fixings", "8 cleats", "M5 threaded inserts and pan screws in slotted holes, +/- 10 mm of travel, so each unit's flush line is set at fit-out rather than at cutting.")`
 
-- [ ] **Step 6: Run to verify it passes**
+- [ ] **Step 7: Run to verify it passes**
 
 ```bash
 cd ~/Desktop/claude/personal/dj-piano-console
 python3 generate.py && VARIANT=2 python3 generate.py
 grep -c 'Slab fascia' dj-piano-console-v2-spec.html      # expect 1
+grep -c 'set back 15' dj-piano-console-v2-spec.html      # expect >= 1
 grep -c 'brush grommet' dj-piano-console-v2-spec.html    # expect 0
 grep -c 'brush grommet' dj-piano-console-spec.html       # expect 1
 ```
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add dj-piano-console/generate.py
-git commit -m "Update the parts list and hardware for the v2 slab, wells and shallower drawers"
+git commit -m "Update the parts list and hardware for the v2 slab, wells, drawers and book setback"
 ```
 
 ---
@@ -591,10 +656,20 @@ Add a zone: `("Cable trough", f"{Z_WELL_FLOOR:g} to {Z_TOP_UNDER:g}", "Continuou
 
 `"Panel thickness"` (`:482`) for v2: `"18 mm carcass, 30 mm top and caps over a 60 mm fascia, 15 mm drawer boxes."`
 
+- [ ] **Step 3b: Fix the book and recess zones**
+
+`"Book compartments"` and `"Recess"` both still describe v1's full-depth book zone:
+
+```python
+        ("Book compartments", "21.8 to 61.2", f"Two openings 71.6 wide x 39.4 tall x {BOOK_D:g} deep, one adjustable shelf each. Front plane set back {BOOK_SETBACK:g} cm from the console face for seated shin clearance. Still takes a 31.4 cm LP sleeve, with 1.8 cm to spare."),
+        ("Recess", "0 to 20 (to 61.2 at the front)", f"Open across the whole bay and through to the wall: sustain pedal and feet when seated, toe space when standing. The front {BOOK_SETBACK:g} cm stands open right up to the tray underside, so the shins clear the shelving."),
+```
+
 - [ ] **Step 4: Fix `ergo`**
 
 Two of the four entries are wrong for v2:
 - "Standing at the decks" (`:488`) — "mixer faders at about 111 cm" assumed the Xone standing on the top. For v2: `"Standing at the decks: surface at 100 cm, every faceplate flush with it. Toes go under the floating bay. Reaching into a well for a rear socket means lifting the unit out by its finger notches."`
+- "Seated at the keyboard" (`:487`) — append: `"The book zone is set back 15 cm from the front plane, so the shins clear it; in v1 they passed within about 1 cm of the bottom panel's front edge."`
 - "Cables" (`:489`) — rewrite around the trough: `"Cables: each unit's leads leave through a slot in the rear wall of its well into the trough under the back rail, run along the bay and drop into the power niche, where the switched strip and the bricks sit. The keyboard's mains lead and the pedal cable keep their cutout behind the tray; leave a 60 cm slack loop for the tray travel. Stand the console a few centimetres off the wall: the back panel is flush with the rear face, and the trough vents through it."`
 
 - [ ] **Step 5: Fix `build`**
@@ -604,6 +679,8 @@ Four of the numbered construction notes are v1-specific (`:493`, `:495`, `:496`,
 - Inset-back-panel note: replace with "The bay back panel is flush with the rear face. The cable trough is formed by leaving the band from 91 to 97 open behind the wells, from wing to wing."
 - Rout-the-slot note: replace with "Cut the four gear wells in the top before finishing, and dry-fit every unit before the fascia goes on. The flush line is set by the cleats, so cut the cut-outs to the units and leave the floor heights to fit-out."
 - Power-niche note: the niche is now `24 × {DRW_H:g}` and opens upward into the trough, not rearward into a chase.
+
+Add one: "Set the bay bottom panel, the book divider and both adjustable shelves back 15 cm from the front plane. The panel's front edge is unsupported and unlipped at 21.8; lip it and ease it, it is at shin height."
 
 Add one: "Glue the well side walls to the underside of the top board before the fascia goes on. Each web between two wells is then a 30 mm cap on two 60 mm walls, which is what carries the span; a bare 30 mm web is not stiff enough to lean on."
 
@@ -732,6 +809,8 @@ git commit -m "Regenerate the v2 spec package and document the variant in the RE
 ## Self-Review
 
 **Spec coverage.** Every section of the design doc maps to a task: derived dimensions and the variant switch → Task 1; the top assembly → Tasks 2, 3, 6; well geometry → Tasks 2, 4, 5; support → Tasks 5, 6; cable trough and heat → Tasks 3, 6, 7; the dust-cover consequence → Tasks 2, 7; package structure → Tasks 1, 8, 9. The "Verification" section's arithmetic checks are Task 1's assertions; its depth and bay closures are covered there too.
+
+**Late change, folded in.** The 15 cm book zone setback was added after the plan was first written, on Luca's review of the v1 section. It lands in Tasks 1 (parameters and assertions), 2 (ghosted panel), 3 (the four moved rects), 6 (three parts rows) and 7 (two zones, one ergonomics note, one build note). Task 3's shelf line is the one place where v1 byte-identity is genuinely at risk, and its step says so.
 
 **Known gap, deliberate.** The spec names four drawings. Task 5 adds a fifth (the well section) and is flagged in place as beyond the approved scope, to be confirmed or dropped before it is started.
 
