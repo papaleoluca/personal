@@ -500,6 +500,30 @@ def detail_tray():
     d.leader(T / 2, 59, R, 56.5, "Wing inner panel 18 mm = bay side wall; slide cabinet member fixes to it")
     return d.render()
 
+# ---------------- 5. detail B: gear well (v2) ----------------
+def detail_well():
+    d = Drawing(-4, 20, 86, 103, scale=16.0, pad=(30, 20, 400, 40))
+    x0 = GEAR_Y                                                      # front rail depth
+    d.rect(0, Z_WELL_FLOOR, x0, FASCIA_H + TT, fill=OAK)              # front rail in section
+    d.line(0, Z_TOP_UNDER, x0, Z_TOP_UNDER, stroke=OAKE, sw=0.8, dash="3,2")
+    d.rect(x0, Z_WELL_FLOOR, 0.9, 1.4, fill=OAK2)                     # cleat / rebate
+    d.rect(x0 + 0.9, Z_WELL_FLOOR, 12, 0.9, fill=OAK2)                # well floor
+    d.rect(x0 + 0.9, Z_WELL_FLOOR + 0.9, 12, WELL_DROP - 0.9, fill=GEARC, stroke="none")
+    d.line(x0, H_TOP, 20, H_TOP, stroke=INK, sw=1.4)                  # the flush line
+    d.dim_v(Z_WELL_FLOOR, H_TOP, -2, f"{WELL_DROP:g} clear", right=False)
+    d.dim_v(Z_TOP_UNDER, H_TOP, 2.5, f"{TT:g}", right=False)
+    d.dim_v(Z_WELL_FLOOR, Z_TOP_UNDER, 2.5, f"{FASCIA_H:g}", right=False)
+    R = 21.0
+    d.leader(3.5, Z_TOP_UNDER + 1.4, R, 101.5, "Oak top board 30 mm; cut-out edges eased, not lipped")
+    d.leader(3.5, Z_WELL_FLOOR + 3.0, R, 99.0, "Fascia 60 mm solid oak, front and ends; bottom sits on the well floor at 91")
+    d.leader(x0 + 5.0, Z_WELL_FLOOR + 0.4, R, 96.5, "Well floor 18 mm on adjustable cleat: slots give +/-10 mm at fit-out")
+    d.leader(x0 + 3.0, Z_WELL_FLOOR + 0.1, R, 94.0, "Technics plinth has no flange: stands on its own feet at the floor")
+    d.leader(x0 + 0.45, Z_WELL_FLOOR + 0.9, R, 91.5, "Xone:92 and XDJ-700 faceplates may bear on the rebate; confirm against units")
+    d.leader(14, H_TOP, R, 89.0, "Faceplate flush with oak; 2 mm clearance at sides and rear, none at front")
+    d.leader(18.0, Z_WELL_FLOOR + 5.0, R, 86.5, "Rear wall slots into the cable trough; leads and the Xone's heat exit there")
+    d.text(2.0, 87.5, "finger notches at two corners of each well, r 20 mm", size=8, fill=NOTE, italic=True, anchor="start")
+    return d.render()
+
 # ---------------- HTML ----------------
 def parts_rows():
     rows = [
@@ -638,7 +662,9 @@ def build_html(svgs, render_path=None):
 <div class="page drawing"><h2>1. Front elevation</h2>{svgs['front'].replace('<svg ', '<svg style="height:168mm" ', 1)}</div>
 <div class="page drawing"><h2>2. Side section through the bay, cut through the power niche and the mixer, looking toward the right wing</h2>{svgs['side'].replace('<svg ', '<svg style="height:165mm" ', 1)}</div>
 <div class="page drawing"><h2>3. Plan of the top</h2>{svgs['plan'].replace('<svg ', '<svg style="height:66mm" ', 1)}
-<h2 style="margin-top:14pt">4. Detail A: tray edge, slide and apron (section looking from the front, left side)</h2>{svgs['detail'].replace('<svg ', '<svg style="height:82mm" ', 1)}</div>
+<h2 style="margin-top:14pt">4. Detail A: tray edge, slide and apron (section looking from the front, left side)</h2>{svgs['detail'].replace('<svg ', '<svg style="height:82mm" ', 1)}
+{("<h2 style='margin-top:14pt'>5. Detail B: gear well (section through the front rail)</h2>" + svgs['well'].replace('<svg ', '<svg style="height:70mm" ', 1)) if 'well' in svgs else ''}
+</div>
 <div class="page parts"><h2>Parts list</h2>
 {table(["Group", "Part", "Qty", "Size L × W (cm)", "Thk (mm)", "Material", "Notes"], parts_rows())}
 </div>
@@ -661,6 +687,7 @@ def build_html(svgs, render_path=None):
 if __name__ == "__main__":
     import sys
     svgs = {"front": front_elevation(), "side": side_section(), "plan": plan_view(), "detail": detail_tray()}
+    if VARIANT == 2: svgs["well"] = detail_well()
     for k, v in svgs.items():
         with open(os.path.join(OUT, f"drawing-{k}{SUFFIX}.svg"), "w") as f: f.write(v)
     render = sys.argv[1] if len(sys.argv) > 1 else os.path.join(OUT, f"render-cg{SUFFIX}.png")
