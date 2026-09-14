@@ -430,8 +430,14 @@ def plan_view():
         d.rect(sx, SPK_Y, SPK_W, SPK_D, fill=GEARC, stroke="none")
         d.text(sx + SPK_W / 2, SPK_Y + SPK_D / 2, "5\" monitor", size=7, fill="white", rot=-90, dx=3)
     d.rect(X_BAY0, 0, BAY_W, D)
-    d.rect(SLOT_X0, SLOT_Y0, SLOT_X1 - SLOT_X0, SLOT_Y1 - SLOT_Y0, fill="#3a3a3a", stroke="none", rx=2.5)
-    d.text((SLOT_X0 + SLOT_X1) / 2, SLOT_Y0 + 3, f"cable slot {SLOT_X1 - SLOT_X0:g} × {SLOT_Y1 - SLOT_Y0:g}", size=8, fill="white", dy=3)
+    if VARIANT == 1:
+        d.rect(SLOT_X0, SLOT_Y0, SLOT_X1 - SLOT_X0, SLOT_Y1 - SLOT_Y0, fill="#3a3a3a", stroke="none", rx=2.5)
+        d.text((SLOT_X0 + SLOT_X1) / 2, SLOT_Y0 + 3, f"cable slot {SLOT_X1 - SLOT_X0:g} × {SLOT_Y1 - SLOT_Y0:g}", size=8, fill="white", dy=3)
+    else:
+        for n, wx, ww, wy0, wy1, wfz in well_positions():
+            d.rect(wx, wy0, ww, wy1 - wy0, fill="none", stroke="#C0392B", sw=1.2, dash="4,3")
+            d.text(wx + ww / 2, wy1 + 2.0, f"cut-out {ww:g} × {wy1 - wy0:g}", size=7, fill="#C0392B", dy=3)
+        d.text((X_BAY0 + X_BAY1) / 2, Y_BACK0 - 3.4, "cable trough, full bay width", size=8, fill=NOTE, italic=True, dy=3)
     for n, gx, gw, gd, gh in gear_positions():
         d.rect(gx, GEAR_Y, gw, gd, fill=GEARC, stroke="none")
         d.text(gx + gw / 2, GEAR_Y + gd / 2, n, size=8, fill="white", dy=3)
@@ -451,7 +457,13 @@ def plan_view():
     if CAP_OVER > 0:
         d.dim_h(X_BAY0, CAP_W, D + 5, f"{CAP_OVER:g} cap overhang", ext=D); d.dim_h(W - CAP_W, X_BAY1, D + 5, f"{CAP_OVER:g}", ext=D)
     xr = W + 14
-    d.dim_v(0, SLOT_Y0, xr, f"{SLOT_Y0:g}", ext=X_BAY1); d.dim_v(SLOT_Y0, SLOT_Y1, xr, f"{SLOT_Y1 - SLOT_Y0:g}", ext=X_BAY1); d.dim_v(SLOT_Y1, D, xr, f"{D - SLOT_Y1:g}", ext=X_BAY1)
+    if VARIANT == 1:
+        d.dim_v(0, SLOT_Y0, xr, f"{SLOT_Y0:g}", ext=X_BAY1); d.dim_v(SLOT_Y0, SLOT_Y1, xr, f"{SLOT_Y1 - SLOT_Y0:g}", ext=X_BAY1); d.dim_v(SLOT_Y1, D, xr, f"{D - SLOT_Y1:g}", ext=X_BAY1)
+    else:
+        _deep = max(w[4] for w in well_positions())
+        d.dim_v(0, GEAR_Y, xr, f"{GEAR_Y:g}", ext=X_BAY1)
+        d.dim_v(GEAR_Y, _deep, xr, f"{_deep - GEAR_Y:g} deepest well", ext=X_BAY1)
+        d.dim_v(_deep, Y_BACK0, xr, f"{Y_BACK0 - _deep:g} back rail", ext=X_BAY1)
     d.dim_v(0, D, W + 24, "50")
     return d.render()
 
