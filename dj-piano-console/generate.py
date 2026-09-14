@@ -355,7 +355,11 @@ def side_section():
         d.rect(GEAR_Y, H_TOP, 35.8, 10.7, fill=GEARC, stroke="none")
     else:
         d.rect(GEAR_Y, Z_WELL_FLOOR + 0.9, 35.8, WELL_DROP - 0.9, fill=GEARC, stroke="none")
-    d.poly([(GEAR_Y + 35.8, H_TOP + 4), (SLOT_Y0 + 2.5, H_TOP + 1.5), (SLOT_Y0 + 2.5, Z_TOP_UNDER - 3), (47.0, 93), (46.0, 89.5), (36, 88.5), (18, 88.3)], stroke="#C0392B", sw=1.2)
+    if VARIANT == 1:
+        d.poly([(GEAR_Y + 35.8, H_TOP + 4), (SLOT_Y0 + 2.5, H_TOP + 1.5), (SLOT_Y0 + 2.5, Z_TOP_UNDER - 3), (47.0, 93), (46.0, 89.5), (36, 88.5), (18, 88.3)], stroke="#C0392B", sw=1.2)
+    else:
+        # mixer's rear in its well -> back into the trough (z 91-97) -> down along the back panel -> into the power niche
+        d.poly([(GEAR_Y + 35.8, Z_WELL_FLOOR + 5), (xone[4] + 3, Z_WELL_FLOOR + 3), (Y_BACK0 - 1, Z_FIX_TOP + 2), (20, Z_FIX_TOP + 2)], stroke="#C0392B", sw=1.2)
     d.poly([(TRAY_D - 3, 69), (Y_BACK0 + 0.5, 70.5), (46.5, 72), (46.5, 87.5), (25, 88.3)], stroke="#C0392B", sw=1.0)
     d.poly([(35, Z_FIX_TOP + 2), (47.5, 84.5), (47.5, 10), (50, 8)], stroke="#333", sw=1.2)
     d.text(36, 11.5, "mains lead to wall socket", size=7.5, fill=NOTE, italic=True)
@@ -371,7 +375,8 @@ def side_section():
     d.text(-22, 47.5, "thigh clears tray underside (61.2)", size=8, fill=P, italic=True, anchor="end")
     # labels (left column)
     R = -26
-    d.leader(SLOT_Y0 + 3, H_TOP, R, 162, f"cable slot {SLOT_Y1 - SLOT_Y0:g} cm in the top", anchor="end", italic=True)
+    if VARIANT == 1:
+        d.leader(SLOT_Y0 + 3, H_TOP, R, 162, f"cable slot {SLOT_Y1 - SLOT_Y0:g} cm in the top", anchor="end", italic=True)
     if VARIANT == 1:
         d.leader(47.5, 60, R, 154, "cable chase 5 cm behind the inset back panel", anchor="end", italic=True)
         d.leader(Y_BACK0 + 0.9, 40, R, 146, "back panel 18 mm, inset 5 cm", anchor="end", italic=True)
@@ -392,7 +397,8 @@ def side_section():
         d.dim_h(xone[4], Y_BACK0, 114, f"{Y_BACK0 - xone[4]:g} back rail", ext=H_TOP)
     d.dim_h(0, D, -12, "50 overall depth", above=False)
     d.dim_h(-EXT, 0, 92, "40 extension", ext=Z_TRAY_UNDER + 14)
-    d.dim_h(0, SLOT_Y0, 114, f"{SLOT_Y0:g} from front edge to slot", ext=H_TOP); d.dim_h(SLOT_Y0, SLOT_Y1, 114, f"{SLOT_Y1 - SLOT_Y0:g}", ext=H_TOP)
+    if VARIANT == 1:
+        d.dim_h(0, SLOT_Y0, 114, f"{SLOT_Y0:g} from front edge to slot", ext=H_TOP); d.dim_h(SLOT_Y0, SLOT_Y1, 114, f"{SLOT_Y1 - SLOT_Y0:g}", ext=H_TOP)
     d.dim_h(0, TRAY_D, 58.5, "42 tray", above=False)
     xr = D + 8
     d.dim_v(0, RECESS_H, xr, "20 recess"); d.dim_v(Z_TRAY_TOP, Z_CAV_TOP, xr, "17"); d.dim_v(H_TOP, H_WING, xr, "30")
