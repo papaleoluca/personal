@@ -128,6 +128,25 @@ The power niche (x 80.5 - 104.5) becomes 81.8 -> 91 and keeps its back-panel cut
 at 83 -> 95, which now spans both the niche and the trough — so the power strip
 feeds straight up into the trough.
 
+### Power bricks must stand at the rear of the niche
+
+Found during implementation, not at design time. Shrinking the drawer band to 9.2
+also shrinks the power niche to 9.2 (81.8 -> 91), and the niche no longer has the
+height it needs. A power strip lying on the niche floor is about 4 cm, and an
+XDJ-700 wall-wart brick standing on it is about 8.5 — 12.5 total, which overshoots
+the 91 ceiling by 3.3 cm. Directly above the niche (x 80.5 - 104.5) sit two well
+floors at z 91: the XDJ-700's across x 80.5 - 96.3 and the Xone:92's across
+x 101.9 - 104.5. The brick would meet solid ply, not air.
+
+The trough is the only headroom. A brick set at the **rear** of the niche, inside
+the trough footprint (y 41.2 - 48.2), rises clear to 97 — giving it the same 15.2 cm
+of height v1 had. The trough is 7 cm deep there and the brick is about 6, so it fits.
+
+So: the strip lies on the niche floor toward the front; the bricks stand behind it,
+under the trough. This is a build instruction, not a preference — bricks placed at
+the front of the v2 niche do not fit. Carry it into the build notes and the hardware
+list.
+
 Because `BACK_INSET` is 0, the back panel is the rear face of the piece. The console
 must stand a few centimetres off the wall for the trough to vent and for cables to
 exit. This is a placement note for the spec sheet, not a construction detail.
@@ -190,6 +209,8 @@ already mirrors v1's by hand. The README's regenerate block gains the v2 command
 - Bay closes: 3.0 + 45.3 + 6 + 21.8 + 6 + 32.0 + 6 + 21.8 + 3.1 = `BAY_W` 145.0.
 - Shin clearance closes: the shin line crosses z = 21.8 at y = -1.0, so a 15.0
   setback leaves 16.0 cm; compartment depth `INT_D` 48.2 - 15.0 = 33.2 >= 31.4 (LP).
+- Power niche closes only at the rear: strip 4 + brick 8.5 = 12.5 > niche height 9.2,
+  so bricks must sit under the trough (ceiling 97), not under a well floor (91).
 - Both variants regenerate from a clean checkout. v1's `drawing-*.svg` must come
   back byte-identical to the committed v1.6 files (`draw_books` is seeded, so the
   drawings are deterministic); the HTML and PDF will differ by the `date.today()`
