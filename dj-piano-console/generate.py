@@ -326,7 +326,7 @@ def side_section():
         d.rect(0, Z_WELL_FLOOR, GEAR_Y, FASCIA_H + TT)                 # front rail, 5 cm, solid 91 -> 100
         d.rect(xone[4], Z_TOP_UNDER, Y_BACK0 - xone[4], TT)            # back rail: oak at the surface (97 -> 100), open underneath -> the trough
         d.rect(GEAR_Y, Z_WELL_FLOOR, xone[4] - GEAR_Y, 0.9, fill=OAK2) # well floor on its cleat
-        d.text((xone[4] + Y_BACK0) / 2, Z_WELL_FLOOR + 2.6, "trough", size=7, fill=NOTE)
+        d.text((xone[4] + Y_BACK0) / 2 + 0.3, Z_WELL_FLOOR + 4.3, "trough", size=7, fill=NOTE)
     # books
     d.rect(BOOK_SETBACK + 1.0, Z_BOT_TOP + SHELF_UP, (BOOK_D - 1.0) if VARIANT == 2 else 40.0, T)
     for (y, h, dep, c) in [(1.5, 17, 13, "#6E8B74"), (1.5, 15.5, 22, "#A67C52"), (1.5, 30, 31.5, "#5E5548")]:
@@ -348,7 +348,10 @@ def side_section():
     d.rect(GAP, Z_FIX_TOP + 1.0, T, DRW_H - 1.0 - GAP)
     d.rect(5, Z_FIX_TOP, 30, 4.0, fill="#444", stroke="none")
     for yy in (9, 16, 23): d.rect(yy, Z_FIX_TOP + 4.0, 4.0, 2.5, fill="#777", stroke="none")
-    d.rect(28.5, Z_FIX_TOP + 4.0, 6, 8.5, fill="#666", stroke="none")
+    if VARIANT == 1:
+        d.rect(28.5, Z_FIX_TOP + 4.0, 6, 8.5, fill="#666", stroke="none")       # stacked on the strip: 4 + 8.5 only fits v1's 15.2 band
+    else:
+        d.rect(Y_BACK0 - 6, Z_FIX_TOP, 6, 8.5, fill="#666", stroke="none")      # stands on the niche floor behind the strip, headroom into the trough
     # mixer in section + cables
     if VARIANT == 1:
         d.rect(GEAR_Y, H_TOP, 35.8, 10.7, fill=GEARC, stroke="none")
@@ -358,7 +361,7 @@ def side_section():
         d.poly([(GEAR_Y + 35.8, H_TOP + 4), (SLOT_Y0 + 2.5, H_TOP + 1.5), (SLOT_Y0 + 2.5, Z_TOP_UNDER - 3), (47.0, 93), (46.0, 89.5), (36, 88.5), (18, 88.3)], stroke="#C0392B", sw=1.2)
     else:
         # mixer's rear in its well -> back into the trough (z 91-97) -> down along the back panel -> into the power niche
-        d.poly([(GEAR_Y + 35.8, Z_WELL_FLOOR + 5), (xone[4] + 3, Z_WELL_FLOOR + 3), (Y_BACK0 - 1, Z_FIX_TOP + 2), (20, Z_FIX_TOP + 2)], stroke="#C0392B", sw=1.2)
+        d.poly([(GEAR_Y + 35.8, Z_WELL_FLOOR + 5), (xone[4] + 0.5, Z_WELL_FLOOR + 3.2), (xone[4] + 0.5, Z_FIX_TOP + 5.2), (20, Z_FIX_TOP + 2)], stroke="#C0392B", sw=1.2)
     if VARIANT == 1:
         d.poly([(TRAY_D - 3, 69), (Y_BACK0 + 0.5, 70.5), (46.5, 72), (46.5, 87.5), (25, 88.3)], stroke="#C0392B", sw=1.0)
         d.poly([(35, Z_FIX_TOP + 2), (47.5, 84.5), (47.5, 10), (50, 8)], stroke="#333", sw=1.2)
@@ -367,8 +370,8 @@ def side_section():
         # keyboard lead: behind the tray and straight out of the tray cutout (66 -> 74) -- no chase to climb in v2
         d.poly([(TRAY_D - 3, 71.5), (44.0, 71.8), (Y_BACK0 - 0.3, 72.2)], stroke="#C0392B", sw=1.0)
         # mains: off the end of the strip, out of the niche cutout (83 -> 95) to the wall behind
-        d.poly([(35, Z_FIX_TOP + 3.2), (41, 86.3), (Y_BACK0 - 0.3, 87.9)], stroke="#333", sw=1.2)
-        d.text(D + 2, 88, "mains lead to wall socket", size=7.5, anchor="start", fill=NOTE, italic=True)
+        d.poly([(35, Z_FIX_TOP + 3.2), (41.4, 90.2), (42.6, 92.2), (Y_BACK0 - 0.3, 92.9)], stroke="#333", sw=1.2)
+        d.text(D + 2, 92.6, "mains lead to wall socket", size=7.5, anchor="start", fill=NOTE, italic=True)
     d.rect(12, 0, 12, 5, fill="#555", stroke="none")
     if VARIANT == 1:
         d.poly([(24, 3), (47.0, 3), (47.0, CUT_Z0 + 4), (Y_BACK0, CUT_Z0 + 4), (TRAY_D - 3, 68.5)], stroke="#8E44AD", sw=1.0, dash="2,2")
