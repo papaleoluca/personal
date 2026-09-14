@@ -311,20 +311,31 @@ def side_section():
     d.line(D, 0, D, H_WING + SPK_H + 4, stroke="#777", sw=3)
     d.text(D + 2, 158, "wall", size=9, anchor="start", fill="#777")
     # chase hatch
-    for zz in range(22, 97, 4): d.line(Y_BACK1, zz, D, zz + 3, stroke=GHOST, sw=0.5)
+    if VARIANT == 1:
+        for zz in range(22, 97, 4): d.line(Y_BACK1, zz, D, zz + 3, stroke=GHOST, sw=0.5)
     # carcass
-    d.rect(0, RECESS_H, Y_BACK1, T)
+    d.rect(BOOK_SETBACK, RECESS_H, Y_BACK1 - BOOK_SETBACK, T)
     d.rect(Y_BACK0, Z_BOT_TOP, T, Z_TOP_UNDER - Z_BOT_TOP)
     d.rect(Y_BACK0 - 0.05, CUT_Z0, T + 0.1, CUT_H, fill=VOID, stroke="none")
     d.rect(Y_BACK0 - 0.05, NICHE_CUT_Z0, T + 0.1, NICHE_CUT_H, fill=VOID, stroke="none")
     d.rect(0, Z_CAV_TOP, Y_BACK0, T)
-    d.rect(0, Z_TOP_UNDER, SLOT_Y0, TT); d.rect(SLOT_Y1, Z_TOP_UNDER, D - SLOT_Y1, TT)
+    if VARIANT == 1:
+        d.rect(0, Z_TOP_UNDER, SLOT_Y0, TT); d.rect(SLOT_Y1, Z_TOP_UNDER, D - SLOT_Y1, TT)
+    else:
+        xone = [w for w in well_positions() if w[0] == "Xone:92"][0]
+        d.rect(0, Z_WELL_FLOOR, GEAR_Y, FASCIA_H + TT)                 # front rail, 5 cm, solid 91 -> 100
+        d.rect(xone[4], Z_TOP_UNDER, Y_BACK0 - xone[4], TT)            # back rail: oak at the surface (97 -> 100), open underneath -> the trough
+        d.rect(GEAR_Y, Z_WELL_FLOOR, xone[4] - GEAR_Y, 0.9, fill=OAK2) # well floor on its cleat
+        d.text((xone[4] + Y_BACK0) / 2, Z_WELL_FLOOR + 2.6, "trough", size=7, fill=NOTE)
     # books
-    d.rect(1.0, Z_BOT_TOP + SHELF_UP, 40.0, T)
+    d.rect(BOOK_SETBACK + 1.0, Z_BOT_TOP + SHELF_UP, (BOOK_D - 1.0) if VARIANT == 2 else 40.0, T)
     for (y, h, dep, c) in [(1.5, 17, 13, "#6E8B74"), (1.5, 15.5, 22, "#A67C52"), (1.5, 30, 31.5, "#5E5548")]:
         pass
-    d.rect(1.5, Z_BOT_TOP, 22, 17, fill="#A67C52", stroke="none")
-    d.rect(1.5, Z_BOT_TOP + SHELF_UP + T, 20, 15.5, fill="#6E8B74", stroke="none")
+    d.rect(BOOK_SETBACK + 1.5, Z_BOT_TOP, 22, 17, fill="#A67C52", stroke="none")
+    d.rect(BOOK_SETBACK + 1.5, Z_BOT_TOP + SHELF_UP + T, 20, 15.5, fill="#6E8B74", stroke="none")
+    if VARIANT == 2:
+        d.dim_h(0, BOOK_SETBACK, 24.5, f"{BOOK_SETBACK:g} setback", ext=Z_BOT_TOP, above=False)
+        d.leader(BOOK_SETBACK, 30, -26, 114, f"book zone set back {BOOK_SETBACK:g} cm: the seated shin crosses this plane about 1 cm clear of the panel edge in v1", anchor="end", italic=True)  # -26 mirrors R, defined later in this function
     # tray stowed + slide + apron
     d.rect(0, Z_TRAY_UNDER, TRAY_D, TRAY_T)
     d.rect(1.5, Z_TRAY_TOP, SLIDE_LEN, SLIDE_H, fill="#C4C4C4", stroke="none", op=0.7)
@@ -340,7 +351,10 @@ def side_section():
     for yy in (9, 16, 23): d.rect(yy, Z_FIX_TOP + 4.0, 4.0, 2.5, fill="#777", stroke="none")
     d.rect(28.5, Z_FIX_TOP + 4.0, 6, 8.5, fill="#666", stroke="none")
     # mixer in section + cables
-    d.rect(GEAR_Y, H_TOP, 35.8, 10.7, fill=GEARC, stroke="none")
+    if VARIANT == 1:
+        d.rect(GEAR_Y, H_TOP, 35.8, 10.7, fill=GEARC, stroke="none")
+    else:
+        d.rect(GEAR_Y, Z_WELL_FLOOR + 0.9, 35.8, WELL_DROP - 0.9, fill=GEARC, stroke="none")
     d.poly([(GEAR_Y + 35.8, H_TOP + 4), (SLOT_Y0 + 2.5, H_TOP + 1.5), (SLOT_Y0 + 2.5, Z_TOP_UNDER - 3), (47.0, 93), (46.0, 89.5), (36, 88.5), (18, 88.3)], stroke="#C0392B", sw=1.2)
     d.poly([(TRAY_D - 3, 69), (Y_BACK0 + 0.5, 70.5), (46.5, 72), (46.5, 87.5), (25, 88.3)], stroke="#C0392B", sw=1.0)
     d.poly([(35, Z_FIX_TOP + 2), (47.5, 84.5), (47.5, 10), (50, 8)], stroke="#333", sw=1.2)
@@ -358,16 +372,24 @@ def side_section():
     # labels (left column)
     R = -26
     d.leader(SLOT_Y0 + 3, H_TOP, R, 162, f"cable slot {SLOT_Y1 - SLOT_Y0:g} cm in the top", anchor="end", italic=True)
-    d.leader(47.5, 60, R, 154, "cable chase 5 cm behind the inset back panel", anchor="end", italic=True)
-    d.leader(Y_BACK0 + 0.9, 40, R, 146, "back panel 18 mm, inset 5 cm", anchor="end", italic=True)
+    if VARIANT == 1:
+        d.leader(47.5, 60, R, 154, "cable chase 5 cm behind the inset back panel", anchor="end", italic=True)
+        d.leader(Y_BACK0 + 0.9, 40, R, 146, "back panel 18 mm, inset 5 cm", anchor="end", italic=True)
+    else:
+        d.leader(xone[4] + 2, Z_WELL_FLOOR + 3, R, 154, "cable trough under the back rail, 7 cm deep, runs the full bay and vents the Xone", anchor="end", italic=True)
+        d.leader(Y_BACK0 + 0.9, 40, R, 146, "back panel 18 mm, flush with the rear face", anchor="end", italic=True)
     d.leader(20, Z_FIX_TOP + 2, R, 138, "power niche: strip and bricks, vented door", anchor="end", italic=True)
     d.leader(Y_BACK0 + 0.9, NICHE_CUT_Z0 + 6, R, 122, "back panel cut away behind the niche", anchor="end", italic=True)
     d.leader(21, 65.5, R, 130, "heavy-duty tray slide 400 mm (detail A)", anchor="end", italic=True)
     d.leader(18, 2.5, R, 5, "sustain pedal in the recess", anchor="end", italic=True)
     d.text(-EXT + TRAY_D / 2 - 8, 84, "tray extended 40 cm (dashed)", size=8, fill=INK, italic=True)
-    d.text(45, 40, "chase", size=8, rot=-90, fill=NOTE, dx=13)
+    if VARIANT == 1: d.text(45, 40, "chase", size=8, rot=-90, fill=NOTE, dx=13)
     # dims
-    d.dim_h(0, INT_D, -5, "43.2 interior", ext=0, above=False); d.dim_h(Y_BACK1, D, -5, "5", ext=0, above=False)
+    d.dim_h(0, INT_D, -5, f"{INT_D:g} interior", ext=0, above=False)
+    if VARIANT == 1: d.dim_h(Y_BACK1, D, -5, "5", ext=0, above=False)
+    if VARIANT == 2:
+        d.dim_h(0, GEAR_Y, 114, f"{GEAR_Y:g} front rail", ext=H_TOP)
+        d.dim_h(xone[4], Y_BACK0, 114, f"{Y_BACK0 - xone[4]:g} back rail", ext=H_TOP)
     d.dim_h(0, D, -12, "50 overall depth", above=False)
     d.dim_h(-EXT, 0, 92, "40 extension", ext=Z_TRAY_UNDER + 14)
     d.dim_h(0, SLOT_Y0, 114, f"{SLOT_Y0:g} from front edge to slot", ext=H_TOP); d.dim_h(SLOT_Y0, SLOT_Y1, 114, f"{SLOT_Y1 - SLOT_Y0:g}", ext=H_TOP)
