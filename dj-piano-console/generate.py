@@ -533,16 +533,34 @@ def parts_rows():
         ("Wings", "Wing back panel", 2, f"{WING_INT_H:g} × {WING_INT_W:g}", 18, "Oak-veneered ply", "Flush with the rear edge (no chase in the wings)."),
         ("Wings", "Wing plinth board", 2, f"{WING_INT_W:g} × {WING_PLINTH_H:g}", 18, "Solid oak", "Set back 3 cm from the front."),
         ("Wings", "Speaker cap", 2, f"{D:g} × {CAP_W:g}", 30, "Solid oak", "Same footprint as the column, flush on every side. Screwed from below through the wing panels."),
-        ("Bay", "Top", 1, f"{BAY_W:g} × {D:g}", 30, "Solid oak, or 30 mm veneered board with 30 mm oak lipping", "Routed cable slot 115 × 6 cm, 41 cm from the front edge, centred, ends rounded r 3. Passes plugs and the XDJ bricks."),
-        ("Bay", "Bay bottom panel", 1, f"{BAY_W:g} × {Y_BACK1:g}", 18, "Oak-veneered ply, front edge lipped", "Top face at 21.8 cm. Carries the books; stiffened by the divider and the back panel, no rail underneath."),
+        ("Bay", "Top", 1, f"{BAY_W:g} × {D:g}", 30, "Solid oak, or 30 mm veneered board with 30 mm oak lipping",
+         "Routed cable slot 115 × 6 cm, 41 cm from the front edge, centred, ends rounded r 3. Passes plugs and the XDJ bricks."
+         if VARIANT == 1 else
+         f"Four cut-outs for the gear, all front edges {GEAR_Y:g} cm from the front edge. Sizes per the plan; 2 mm clearance at sides and rear, none at the front. Finger notches r 20 mm at two corners of each. Edges eased, not lipped."),
+    ]
+    if VARIANT == 2:
+        rows += [
+            ("Bay", "Slab fascia", 1, f"{BAY_W:g} × {FASCIA_H:g}", 60, "Solid oak", f"Front face, returned on both ends. Bottom edge at {Z_WELL_FLOOR:g}, flush with the well floors. Makes the top read as a {TT + FASCIA_H:g} cm slab."),
+            ("Bay", "Well side wall", 8, f"{FASCIA_H:g} × well depth", 18, "Oak-veneered ply", "Two per well, hung from the underside of the top board down to 91. Glued to the top board: this is what stiffens the webs between the wells."),
+            ("Bay", "Well rear wall", 4, f"{FASCIA_H:g} × well width", 18, "Oak-veneered ply", "One per well, slotted for cables into the trough. Slot the Xone:92's full width for airflow."),
+            ("Bay", "Well floor", 4, "well width × well depth", 18, "Oak-veneered ply", f"Top face at {Z_WELL_FLOOR:g}. On adjustable cleats, slotted +/- 10 mm, so the flush line is set against the real units at fit-out."),
+            ("Bay", "Well floor cleat", 8, "20 × 14 mm × well depth", 20, "Solid oak", "Two per well, slotted screw holes."),
+        ]
+    rows += [
+        ("Bay", "Bay bottom panel", 1, f"{BAY_W:g} × {Y_BACK1 - BOOK_SETBACK:g}", 18, "Oak-veneered ply, front edge lipped",
+         "Top face at 21.8 cm. Carries the books; stiffened by the divider and the back panel, no rail underneath."
+         if VARIANT == 1 else
+         f"Top face at 21.8 cm. Front edge set back {BOOK_SETBACK:g} cm from the front plane for shin clearance; the recess is therefore open from the floor to the tray underside across that {BOOK_SETBACK:g} cm. Carries the books; stiffened by the divider and the back panel, no rail underneath."),
         ("Bay", "Fixed mid panel", 1, f"{BAY_W:g} × {INT_D:g}", 18, "Oak-veneered ply, front edge lipped", "Top face at 81.8 cm. Ceiling of the keyboard slot, floor of the drawer band."),
-        ("Bay", "Bay back panel", 1, f"{BAY_W:g} × {Z_TOP_UNDER - Z_BOT_TOP:g}", 18, "Oak-veneered ply", f"Inset 5 cm. Cutout {CUT_W:g} × {CUT_H:g} cm behind the tray at {CUT_Z0:g} to {CUT_Z0 + CUT_H:g} cm; cutout {NICHE_W:g} × {NICHE_CUT_H:g} cm behind the niche at {NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H:g} cm."),
-        ("Bay", "Book zone divider", 1, f"{INT_D:g} × {Z_TRAY_UNDER - Z_BOT_TOP - 0.5:g}", 18, "Oak-veneered ply, front edge lipped", "Centred. Glued and screwed to bottom and back panel along its length; 5 mm gap under the tray."),
+        ("Bay", "Bay back panel", 1, f"{BAY_W:g} × {Z_TOP_UNDER - Z_BOT_TOP:g}", 18, "Oak-veneered ply",
+         ("Inset 5 cm. " if VARIANT == 1 else "Flush with the rear face. Vent cutout behind the trough at 91 to 97. ")
+         + f"Cutout {CUT_W:g} × {CUT_H:g} cm behind the tray at {CUT_Z0:g} to {CUT_Z0 + CUT_H:g} cm; cutout {NICHE_W:g} × {NICHE_CUT_H:g} cm behind the niche at {NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H:g} cm."),
+        ("Bay", "Book zone divider", 1, f"{BOOK_D:g} × {Z_TRAY_UNDER - Z_BOT_TOP - 0.5:g}", 18, "Oak-veneered ply, front edge lipped", "Centred. Glued and screwed to bottom and back panel along its length; 5 mm gap under the tray."),
         ("Bay", "Drawer band divider", 2, f"{INT_D:g} × {DRW_H:g}", 18, "Oak-veneered ply, front edge lipped", "Frame the 24 cm power niche. Optional 6 × 4 cm pass-through at the rear of each for a charging lead."),
         ("Bay", "Power niche door", 1, f"{NICHE_W - 0.4:g} × {DRW_H - 0.4:g}", 18, "Solid oak, grain continuous with the drawer fronts", "Flush inset, concealed hinges, push-to-open latch, 1 cm vent gap at the bottom edge."),
-        ("Bay", "Adjustable shelf", 2, f"{OPEN_W - 0.2:g} × 40", 18, "Oak-veneered ply, front edge lipped", "One per book compartment, on 5 mm pins."),
+        ("Bay", "Adjustable shelf", 2, f"{OPEN_W - 0.2:g} × 40" if VARIANT == 1 else f"{OPEN_W - 0.2:g} × {BOOK_D - 1.0:g}", 18, "Oak-veneered ply, front edge lipped", "One per book compartment, on 5 mm pins."),
         ("Bay", "Drawer front", 2, f"{DRW_W - 0.4:g} × {DRW_H - 0.4:g}", 18, "Solid oak (grain running across both fronts)", "Flush inset, 2 mm gaps, finger pull routed under the top edge."),
-        ("Bay", "Drawer box", 2, "40 deep × 12 high, width per runner spec", 15, "Birch ply, 6 mm bottom", "For the 58.7 cm openings, sized to the runners. Notch the niche-side wall 6 × 4 cm at the rear if the pass-through is used."),
+        ("Bay", "Drawer box", 2, "45 deep × 7 high, width per runner spec" if VARIANT == 2 else "40 deep × 12 high, width per runner spec", 15, "Birch ply, 6 mm bottom", "For the 58.7 cm openings, sized to the runners. Notch the niche-side wall 6 × 4 cm at the rear if the pass-through is used."),
         ("Tray", "Keyboard tray panel", 1, f"{TRAY_PANEL_W:g} × {TRAY_D:g}", 18, "Oak-veneered birch ply, both faces", "Underside is visible from the book compartments: finish it. Front edge lipped."),
         ("Tray", "Tray side apron", 2, f"{TRAY_D:g} × {APRON_H:g}", 18, "Solid oak", "Covers the tray edge (1.8) and rises 5 cm above it. Slide drawer member screws into it."),
         ("Tray", "Tray rear rail", 1, f"{TRAY_PANEL_W:g} × {APRON_UP:g}", 18, "Solid oak", "On the tray top along the rear edge, doweled to the aprons. Stops racking."),
@@ -552,13 +570,20 @@ def parts_rows():
 
 HARDWARE = [
     ("Keyboard tray slides", "1 pair", "Heavy-duty full-extension ball-bearing, 400 mm, rated 100 kg or more per pair, with hold-open detent. Accuride 3634 (400 mm) or Fulterer FR 5000 (400 mm). Side mount at 63 to 68 cm."),
-    ("Drawer runners", "2 pairs", "Full-extension undermount with soft close, 400 mm, 40 kg class. Blum Movento 760H4000S with Blumotion, or Hettich Actro 5D."),
+    ("Drawer runners", "2 pairs",
+     "Full-extension undermount with soft close, 400 mm, 40 kg class. Blum Movento 760H4000S with Blumotion, or Hettich Actro 5D."
+     + ("" if VARIANT == 1 else f" Check the 45 cm box depth against the {INT_D:g} cm interior before ordering.")),
     ("Shelf pins", "8", "5 mm steel, for two adjustable shelves. Drill 32 mm pitch, 37 mm from front and rear edges."),
     ("Levelling feet", "8", "M8 adjustable glides, 15 to 25 mm, two per wing side panel, hidden behind the plinth boards."),
     ("Anti-tip brackets", "2", "One per wing, concealed, fixed to the wall. Recommended: the wings are 130 cm tall with speakers on top."),
     ("Speaker isolation pads", "2", "IsoAcoustics ISO-155 or Auralex MoPAD, set with a slight upward tilt toward the standing position."),
     ("Headphone hook", "1", "Black steel or oak, on the outer face of the right wing at about 105 cm."),
-    ("Power strip", "1", "6-way with switch, up to 40 cm long, or two 4-way strips side by side. Lies on the niche floor with sockets facing up; bricks stand on it. Niche is 24 wide × 15 tall × 48 deep including the chase."),
+    ("Power strip", "1",
+     "6-way with switch, up to 40 cm long, or two 4-way strips side by side. Lies on the niche floor with sockets facing up; bricks stand on it. Niche is 24 wide × 15 tall × 48 deep including the chase."
+     if VARIANT == 1 else
+     f"6-way with switch, up to 40 cm long, or two 4-way strips side by side. Lies on the niche floor with sockets facing up. Niche is 24 wide × {DRW_H:g} tall × {INT_D:g} deep, open at the top into the cable trough. "
+     f"Bricks no longer stack on the strip: strip (about 4 cm) plus a stacked brick (about 8.5 cm) would reach about 12.5 cm, well above this niche's ceiling. Stand each brick directly on the niche floor beside the strip instead — an 8.5 cm brick tops out at {Z_FIX_TOP + 8.5:g}, clearing the {Z_WELL_FLOOR:g} cm well floor above by 7 mm — placed toward the rear of the niche, within the trough footprint ({max(w[4] for w in well_positions()):g} to {INT_D:g} cm from the front), so the open trough stays clear as the route for the mains lead out through the niche cutout at {NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H:g} cm. "
+     "Margin is 7 mm: measure the actual bricks before building, since anything taller than 8.5 cm will not fit at all."),
     ("Niche door hardware", "1 set", "Two concealed hinges (Blum Clip top or similar) and a push-to-open latch (Blum Tip-On), so the door needs no handle."),
     ("Cable slot brush strip", "1 (optional)", "Black brush grommet strip 115 cm, for a 60 mm slot, to line the slot."),
     ("Drawer pass-through grommets", "2 (optional)", "Rubber or oak-lined 60 × 40 mm grommets in the drawer-band dividers, for charging leads from the strip into the drawers."),
@@ -566,6 +591,9 @@ HARDWARE = [
     ("Carcass fixings", "as needed", "8 mm dowels and glue at all visible joints; concealed confirmat screws where hidden (behind drawers and tray). Slide screws per manufacturer."),
     ("Finish", "about 1 L", "Osmo Polyx-Oil 3062 Matt, two coats, or Rubio Monocoat Oil Plus 2C Pure (about 350 ml). Natural oak tone, no stain."),
 ]
+if VARIANT == 2:
+    HARDWARE = [row for row in HARDWARE if row[0] != "Cable slot brush strip"]
+    HARDWARE.append(("Well floor cleats and fixings", "8 cleats", "M5 threaded inserts and pan screws in slotted holes, +/- 10 mm of travel, so each unit's flush line is set at fit-out rather than at cutting."))
 
 def table(headers, rows):
     th = "".join(f"<th>{H.escape(str(h))}</th>" for h in headers)
