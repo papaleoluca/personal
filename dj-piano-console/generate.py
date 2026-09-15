@@ -83,6 +83,11 @@ if VARIANT == 2:
 Z_DRW_TOP = Z_WELL_FLOOR - T if VARIANT == 2 else Z_TOP_UNDER
 Z_BACK_TOP = Z_WELL_FLOOR if VARIANT == 2 else Z_TOP_UNDER   # v2: back panel stops at the trough, opening its rear face
 WELL_WALL_H = Z_TOP_UNDER - Z_DRW_TOP     # 7.8: well side walls reach the floor's underside to carry the cleats
+# v2: the well floor eats 18 mm off the drawer band, so the fronts are made taller than their boxes
+# and run up to the fascia's bottom edge at 91. Nothing else is available to close that strip: the
+# well floors start GEAR_Y back from the front plane, so the band from 89.2 to 91 is empty at the face.
+Z_FRONT_TOP = Z_WELL_FLOOR if VARIANT == 2 else Z_DRW_TOP    # top edge of the drawer fronts and the niche door
+FRONT_H = Z_FRONT_TOP - Z_FIX_TOP         # 11.0 in v2 on a 9.2 box; = DRW_H (15.2) in v1
 BOOK_D = INT_D - BOOK_SETBACK             # 33.2 in v2, 43.2 in v1
 NICHE_CUT_H_EFF = min(NICHE_CUT_H, Z_BACK_TOP - NICHE_CUT_Z0)   # v2: the panel's top edge at 91 clips the 12 cm cutout to 8
 
@@ -117,6 +122,10 @@ if VARIANT == 2:
     assert _eq(Z_WELL_FLOOR + FASCIA_H, Z_TOP_UNDER) and _eq(Z_TOP_UNDER, 97.0)
     assert _eq(Z_TOP_UNDER + TT, H_TOP)
     assert _eq(WELL_WALL_H, 7.8) and _eq(Z_BACK_TOP, Z_WELL_FLOOR)
+    # the front face is continuous: fronts 80.0 -> 91.0 meet the fascia's bottom edge, no open strip
+    assert _eq(Z_FRONT_TOP, Z_WELL_FLOOR) and _eq(FRONT_H, 11.0)
+    assert _eq(FRONT_H - DRW_H, T)                        # the fronts overhang their boxes by exactly the floor's thickness
+    assert min(w[3] for w in well_positions()) >= T        # that overhang clears: every well floor starts behind the fronts
     _deep = max(w[4] for w in well_positions())          # deepest well back edge
     assert _eq(_deep, 41.2), _deep                        # the Xone:92
     assert _eq(INT_D - _deep, 7.0)                        # minimum back rail
@@ -259,17 +268,16 @@ def front_elevation():
     d.rect(KB_X + 5, Z_TRAY_TOP + 3.2, KB_W - 10, 3.0, fill="#F2F2F2", stroke="none")
     # fixed panel, drawers, top
     d.rect(X_BAY0, Z_CAV_TOP, BAY_W, T)
-    d.rect(X_BAY0, Z_FIX_TOP, BAY_W, DRW_H, fill="#6B5A40", stroke="none")
+    # the fronts, not the boxes: in v2 they run 18 mm past the band's ceiling up to the fascia at 91
+    d.rect(X_BAY0, Z_FIX_TOP, BAY_W, FRONT_H, fill="#6B5A40", stroke="none")
     for ox in (X_BAY0, NICHE_X + NICHE_W + T):
-        d.rect(ox + GAP, Z_FIX_TOP + GAP, DRW_W - 2 * GAP, DRW_H - 2 * GAP, fill=OAK)
-        d.line(ox + 8, Z_DRW_TOP - 1.7, ox + DRW_W - 8, Z_DRW_TOP - 1.7, stroke=OAKE, sw=1.2)
-    d.rect(NICHE_X - T, Z_FIX_TOP, T, DRW_H); d.rect(NICHE_X + NICHE_W, Z_FIX_TOP, T, DRW_H)
-    d.rect(NICHE_X + GAP, Z_FIX_TOP + GAP, NICHE_W - 2 * GAP, DRW_H - 2 * GAP, fill=OAK)
-    cxn, czn = NICHE_X + NICHE_W / 2, Z_FIX_TOP + DRW_H / 2 + 0.8
+        d.rect(ox + GAP, Z_FIX_TOP + GAP, DRW_W - 2 * GAP, FRONT_H - 2 * GAP, fill=OAK)
+        d.line(ox + 8, Z_FRONT_TOP - 1.7, ox + DRW_W - 8, Z_FRONT_TOP - 1.7, stroke=OAKE, sw=1.2)
+    d.rect(NICHE_X - T, Z_FIX_TOP, T, FRONT_H); d.rect(NICHE_X + NICHE_W, Z_FIX_TOP, T, FRONT_H)
+    d.rect(NICHE_X + GAP, Z_FIX_TOP + GAP, NICHE_W - 2 * GAP, FRONT_H - 2 * GAP, fill=OAK)
+    cxn, czn = NICHE_X + NICHE_W / 2, Z_FIX_TOP + FRONT_H / 2 + 0.8
     d.circle(cxn, czn, 1.7, stroke=OAKE, sw=1.1); d.line(cxn, czn, cxn, czn + 2.4, stroke=OAKE, sw=1.4)
     d.text(cxn, Z_FIX_TOP + 2.4, "power niche", size=7, fill=NOTE)
-    if VARIANT == 2:
-        d.rect(X_BAY0, Z_DRW_TOP, BAY_W, T)   # well floors, 18 mm: ceiling of the drawer band, gear stands on top
     if VARIANT == 1:
         d.rect(X_BAY0, Z_TOP_UNDER, BAY_W, TT)
         # gear
@@ -293,8 +301,10 @@ def front_elevation():
         d.text(W / 2, 123.6, f"Cable slot {SLOT_Y1 - SLOT_Y0:g} × {SLOT_X1 - SLOT_X0:g} cm routed in the top behind the gear; leads, plugs and the XDJ bricks pass down into the chase and the power niche", size=9, fill=NOTE, italic=True)
     else:
         d.text(W / 2, 123.6, f"Gear sunk {WELL_DROP:g} cm into the slab, faceplates flush: one unbroken oak face. Each well opens at the rear into the cable trough; no dust covers can be fitted", size=9, fill=NOTE, italic=True)
-    d.text(X_BAY0 + DRW_W / 2, Z_FIX_TOP + DRW_H / 2, "Drawer: cables, adapters, needles", size=9, dy=3)
-    d.text(NICHE_X + NICHE_W + T + DRW_W / 2, Z_FIX_TOP + DRW_H / 2, "Drawer: headphones", size=9, dy=3)
+    d.text(X_BAY0 + DRW_W / 2, Z_FIX_TOP + FRONT_H / 2, "Drawer: cables, adapters, needles", size=9, dy=3)
+    d.text(NICHE_X + NICHE_W + T + DRW_W / 2, Z_FIX_TOP + FRONT_H / 2, "Drawer: headphones", size=9, dy=3)
+    if VARIANT == 2:
+        d.text(X_BAY0 + DRW_W / 2, Z_FIX_TOP + FRONT_H / 2 - 3.2, f"front {FRONT_H:g} cm tall on a {DRW_H:g} cm box", size=7, fill=NOTE, italic=True, dy=3)
     d.text(W / 2, Z_CAV_TOP - 2.6, "Keyboard 133 × 35 × 12 stowed on the pull-out tray (extends 40 cm, see section)", size=9, fill=NOTE, italic=True)
     d.text(X_BAY0 + OPEN_W / 2, Z_TRAY_UNDER - 3.2, "Books or LPs (39 cm clear)", size=9, fill=NOTE, italic=True)
     d.text(rx + OPEN_W / 2, Z_TRAY_UNDER - 3.2, "Adjustable shelf on 5 mm pins", size=9, fill=NOTE, italic=True)
@@ -310,10 +320,10 @@ def front_elevation():
     # height dims (right)
     xr = W + 8
     d.dim_v(0, RECESS_H, xr, "20", ext=X_BAY1); d.dim_v(Z_BOT_TOP, Z_TRAY_UNDER, xr, "39.4", ext=X_BAY1)
-    d.dim_v(Z_TRAY_TOP, Z_CAV_TOP, xr, f"{Z_CAV_TOP - Z_TRAY_TOP:g}", ext=X_BAY1); d.dim_v(Z_FIX_TOP, Z_DRW_TOP, xr, f"{DRW_H:g}", ext=X_BAY1)
+    d.dim_v(Z_TRAY_TOP, Z_CAV_TOP, xr, f"{Z_CAV_TOP - Z_TRAY_TOP:g}", ext=X_BAY1)
+    d.dim_v(Z_FIX_TOP, Z_FRONT_TOP, xr, f"{FRONT_H:g} fronts" if VARIANT == 2 else f"{DRW_H:g}", ext=X_BAY1)
     if VARIANT == 2:
         d.dim_v(Z_WELL_FLOOR, H_TOP, xr, f"{FASCIA_H + TT:g} slab", ext=X_BAY1)
-        d.dim_v(Z_DRW_TOP, Z_WELL_FLOOR, W + 20, f"{T:g} well floor", ext=X_BAY1)
     d.dim_v(H_TOP, Z_CAP_UNDER, xr, "27", ext=X_BAY1)
     d.dim_v(0, Z_TRAY_TOP, W + 20, "63 tray top"); d.dim_v(0, H_TOP, W + 31, "100 DJ surface"); d.dim_v(0, H_WING, W + 42, "130 cap top")
     # left: wing openings
@@ -372,7 +382,7 @@ def side_section():
     d.rect(-EXT, Z_TRAY_UNDER, TRAY_D, TRAY_T, fill="none", stroke=INK, dash="4,3")
     d.rect(-EXT + KB_Y, Z_TRAY_TOP, KB_D, KB_H, fill="none", stroke=INK, dash="4,3")
     # power niche (the cut runs through it): door with vent gap, strip, plugs, brick
-    d.rect(GAP, Z_FIX_TOP + 1.0, T, DRW_H - 1.0 - GAP)
+    d.rect(GAP, Z_FIX_TOP + 1.0, T, FRONT_H - 1.0 - GAP)   # niche door in section: full front height, 1 cm vent gap at the bottom
     d.rect(5, Z_FIX_TOP, 30, 4.0, fill="#444", stroke="none")
     for yy in (9, 16, 23): d.rect(yy, Z_FIX_TOP + 4.0, 4.0, 2.5, fill="#777", stroke="none")
     if VARIANT == 1:
@@ -449,7 +459,8 @@ def side_section():
 
 # ---------------- 3. plan view ----------------
 def plan_view():
-    d = Drawing(0, W, -22, D + 12, scale=4.0, pad=(40, 20, 130, 20))
+    # v2 needs one more dimension column on the right for the wall gap, so it gets a wider right pad
+    d = Drawing(0, W, -22, D + 12, scale=4.0, pad=(40, 20, 130 if VARIANT == 1 else 165, 20))
     d.line(0, D + WALL_GAP, W, D + WALL_GAP, stroke="#777", sw=3); d.text(W + 1, D + WALL_GAP, "wall", size=9, anchor="start", fill="#777", dy=3)
     for x0, cx in ((0.0, 0.0), (W - WING_W, W - CAP_W)):
         d.rect(x0, 0, WING_W, D, fill=OAK2)
@@ -495,7 +506,8 @@ def plan_view():
         d.dim_v(0, GEAR_Y, xr, f"{GEAR_Y:g}", ext=X_BAY1)
         d.dim_v(GEAR_Y, _deep, xr, f"{_deep - GEAR_Y:g} deepest well", ext=X_BAY1)
         d.dim_v(_deep, Y_BACK0, xr, f"{Y_BACK0 - _deep:g} back rail", ext=X_BAY1)
-        d.dim_v(D, D + WALL_GAP, xr, f"{WALL_GAP:g} wall gap", ext=X_BAY1)
+        # own column, clear of the "back rail" label: rotated labels are longer than their own spans here
+        d.dim_v(D, D + WALL_GAP, W + 32, f"{WALL_GAP:g} wall gap", ext=X_BAY1)
     d.dim_v(0, D, W + 24, "50")
     return d.render()
 
@@ -599,10 +611,19 @@ def parts_rows():
          + f"Cutout {CUT_W:g} × {CUT_H:g} cm behind the tray at {CUT_Z0:g} to {CUT_Z0 + CUT_H:g} cm; cutout {NICHE_W:g} × {NICHE_CUT_H_EFF:g} cm behind the niche at {NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H_EFF:g} cm."
          + ("" if VARIANT == 1 else f" The niche cutout runs out at the panel's top edge, where the open trough takes over.")),
         ("Bay", "Book zone divider", 1, f"{BOOK_D:g} × {Z_TRAY_UNDER - Z_BOT_TOP - 0.5:g}", 18, "Oak-veneered ply, front edge lipped", "Centred. Glued and screwed to bottom and back panel along its length; 5 mm gap under the tray."),
-        ("Bay", "Drawer band divider", 2, f"{INT_D:g} × {DRW_H:g}", 18, "Oak-veneered ply, front edge lipped", "Frame the 24 cm power niche. Optional 6 × 4 cm pass-through at the rear of each for a charging lead."),
-        ("Bay", "Power niche door", 1, f"{NICHE_W - 0.4:g} × {DRW_H - 0.4:g}", 18, "Solid oak, grain continuous with the drawer fronts", "Flush inset, concealed hinges, push-to-open latch, 1 cm vent gap at the bottom edge."),
+        ("Bay", "Drawer band divider", 2, f"{INT_D:g} × {DRW_H:g}", 18, "Oak-veneered ply, front edge lipped",
+         "Frame the 24 cm power niche. Optional 6 × 4 cm pass-through at the rear of each for a charging lead."
+         if VARIANT == 1 else
+         f"Frame the 24 cm power niche. Notched: the front {GEAR_Y:g} cm rises to {FRONT_H:g} cm with the fronts, closing the strip behind the gaps between them; behind that it drops to {DRW_H:g} cm to pass under the well floors. Optional 6 × 4 cm pass-through at the rear of each for a charging lead."),
+        ("Bay", "Power niche door", 1, f"{NICHE_W - 0.4:g} × {FRONT_H - 0.4:g}", 18, "Solid oak, grain continuous with the drawer fronts",
+         "Flush inset, concealed hinges, push-to-open latch, 1 cm vent gap at the bottom edge."
+         if VARIANT == 1 else
+         f"Flush inset, concealed hinges, push-to-open latch, 1 cm vent gap at the bottom edge. {FRONT_H:g} cm like the drawer fronts, {T*10:g} mm taller than its opening, so the face closes up to the fascia at {Z_WELL_FLOOR:g}."),
         ("Bay", "Adjustable shelf", 2, f"{OPEN_W - 0.2:g} × 40" if VARIANT == 1 else f"{OPEN_W - 0.2:g} × {BOOK_D - 1.0:g}", 18, "Oak-veneered ply, front edge lipped", "One per book compartment, on 5 mm pins."),
-        ("Bay", "Drawer front", 2, f"{DRW_W - 0.4:g} × {DRW_H - 0.4:g}", 18, "Solid oak (grain running across both fronts)", "Flush inset, 2 mm gaps, finger pull routed under the top edge."),
+        ("Bay", "Drawer front", 2, f"{DRW_W - 0.4:g} × {FRONT_H - 0.4:g}", 18, "Solid oak (grain running across both fronts)",
+         "Flush inset, 2 mm gaps, finger pull routed under the top edge."
+         if VARIANT == 1 else
+         f"Flush inset, 2 mm gaps, finger pull routed under the top edge. {FRONT_H:g} cm on a {DRW_H:g} cm box: it overhangs the box {T*10:g} mm upward to meet the fascia at {Z_WELL_FLOOR:g}, closing the face. Clear behind, because the well floors start {GEAR_Y:g} cm back. Size off the opening, not off the box."),
         ("Bay", "Drawer box", 2, "45 deep × 7 high, width per runner spec" if VARIANT == 2 else "40 deep × 12 high, width per runner spec", 15, "Birch ply, 6 mm bottom",
          "For the 58.7 cm openings, sized to the runners. Notch the niche-side wall 6 × 4 cm at the rear if the pass-through is used."
          if VARIANT == 1 else
@@ -683,7 +704,7 @@ def build_html(svgs, render_path=None):
           if VARIANT == 1 else
           f"Turntable, XDJ-700, Xone:92, XDJ-700 left to right within the {BAY_W:g} cm bay, each sunk into a well that gives {WELL_DROP:g} cm of clearance below its faceplate — not below its overall height. Faceplates finish flush with the oak. Front rail {GEAR_Y:g} cm, oak webs about 5.6 cm. Dust covers cannot be fitted.")),
         ("Drawer band",
-         "81.8 to 97" if VARIANT == 1 else f"{Z_FIX_TOP:g} to {Z_DRW_TOP:g}",
+         "81.8 to 97" if VARIANT == 1 else f"{Z_FIX_TOP:g} to {Z_DRW_TOP:g} (fronts to {Z_WELL_FLOOR:g})",
          ("Two flush drawers of 58.7 cm (cables and adapters left, headphones right) with a 24 cm power niche between them: push-to-open door, strip and wall-wart bricks inside, open at the back into the cable chase."
           if VARIANT == 1 else
           f"Two flush drawers of 58.7 cm ({DRW_H:g} cm high) with a 24 cm power niche between them: push-to-open door, strip and bricks inside, open at the top into the cable trough.")),
@@ -786,7 +807,9 @@ def build_html(svgs, render_path=None):
         build.append(f"Glue the well side walls to the underside of the top board before the fascia goes on. Each web between two wells is then a {TT*10:g} mm cap on two {FASCIA_H*10:g} mm walls, which is what carries the span; a bare {TT*10:g} mm web is not stiff enough to lean on.")
     build += [
         "Keyboard tray: side-mounted heavy-duty slides above the tray surface, screwed into the solid oak aprons (detail A). Confirm the keyboard's actual footprint and connector positions before cutting the tray and the back-panel cutout.",
-        "Drawers on undermount runners with flush inset fronts, 2 mm gaps, finger pull routed under the top edge. Run the grain across both fronts and the niche door as one board.",
+        ("Drawers on undermount runners with flush inset fronts, 2 mm gaps, finger pull routed under the top edge. Run the grain across both fronts and the niche door as one board."
+         if VARIANT == 1 else
+         f"Drawers on undermount runners with flush inset fronts, 2 mm gaps, finger pull routed under the top edge. Run the grain across both fronts and the niche door as one board. Cut the fronts and the door to {FRONT_H:g} cm, not to the {DRW_H:g} cm band: the well floors take {T*10:g} mm off the top of the boxes, but nothing closes the face there, so the fronts run on up to the fascia at {Z_WELL_FLOOR:g}. The {T*10:g} mm standing proud of each box has clear air behind it back to the front rail. The two dividers are notched to match over their front {GEAR_Y:g} cm."),
         ("Power niche: cut the back panel away behind it (24 × 12 cm at 83 to 95) so niche and chase are one space. Door on concealed hinges with a push latch and a 1 cm gap at the bottom for air. The strip lies on the mid panel with sockets up; leads from the slot and from the keyboard arrive through the chase. Optional: a 6 × 4 cm hole through each divider at the rear, with a matching notch in the drawer side, lets a lead from the strip charge headphones or a phone inside the drawers; leave a 45 cm loop for the drawer travel. Bricks stay in the niche."
          if VARIANT == 1 else
          f"Power niche: {NICHE_W:g} × {DRW_H:g}, its rear {INT_D - _NICHE_REAR_Y0:g} cm opening upward into the trough rather than rearward into a chase. Door on concealed hinges with a push latch and a 1 cm gap at the bottom edge for air. The strip lies flat on the niche floor with sockets up. Stand the bricks on the floor beside it, toward the rear of the niche, y {_NICHE_REAR_Y0:g} to {INT_D:g} from the front: past that line the well floors have stopped and the open trough runs overhead, so the headroom there is {_NICHE_REAR_H:g} cm, up to the back rail's underside at {Z_TOP_UNDER:g}, and brick height is not a constraint. What matters is that nothing is stacked on the strip — strip plus brick is about {_STRIP_H + _BRICK_H:g} cm, topping out at {_STACK_TOP:g}, which fouls a well floor at the front of the niche and blocks the trough at the rear — and that the trough stays clear as the route for the mains lead out through the back-panel cutout ({NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H_EFF:g}, x {NICHE_X:g} to {NICHE_X + NICHE_W:g}), which runs out at the panel's top edge and hands over to the trough's own open rear. Height is only critical for a brick pushed to the front of the niche instead, under a well floor: {_NICHE_FRONT_H:g} cm of headroom there, which an {_BRICK_H:g} cm brick clears by {_BRICK_FRONT_MM:g} mm."),

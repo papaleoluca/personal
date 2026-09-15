@@ -2,6 +2,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 const V = new URLSearchParams(location.search).get('v') === '2' ? 2 : 1; // v2: flush-mounted gear, thicker apparent top, shallower drawer band, book zone set back
+const WALL_GAP = V===2?5.0:0; // v2 stands off the wall so the open trough can vent [0]
 const W=1600,H=1200;let OX=0; // x offset (cm) applied by box()/cyl(), used to shift the bay parts
 const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
 renderer.setSize(W,H,false);renderer.setPixelRatio(1);
@@ -32,17 +33,21 @@ function cyl(r,h,x,y,z,m,axisZ){const mesh=new THREE.Mesh(new THREE.CylinderGeom
 // room
 const floorTex=(()=>{const c=document.createElement('canvas');c.width=1024;c.height=1024;const g=c.getContext('2d');g.fillStyle='#e9dfcd';g.fillRect(0,0,1024,1024);for(let i=0;i<300;i++){const y=Math.random()*1024;g.strokeStyle=`rgba(200,180,150,${(0.04+Math.random()*0.1).toFixed(2)})`;g.lineWidth=1+Math.random()*2;g.beginPath();g.moveTo(0,y);g.lineTo(1024,y+(Math.random()-0.5)*6);g.stroke();}for(let y=0;y<1024;y+=128){g.strokeStyle='rgba(150,125,95,0.35)';g.lineWidth=2;g.beginPath();g.moveTo(0,y);g.lineTo(1024,y);g.stroke();}const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(4,4);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;return t;})();
 const floor=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.MeshStandardMaterial({map:floorTex,roughness:0.6}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
-const wall=new THREE.Mesh(new THREE.PlaneGeometry(14,5),new THREE.MeshStandardMaterial({color:0xf5f3ef,roughness:0.95}));wall.position.set(0.925,2.5,-0.5);wall.receiveShadow=true;scene.add(wall);
-box(1400,8,1.2,92.5,4,-49.4,white); // skirting
+const wall=new THREE.Mesh(new THREE.PlaneGeometry(14,5),new THREE.MeshStandardMaterial({color:0xf5f3ef,roughness:0.95}));wall.position.set(0.925,2.5,-0.5-WALL_GAP/100);wall.receiveShadow=true;scene.add(wall);
+box(1400,8,1.2,92.5,4,-49.4-WALL_GAP,white); // skirting: moves back with the wall, so the v2 gap is visible
 // dims (cm)
 const W_=185,D=50,T=1.8,TT=3,WING=20,CAP=20,BAY0=20,BAY1=165;
 // v2: flush-mounted gear (bracketed values are v1)
 const WELL_DROP=9.0, Z_WELL_FLOOR=100-WELL_DROP;                     // 91.0
 const GEAR_Y=V===2?5.0:2.0, GDZ=GEAR_Y-2.0;                          // front rail depth [2.0]; GDZ shifts every gear z by the same amount
 const BACK_INSET=V===2?0:5, Y_BACK1=D-BACK_INSET, Y_BACK0=Y_BACK1-T; // back panel depth [43.2 -> 45.0], now [48.2 -> 50.0]
+const Z_BACK_TOP=V===2?Z_WELL_FLOOR:97;                              // back panel stops at the trough so its rear face is open [97 -> 91]
 const BOOK_SETBACK=V===2?15.0:0, BOOK_D=Y_BACK0-BOOK_SETBACK;        // book zone set back [0.0], compartment depth [43.2 -> 33.2]
 const SHELF_D=V===2?BOOK_D-1.0:40;                                   // shelf depth, shallower and set back with the book zone in v2
-const DRW_H=V===2?(Z_WELL_FLOOR-81.8):15.2, DRW_Y=81.8+DRW_H/2, DRW_FRONT_H=DRW_H-0.4, DRW_TOP=81.8+DRW_H; // drawer band [15.2 -> 9.2], top [97 -> 91]
+const Z_FIX_TOP=V===2?80.0:81.8;                                     // fixed mid panel top face: drops 18 mm so the well floor gets its own band [81.8 -> 80.0]
+const DRW_H=V===2?(Z_WELL_FLOOR-T-Z_FIX_TOP):15.2, DRW_Y=Z_FIX_TOP+DRW_H/2, DRW_TOP=Z_FIX_TOP+DRW_H; // drawer band [15.2 -> 9.2], ceiling = the well floor's underside [97 -> 89.2]
+const FRONT_H=V===2?(Z_WELL_FLOOR-Z_FIX_TOP):DRW_H, FRONT_TOP=Z_FIX_TOP+FRONT_H, FRONT_Y=Z_FIX_TOP+FRONT_H/2, DRW_FRONT_H=FRONT_H-0.4; // fronts overhang their boxes up to the fascia [15.2 -> 11.0]
+const NOTCH=V===2?GEAR_Y:0;                                          // the dividers rise with the fronts over their front GEAR_Y cm, then drop under the well floors
 const TOP_H=V===2?(100-Z_WELL_FLOOR):TT, TOP_Y=V===2?(Z_WELL_FLOOR+100)/2:98.5; // apparent slab [3 -> 9] thick
 function gh(trueH){return V===2?WELL_DROP:trueH;} // effective gear-body height: own height in v1, flush WELL_DROP in v2
 const recCols=[0x3b2f2f,0x6b4a3a,0xd9cbb3,0x2f3a4a,0xa3927a,0x8c2f2f,0x1f1f1f,0xc7b299,0x4a6b5a,0xe0d5c0,0x2f2f2f,0x7a5a8a,0x8a5a44,0x4a5a6a,0xbf8f3f,0x5a7a9a,0x222a33,0xd8a070];
@@ -65,10 +70,10 @@ for(const x0 of [0,W_-WING]){
 OX=BAY0-14.5; // bay parts below were laid out for a 14.5 wing; shift them
 // bay carcass
 box(145,T,Y_BACK1-BOOK_SETBACK,87,20.9,-(BOOK_SETBACK+Y_BACK1)/2,oakH);            // bottom panel: set back with the book zone in v2
-box(145,75.2,T,87,59.4,-(Y_BACK0+Y_BACK1)/2,oakH);                                 // back panel: flush with the rear face in v2
+box(145,Z_BACK_TOP-21.8,T,87,(21.8+Z_BACK_TOP)/2,-(Y_BACK0+Y_BACK1)/2,oakH);       // back panel: flush with the rear face in v2, and stopping at the trough
 box(T,38.9,BOOK_D,87,41.25,-(BOOK_SETBACK+BOOK_D/2),oakV);                         // book zone divider: set back in v2
 box(71.4,T,SHELF_D,123.7,42.2,-(BOOK_SETBACK+1.0+SHELF_D/2),oakH);                 // shelf: set back in v2
-box(145,T,Y_BACK0,87,80.9,-Y_BACK0/2,oakH);                                        // fixed mid panel: full depth, not affected by the book setback
+box(145,T,Y_BACK0,87,Z_FIX_TOP-T/2,-Y_BACK0/2,oakH);                               // fixed mid panel: full depth, not affected by the book setback
 // tray + slides + aprons
 box(137.6,T,42,87,62.1,-21,oakH);
 box(1.9,5,40,BAY0+0.95,65.5,-21.5,grey);box(1.9,5,40,BAY1-0.95,65.5,-21.5,grey);
@@ -80,16 +85,32 @@ box(124,1.4,13.5,87,75.5,-9.5,white);
 for(let i=0;i<52;i++){const p=i%7;if(p===2||p===6)continue;box(1.0,1.2,8.2,87-62+i*2.385+1.2,76.4,-12.2,darker);}
 box(120,0.6,10,87,75.3,-25,new THREE.MeshStandardMaterial({color:0x333333,roughness:0.6}));
 // drawers + niche
-box(58.3,DRW_FRONT_H,T,43.85,DRW_Y,-0.9,oakH);box(58.3,DRW_FRONT_H,T,130.15,DRW_Y,-0.9,oakH);
-box(23.6,DRW_FRONT_H,T,87,DRW_Y,-0.9,oakH);
-box(T,DRW_H,Y_BACK0,74.1,DRW_Y,-Y_BACK0/2,oakV);box(T,DRW_H,Y_BACK0,99.9,DRW_Y,-Y_BACK0/2,oakV);
+box(58.3,DRW_FRONT_H,T,43.85,FRONT_Y,-0.9,oakH);box(58.3,DRW_FRONT_H,T,130.15,FRONT_Y,-0.9,oakH);
+box(23.6,DRW_FRONT_H,T,87,FRONT_Y,-0.9,oakH);
+for(const dx of [74.1,99.9]){box(T,DRW_H,Y_BACK0-NOTCH,dx,DRW_Y,-(NOTCH+Y_BACK0)/2,oakV);if(NOTCH)box(T,FRONT_H,NOTCH,dx,FRONT_Y,-NOTCH/2,oakV);}
 // drawer gaps and finger pulls
-for(const gx of [14.6,73.1,75.1,98.9,100.9,159.4]){box(0.25,DRW_H,1.0,gx,DRW_Y,-0.4,darker);}
-box(145,0.25,1.0,87,81.9,-0.4,darker);box(145,0.25,1.0,87,DRW_TOP-0.1,-0.4,darker);
-box(42,0.7,0.8,43.85,DRW_TOP-1.1,-0.2,darker);box(42,0.7,0.8,130.15,DRW_TOP-1.1,-0.2,darker);
-// top + slot
-box(145,TOP_H,D,87,TOP_Y,-25,oakH);
-box(115,0.5,6,87,100.05,-44,darker);
+for(const gx of [14.6,73.1,75.1,98.9,100.9,159.4]){box(0.25,FRONT_H,1.0,gx,FRONT_Y,-0.4,darker);}
+box(145,0.25,1.0,87,Z_FIX_TOP+0.1,-0.4,darker);box(145,0.25,1.0,87,FRONT_TOP-0.1,-0.4,darker);
+box(42,0.7,0.8,43.85,FRONT_TOP-1.1,-0.2,darker);box(42,0.7,0.8,130.15,FRONT_TOP-1.1,-0.2,darker);
+// top: v1 is a 3 cm board with the cable slot routed in it; v2 is the 9 cm open grid, cut out around each unit
+const GEARXWD=[[40.15,45.3,35.3],[79.7,21.8,30.6],[112.6,32,35.8],[145.5,21.8,30.6]]; // gear centre x, width, depth (pre-OX)
+if(V===2){
+ const DEEP=GEAR_Y+35.8+0.4;                                                                // 41.2: the Xone's well is the deepest, and the trough starts behind it
+ box(145,TOP_H,GEAR_Y,87,TOP_Y,-GEAR_Y/2,oakH);                                             // front rail: solid 91 -> 100 across the bay
+ box(145,TT,D-DEEP,87,100-TT/2,-(DEEP+D)/2,oakH);                                           // back rail: top board only, the trough runs open underneath it
+ let xp=14.5;                                                                               // bay left edge, pre-OX
+ for(const [gx,gw,gd] of GEARXWD){
+  const x0=gx-gw/2-0.2,x1=gx+gw/2+0.2,yb=GEAR_Y+gd+0.4;                                     // cut-out edges, and the back of this well
+  box(x0-xp,TOP_H,DEEP-GEAR_Y,(xp+x0)/2,TOP_Y,-(GEAR_Y+DEEP)/2,oakH);                       // web between wells, or the end margin: a full 9 cm section
+  if(yb<DEEP)box(x1-x0,TT,DEEP-yb,(x0+x1)/2,100-TT/2,-(yb+DEEP)/2,oakH);                    // top board carrying on over the trough behind a shallower well
+  box(x1-x0,T,gd+0.4,(x0+x1)/2,Z_WELL_FLOOR-T/2,-(GEAR_Y+(gd+0.4)/2),oakH);                 // this well's own 18 mm floor: starts GEAR_Y back, never at the face
+  xp=x1;
+ }
+ box(159.5-xp,TOP_H,DEEP-GEAR_Y,(xp+159.5)/2,TOP_Y,-(GEAR_Y+DEEP)/2,oakH);                  // right end margin
+}else{
+ box(145,TOP_H,D,87,TOP_Y,-25,oakH);
+ box(115,0.5,6,87,100.05,-44,darker);
+}
 // gear
 const gearY=V===2?Z_WELL_FLOOR:100; // base the gear body sits on: the well floor in v2, the bare top in v1
 const tt=box(45.3,gh(16.2),35.3,40.15,gearY+gh(16.2)/2,-19.65-GDZ,darker);
