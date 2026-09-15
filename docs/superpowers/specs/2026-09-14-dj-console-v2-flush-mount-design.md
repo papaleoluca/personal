@@ -79,7 +79,12 @@ The top becomes a 9 cm deep open grid rather than a 3 cm board:
 
 - 3 cm oak top board, 97 -> 100, with four cut-outs through it.
 - 6 cm fascia, 91 -> 97, returned across the front and both ends. Its bottom edge
-  lands exactly on the well floors at 91, so drawer fronts start immediately below.
+  lands exactly on the well floors at 91. The drawer fronts run the full 80.0 -> 91.0,
+i.e. **11.0 tall on 9.2 boxes**, overhanging each box upward by 18 mm so the front
+face is closed: the well floors start 5 cm back, so nothing below the fascia would
+otherwise fill z 89.2 -> 91 and an 18 mm slot would run the width of the piece into
+the drawer cavity. The two drawer-band dividers are notched to match over their
+front 5 cm. Front height therefore no longer equals `DRW_H`.
 - Well side walls (1.8) hang from the top board down to the floors at 91.
 
 Each web between two wells is therefore a 3 cm oak cap with two 6 cm walls glued
@@ -137,17 +142,18 @@ outlet and could not sustain any flow. Stopping the panel short costs less mater
 not more: the panel's stiffening job is its glued bottom edge at 21.8, and the top
 assembly is carried by the top board, the webs and the two rails.
 
-The power niche (x 80.5 - 104.5) becomes 81.8 -> 91 and keeps its back-panel cutout
-at 83 -> 95, which now spans both the niche and the trough — so the power strip
+The power niche (x 80.5 - 104.5) becomes 80.0 -> 89.2 and keeps its back-panel cutout
+at 83 -> 91, which now spans both the niche and the trough — so the power strip
 feeds straight up into the trough.
 
 ### Power bricks must stand at the rear of the niche
 
 Found during implementation, not at design time. Shrinking the drawer band to 9.2
-also shrinks the power niche to 9.2 (81.8 -> 91), and v1's arrangement no longer
+also shrinks the power niche to 9.2 (80.0 -> 89.2), and v1's arrangement no longer
 fits. v1 stood the wall-wart bricks **on** the power strip: strip about 4 cm, brick
 about 8.5, total 12.5 measured from the niche floor at 81.8, topping out at 94.3.
-That cleared v1's 97 ceiling with room to spare. In v2 it overshoots 91 by 3.3 cm,
+That cleared v1's 97 ceiling with room to spare. In v2 it overshoots the 89.2 well-floor
+underside by 3.3 cm at the front of the niche,
 and there is no air above to overshoot into — directly over the niche (x 80.5 -
 104.5) sit two well floors at z 91, the XDJ-700's across x 80.5 - 96.3 and the
 Xone:92's across x 101.9 - 104.5. The brick would meet solid ply.
@@ -242,7 +248,10 @@ already mirrors v1's by hand. The README's regenerate block gains the v2 command
 - Shin clearance closes: the shin line crosses z = 21.8 at y = -1.0, so a 15.0
   setback leaves 16.0 cm; compartment depth `INT_D` 48.2 - 15.0 = 33.2 >= 31.4 (LP).
 - Power niche closes only unstacked: strip 4 + brick 8.5 stacked = 12.5 > niche
-  height 9.2, but a floor-standing brick is 8.5 <= 9.2, clearing z 91 by 0.7.
+  height 9.2, but a floor-standing brick is 8.5 <= 9.2, clearing the floor underside
+  at 89.2 by 0.7 — and at the REAR, beyond the wells, roughly 17 to the top board.
+- Front face closes: drawer fronts 80.0 -> 91.0 meet the fascia's bottom edge at 91,
+  leaving no open strip at 89.2 -> 91.
 - Both variants regenerate from a clean checkout. v1's `drawing-*.svg` must come
   back byte-identical to the committed v1.6 files (`draw_books` is seeded, so the
   drawings are deterministic); the HTML and PDF will differ by the `date.today()`
