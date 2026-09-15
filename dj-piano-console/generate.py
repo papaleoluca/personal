@@ -721,7 +721,7 @@ def build_html(svgs, render_path=None):
          f"Power niche: {NICHE_W:g} × {DRW_H:g}, opening upward into the trough above it rather than rearward into a chase. Door on concealed hinges with a push latch and a 1 cm gap at the bottom edge for air. The strip lies on the niche floor with sockets up. Bricks no longer stack on the strip: stand each brick on the niche floor beside it instead, toward the rear of the niche within the trough footprint (y {max(w[4] for w in well_positions()):g} to {INT_D:g} from the front) — an {_BRICK_H:g} cm brick clears the well floor above by {_BRICK_MARGIN_MM:g} mm, so measure the actual bricks before building: anything taller will not fit. The back-panel cutout behind the niche ({NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H:g}, x {NICHE_X:g} to {NICHE_X + NICHE_W:g}) spans niche and trough, but only its upper {NICHE_CUT_Z0 + NICHE_CUT_H - Z_WELL_FLOOR:g} cm is above the well floor at {Z_WELL_FLOOR:g} — that upper strip is the trough's only vent and cable exit; the trough itself runs the full 145 cm bay and is not otherwise vented."),
         "Adjustable shelves on 5 mm pins, holes at 32 mm pitch. Finish the underside of the tray: it is the ceiling of the book compartments.",
         ("Level on the eight feet so the tray runs true, then fix each wing to the wall with a concealed anti-tip bracket"
-         + ("." if VARIANT == 1 else ", holding the gap from note 5 open rather than closing it.")),
+         + ("." if VARIANT == 1 else ", holding that wall gap open rather than closing it.")),
     ]
     variants = [
         "Speaker caps: the earlier 24 cm cap overhanging 4 cm inward was dropped on 14 September 2026; a flush 20 cm cap is enough for a KRK Rokit 5. Widen the cap only if the speakers change.",
