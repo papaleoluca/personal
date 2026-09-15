@@ -612,6 +612,7 @@ def table(headers, rows):
 
 def build_html(svgs, render_path=None):
     today = datetime.date.today().strftime("%d %B %Y")
+    version_line = "Version 1.6" if VARIANT == 1 else "Version 2.0 — flush-mounted gear"
     gear_rows = []
     for n, gx, gw, gd, gh in gear_positions():
         gear_rows.append((n, f"{gw:g} × {gd:g} × {gh:g}", f"{gx - X_BAY0:g} to {gx - X_BAY0 + gw:g}"))
@@ -653,13 +654,14 @@ def build_html(svgs, render_path=None):
     .wrap { max-width: 1180px; margin: 0 auto; padding: 24px; }
     @media print { .wrap { max-width: none; padding: 0; } }
     h1 { font-size: 22pt; margin: 0 0 2pt; letter-spacing: -0.01em; }
-    h2 { font-size: 13.5pt; margin: 0 0 6pt; padding-bottom: 3pt; border-bottom: 1px solid #cfcfcf; }
-    h3 { font-size: 11pt; margin: 10pt 0 4pt; }
+    h2 { font-size: 13.5pt; margin: 0 0 6pt; padding-bottom: 3pt; border-bottom: 1px solid #cfcfcf; page-break-after: avoid; break-after: avoid; }
+    h3 { font-size: 11pt; margin: 10pt 0 4pt; page-break-after: avoid; break-after: avoid; }
     p { margin: 0 0 6pt; }
     .muted { color: #666; font-size: 9.5pt; }
     table { border-collapse: collapse; width: 100%; font-size: 9pt; margin: 4pt 0 8pt; }
     th, td { border: 1px solid #d9d9d9; padding: 2.5pt 5pt; text-align: left; vertical-align: top; }
     th { background: #f3efe6; font-weight: 600; }
+    tr { page-break-inside: avoid; break-inside: avoid; }
     .page { page-break-after: always; break-after: page; margin-bottom: 28px; }
     .page:last-child { page-break-after: auto; }
     .drawing svg { display: block; margin: 0 auto; width: auto; max-width: 100%; }
@@ -667,6 +669,7 @@ def build_html(svgs, render_path=None):
     ul { margin: 0 0 6pt 16pt; padding: 0; } li { margin-bottom: 2pt; }
     .kv td:first-child { font-weight: 600; width: 34%; }
     .parts table { font-size: 7.9pt; } .parts th, .parts td { padding: 1.5pt 4pt; }
+    .cols table { font-size: 8.5pt; } .cols th, .cols td { padding: 1.8pt 5pt; }
     .parts th:nth-child(1) { width: 6%; } .parts th:nth-child(2) { width: 14%; } .parts th:nth-child(3) { width: 5%; } .parts th:nth-child(4) { width: 15%; } .parts th:nth-child(5) { width: 5%; } .parts th:nth-child(6) { width: 22%; }
     """
     key = [
@@ -731,7 +734,7 @@ def build_html(svgs, render_path=None):
     html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>DJ and piano console, design package</title><style>{css}</style></head><body><div class="wrap">
 <div class="page">
 <h1>DJ and piano console</h1>
-<p class="muted">Design package for the carpenter. Version 1.6, {today}. All dimensions in centimetres unless marked mm. Light natural oak, matte oiled.</p>
+<p class="muted">Design package for the carpenter. {version_line}, {today}. All dimensions in centimetres unless marked mm. Light natural oak, matte oiled.</p>
 <p>One piece, {W:g} cm wide, that holds a DJ set-up on top at standing height, a stage piano on a pull-out tray at seated height, about {REC_TOTAL} records in two end columns, books in two open compartments, two drawers with a power niche between them, and two studio monitors on caps at the top of the columns. The middle section floats 20 cm above the floor so a sustain pedal and feet fit underneath.</p>
 <div class="cols"><div><h3>Key dimensions</h3>{table(["Item", "Value"], key).replace('<table>', '<table class="kv">')}</div>
 <div><h3>What goes where</h3>{table(["Zone", "Height (cm)", "Contents"], zones)}</div></div>
