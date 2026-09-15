@@ -58,6 +58,11 @@ Well floors sit at `H_TOP - WELL_DROP` = 100 - 9 = **91.0**. Everything follows:
 | back rail (min) | — | **7.0** | 48.2 - 41.2, behind the Xone |
 | `DRW_H` | 15.2 | **9.2** | `Z_WELL_FLOOR - Z_FIX_TOP` |
 | drawer box depth | 43.2 | **48.2** | wells stop at 91, so drawers run full depth |
+| well floor | — | **89.2 -> 91.0** | 18 mm, `T`; its top face is the plane the gear stands on |
+| `Z_CAV_TOP` | 80.0 | **78.2** | mid panel drops 18 mm so the drawer band keeps its height |
+| `Z_FIX_TOP` | 81.8 | **80.0** | `Z_CAV_TOP + T` |
+| `Z_DRW_TOP` | 97.0 | **89.2** | drawer band ceiling = the floor's underside, not 91 |
+| back panel top | 97.0 | **91.0** | stops at the trough so its whole rear face is open |
 | `BOOK_SETBACK` | 0 | **15.0** | book zone front plane, for shin clearance |
 | book compartment depth | 43.2 | **33.2** | `INT_D - BOOK_SETBACK`; a 31.4 cm LP fits with 1.8 spare |
 
@@ -121,8 +126,16 @@ behind the Xone and 12.2 cm behind the XDJs. Every well has a slot in its rear w
 opening into it.
 
 This also answers the Xone:92 — an analogue mixer that runs warm and would
-otherwise sit in a sealed box. Its well vents rearward into the trough, and the
-trough vents through a cutout in the back panel.
+otherwise sit in a sealed box. Its well vents rearward into the trough.
+
+**The trough's rear is open across the whole bay.** The bay back panel stops at
+`Z_WELL_FLOOR` 91 rather than `Z_TOP_UNDER` 97, so the trough's entire rear face —
+about 145 x 6 cm, roughly 870 cm2 — opens into the wall gap. An earlier version of
+this design vented the trough through the upper 4 cm of the niche cutout alone,
+about 96 cm2 at a single location, which made one aperture serve as both inlet and
+outlet and could not sustain any flow. Stopping the panel short costs less material,
+not more: the panel's stiffening job is its glued bottom edge at 21.8, and the top
+assembly is carried by the top board, the webs and the two rails.
 
 The power niche (x 80.5 - 104.5) becomes 81.8 -> 91 and keeps its back-panel cutout
 at 83 -> 95, which now spans both the niche and the trough — so the power strip
@@ -139,10 +152,16 @@ and there is no air above to overshoot into — directly over the niche (x 80.5 
 104.5) sit two well floors at z 91, the XDJ-700's across x 80.5 - 96.3 and the
 Xone:92's across x 101.9 - 104.5. The brick would meet solid ply.
 
-**The constraint is that bricks may no longer be stacked on the strip.** Standing a
-brick directly on the niche floor gives 81.8 + 8.5 = 90.3, which clears the 91
-ceiling with 0.7 cm to spare. So the strip lies on the niche floor and the bricks
-stand on the floor beside it, not on top of it.
+**The constraint is that bricks may no longer be stacked on the strip**, and that
+they belong at the rear of the niche rather than the front.
+
+Be careful which clearance applies where, because an earlier version of this section
+got it wrong. At the **front** of the niche a brick stands under a well floor, so the
+headroom is `Z_DRW_TOP` 89.2 - `Z_FIX_TOP` 80.0 = 9.2, and an 8.5 cm brick clears by
+7 mm. At the **rear** — y 41.2 to 48.2, beyond the deepest well — there is no floor
+overhead at all, only the open trough running up to the top board at 97, so the same
+brick has roughly 17 cm. The 7 mm margin is a front-position figure and must not be
+quoted against the rear placement this spec prescribes.
 
 Place the bricks at the **rear** of the niche, within the trough footprint
 (y 41.2 - 48.2). That is not needed for the brick to fit — it fits anywhere on the
@@ -208,8 +227,15 @@ already mirrors v1's by hand. The README's regenerate block gains the v2 command
 
 ## Verification
 
-- Arithmetic closes: `Z_FIX_TOP` 81.8 + `DRW_H` 9.2 = `Z_WELL_FLOOR` 91.0;
-  91.0 + `FASCIA_H` 6.0 = `Z_TOP_UNDER` 97.0; 97.0 + `TT` 3.0 = `H_TOP` 100.0.
+- Arithmetic closes, **including the 18 mm well floor** — the first version of this
+  list omitted it, and the drawings and the parts list then resolved it in opposite
+  directions. `Z_WELL_FLOOR` cannot be both the drawer-band ceiling and the plane the
+  gear stands on. Chain, bottom to top: `Z_FIX_TOP` 80.0 + `DRW_H` 9.2 = `Z_DRW_TOP`
+  89.2 (floor underside); 89.2 + `T` 1.8 = `Z_WELL_FLOOR` 91.0 (floor top face, gear
+  bears here); 91.0 + `WELL_DROP` 9.0 = `H_TOP` 100.0; 91.0 + `FASCIA_H` 6.0 =
+  `Z_TOP_UNDER` 97.0.
+- The keyboard still clears the lowered mid panel: stowed top 63.0 + 12.0 = 75.0
+  against a cavity ceiling of 78.2, leaving 3.2 (was 5.0).
 - Depth closes: `GEAR_Y` 5.0 + deepest well 36.2 (Xone + clearance) + back rail 7.0
   = `INT_D` 48.2; + `T` 1.8 = `D` 50.0.
 - Bay closes: 3.0 + 45.3 + 6 + 21.8 + 6 + 32.0 + 6 + 21.8 + 3.1 = `BAY_W` 145.0.
