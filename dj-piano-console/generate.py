@@ -95,6 +95,14 @@ WELL_WALL_H = Z_TOP_UNDER - Z_DRW_TOP     # 7.8: well side walls reach the floor
 Z_FRONT_TOP = Z_WELL_FLOOR if VARIANT == 2 else Z_DRW_TOP    # top edge of the drawer fronts and the niche door
 FRONT_H = Z_FRONT_TOP - Z_FIX_TOP         # 11.0 in v2 on a 9.2 box; = DRW_H (15.2) in v1
 BOOK_D = INT_D - BOOK_SETBACK             # 33.2 in both: v1 43.2 - 10.0, v2 48.2 - 15.0
+# Shelf-pin rows are set out from the book compartment's own front and back faces, never from the
+# carcass front: the compartment starts BOOK_SETBACK back, so on the bay side walls (which do run
+# to the front face) the front row lands BOOK_SETBACK further back than the inset alone implies.
+PIN_PITCH = 3.2                           # 32 mm system hole pitch
+PIN_INSET = 3.7                           # 37 mm in from each face of the compartment
+PIN_ROW_FRONT = BOOK_SETBACK + PIN_INSET  # from the console's front face: v1 13.7, v2 18.7
+PIN_ROW_BACK = INT_D - PIN_INSET          # from the console's front face: v1 39.5, v2 44.5
+PIN_ROW_GAP = PIN_ROW_BACK - PIN_ROW_FRONT  # 25.8 in both variants
 # The niche door is the one flush-inset face that is not gapped evenly: the bottom edge gives up
 # a whole centimetre to the vent the strip and bricks breathe through, so it loses NICHE_VENT + GAP
 # off the opening, not 2 * GAP like the drawer fronts beside it.
@@ -696,7 +704,7 @@ HARDWARE_ROWS = [
      "Full-extension undermount with soft close, 400 mm, 40 kg class. Blum Movento 760H4000S with Blumotion, or Hettich Actro 5D."
      if VARIANT == 1 else
      f"Full-extension undermount with soft close, {_RUNNER_NL:g} mm, 40 kg class: Blum Movento 760H4500S with Blumotion, or Hettich Actro 5D {_RUNNER_NL:g} mm. Not the 400 mm pair used in v1 — an undermount runner is matched to its box, and a {_RUNNER_NL / 10:g} cm box will not engage a 400 mm runner. Confirmed against the interior: a {_RUNNER_NL:g} mm runner wants about {_RUNNER_MIN_D:g} mm of clear depth and the bay gives {INT_D * 10:g} mm, so it fits with about {INT_D * 10 - _RUNNER_MIN_D:g} mm to spare."),
-    (BOTH, "Shelf pins", "8", "5 mm steel, for two adjustable shelves. Drill 32 mm pitch, 37 mm from front and rear edges."),
+    (BOTH, "Shelf pins", "8", f"5 mm steel, two adjustable shelves. {PIN_PITCH * 10:g} mm pitch; rows {PIN_ROW_FRONT:g} and {PIN_ROW_BACK:g} cm back from the console face, {PIN_INSET * 10:g} mm in from the compartment's faces."),
     (BOTH, "Levelling feet", "8", "M8 adjustable glides, 15 to 25 mm, two per wing side panel, hidden behind the plinth boards."),
     (BOTH, "Anti-tip brackets", "2",
      "One per wing, concealed, fixed to the wall. Recommended: the wings are 130 cm tall with speakers on top."
@@ -855,7 +863,7 @@ def build_html(svgs, render_path=None):
         (f"Power niche: cut the back panel away behind it ({NICHE_W:g} × {NICHE_CUT_H_EFF:g} cm at {NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H_EFF:g}) so niche and chase are one space. Door on concealed hinges with a push latch, {NICHE_DOOR_H:g} cm tall in the {FRONT_H:g} cm opening so a {NICHE_VENT:g} cm gap is left at the bottom for air. The strip lies on the mid panel with sockets up; leads from the slot and from the keyboard arrive through the chase. Optional: a 6 × 4 cm hole through each divider at the rear, with a matching notch in the drawer side, lets a lead from the strip charge headphones or a phone inside the drawers; leave a 45 cm loop for the drawer travel. Bricks stay in the niche."
          if VARIANT == 1 else
          f"Power niche: {NICHE_W:g} × {DRW_H:g}, its rear {INT_D - _NICHE_REAR_Y0:g} cm opening upward into the trough rather than rearward into a chase. Door on concealed hinges with a push latch, {NICHE_DOOR_H:g} cm tall in the {FRONT_H:g} cm opening so a {NICHE_VENT:g} cm gap is left at the bottom edge for air. The strip lies flat on the niche floor with sockets up. Stand the bricks on the floor beside it, toward the rear of the niche, y {_NICHE_REAR_Y0:g} to {INT_D:g} from the front: past that line the well floors have stopped and the open trough runs overhead, so the headroom there is {_NICHE_REAR_H:g} cm, up to the back rail's underside at {Z_TOP_UNDER:g}, and brick height is not a constraint. What matters is that nothing is stacked on the strip — strip plus brick is about {_STRIP_H + _BRICK_H:g} cm, topping out at {_STACK_TOP:g}, which fouls a well floor at the front of the niche and blocks the trough at the rear — and that the trough stays clear as the route for the mains lead out through the back-panel cutout ({NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H_EFF:g}, x {NICHE_X:g} to {NICHE_X + NICHE_W:g}), which runs out at the panel's top edge and hands over to the trough's own open rear. Height is only critical for a brick pushed to the front of the niche instead, under a well floor: {_NICHE_FRONT_H:g} cm of headroom there, which an {_BRICK_H:g} cm brick clears by {_BRICK_FRONT_MM:g} mm."),
-        "Adjustable shelves on 5 mm pins, holes at 32 mm pitch. Finish the underside of the tray: it is the ceiling of the book compartments.",
+        f"Adjustable shelves on 5 mm pins, holes at {PIN_PITCH * 10:g} mm pitch. Set the two rows out from the book compartment's own front and back faces, {PIN_INSET * 10:g} mm in from each, not from the front of the carcass: the compartment starts {BOOK_SETBACK:g} cm back, so the rows fall {PIN_ROW_FRONT:g} and {PIN_ROW_BACK:g} cm behind the console's front face, {PIN_ROW_GAP:g} cm apart. Finish the underside of the tray: it is the ceiling of the book compartments.",
         ("Level on the eight feet so the tray runs true, then fix each wing to the wall with a concealed anti-tip bracket"
          + ("." if VARIANT == 1 else f", packed out to {WALL_GAP:g} cm so the bracket holds the wall gap open instead of pulling the console flush.")),
     ]

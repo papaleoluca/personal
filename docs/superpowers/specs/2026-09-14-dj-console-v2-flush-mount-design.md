@@ -213,6 +213,19 @@ compartment lands at 48.2 - 15.0 = 33.2 deep, and a 31.4 cm LP sleeve fits with 
 to spare. v1.6 could not take this change: at 43.2 interior a 15 cm setback leaves
 28.2 and LPs stop fitting. **v2 only** — whether to revisit v1 is deferred.
 
+**Update, 2026-09-16 — no longer deferred; v1.7 has a setback too.** v1 took the same
+fix at a smaller figure: **10.0 cm** in v1.7 against **15.0 cm** here, moving the same
+parts (bay bottom panel, book divider, both adjustable shelves) and leaving 11.0 cm at
+the 21.8 pinch instead of 1.0.
+
+The two figures differ because the interiors do, and the binding constraint is the LP
+sleeve rather than the shin line. v1 keeps its 5 cm cable chase, so it has 43.2 inside
+and 15.0 would leave 28.2 — below the 31.4 an LP needs, which is exactly the objection
+recorded above. 10.0 is the most it can give up: 43.2 - 10.0 = 33.2. v2 bought the
+missing 5 cm by moving its back panel to the rear face, so 48.2 - 15.0 = 33.2 clears
+with the same 1.8 to spare. Both versions therefore land on an identical 33.2 cm
+compartment by different routes, and each is set back as far as its own interior allows.
+
 ### Consequence: no dust covers
 
 v1 lists the turntable at 45.3 x 35.3 x **16.2** — that height includes the dust
@@ -257,6 +270,12 @@ already mirrors v1's by hand. The README's regenerate block gains the v2 command
   drawings are deterministic); the HTML and PDF will differ by the `date.today()`
   stamp at `generate.py:436` and by Chrome's own PDF metadata, so those are
   compared by eye, not by hash.
+  *Update, 2026-09-16:* `dj-piano-console/check-regen.sh` now does this instead of a
+  person doing it: it regenerates both variants and both concept renders into a temp
+  directory and compares all thirteen artefacts by sha256, normalising the date stamp
+  in the two HTML specs. `render-cg.html` is seeded as well now, so the PNGs are in
+  the check too. Only the PDFs are still read by eye — Chrome's creation-date metadata
+  makes them unhashable, and reading them is the point anyway.
 - v2 PDF opened and read end to end against v1 before it goes to the carpenter.
 
 ## Testing
