@@ -1,7 +1,7 @@
 <!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#f3f1ec;overflow:hidden}canvas{display:block}</style></head><body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-const V = new URLSearchParams(location.search).get('v') === '2' ? 2 : 1; // v2: flush-mounted gear, thicker apparent top, shallower drawer band, book zone set back
+const V = new URLSearchParams(location.search).get('v') === '2' ? 2 : 1; // v2: flush-mounted gear, thicker apparent top, shallower drawer band, book zone set back 15 (v1.7 sets it back 10)
 const WALL_GAP = V===2?5.0:0; // v2 stands off the wall so the open trough can vent [0]
 const W=1600,H=1200;let OX=0; // x offset (cm) applied by box()/cyl(), used to shift the bay parts
 const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
@@ -42,8 +42,8 @@ const WELL_DROP=9.0, Z_WELL_FLOOR=100-WELL_DROP;                     // 91.0
 const GEAR_Y=V===2?5.0:2.0, GDZ=GEAR_Y-2.0;                          // front rail depth [2.0]; GDZ shifts every gear z by the same amount
 const BACK_INSET=V===2?0:5, Y_BACK1=D-BACK_INSET, Y_BACK0=Y_BACK1-T; // back panel depth [43.2 -> 45.0], now [48.2 -> 50.0]
 const Z_BACK_TOP=V===2?Z_WELL_FLOOR:97;                              // back panel stops at the trough so its rear face is open [97 -> 91]
-const BOOK_SETBACK=V===2?15.0:0, BOOK_D=Y_BACK0-BOOK_SETBACK;        // book zone set back [0.0], compartment depth [43.2 -> 33.2]
-const SHELF_D=V===2?BOOK_D-1.0:40;                                   // shelf depth, shallower and set back with the book zone in v2
+const BOOK_SETBACK=V===2?15.0:10.0, BOOK_D=Y_BACK0-BOOK_SETBACK;     // book zone set back [10.0 in v1.7, 15.0 in v2], compartment depth 33.2 in both
+const SHELF_D=BOOK_D-1.0;                                            // shelf depth, shallower and set back with the book zone in both
 const Z_FIX_TOP=V===2?80.0:81.8;                                     // fixed mid panel top face: drops 18 mm so the well floor gets its own band [81.8 -> 80.0]
 const DRW_H=V===2?(Z_WELL_FLOOR-T-Z_FIX_TOP):15.2, DRW_Y=Z_FIX_TOP+DRW_H/2, DRW_TOP=Z_FIX_TOP+DRW_H; // drawer band [15.2 -> 9.2], ceiling = the well floor's underside [97 -> 89.2]
 const FRONT_H=V===2?(Z_WELL_FLOOR-Z_FIX_TOP):DRW_H, FRONT_TOP=Z_FIX_TOP+FRONT_H, FRONT_Y=Z_FIX_TOP+FRONT_H/2, DRW_FRONT_H=FRONT_H-0.4; // fronts overhang their boxes up to the fascia [15.2 -> 11.0]
@@ -69,10 +69,10 @@ for(const x0 of [0,W_-WING]){
 }
 OX=BAY0-14.5; // bay parts below were laid out for a 14.5 wing; shift them
 // bay carcass
-box(145,T,Y_BACK1-BOOK_SETBACK,87,20.9,-(BOOK_SETBACK+Y_BACK1)/2,oakH);            // bottom panel: set back with the book zone in v2
+box(145,T,Y_BACK1-BOOK_SETBACK,87,20.9,-(BOOK_SETBACK+Y_BACK1)/2,oakH);            // bottom panel: set back with the book zone
 box(145,Z_BACK_TOP-21.8,T,87,(21.8+Z_BACK_TOP)/2,-(Y_BACK0+Y_BACK1)/2,oakH);       // back panel: flush with the rear face in v2, and stopping at the trough
-box(T,38.9,BOOK_D,87,41.25,-(BOOK_SETBACK+BOOK_D/2),oakV);                         // book zone divider: set back in v2
-box(71.4,T,SHELF_D,123.7,42.2,-(BOOK_SETBACK+1.0+SHELF_D/2),oakH);                 // shelf: set back in v2
+box(T,38.9,BOOK_D,87,41.25,-(BOOK_SETBACK+BOOK_D/2),oakV);                         // book zone divider: set back with the book zone
+box(71.4,T,SHELF_D,123.7,42.2,-(BOOK_SETBACK+1.0+SHELF_D/2),oakH);                 // shelf: set back with the book zone
 box(145,T,Y_BACK0,87,Z_FIX_TOP-T/2,-Y_BACK0/2,oakH);                               // fixed mid panel: full depth, not affected by the book setback
 // tray + slides + aprons
 box(137.6,T,42,87,62.1,-21,oakH);

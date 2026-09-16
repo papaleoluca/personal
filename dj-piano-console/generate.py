@@ -66,7 +66,8 @@ FASCIA_H = Z_TOP_UNDER - Z_WELL_FLOOR     # 6.0 -> apparent slab TT + FASCIA_H =
 WELL_CLEAR = 0.2                          # cut-out clearance per side
 WELL_CLEAT = 1.4                          # well floor cleat: 20 wide x 14 high, two per well, front to back
 WELL_SLOT_W = 12.0                        # cable notch in each player well's rear wall
-BOOK_SETBACK = 0.0                        # v1: book zone flush with the front plane
+BOOK_SETBACK = 10.0                       # v1.7: seated shin clearance. 15 (v2) would leave 28.2 and lose the LP
+                                          # sleeve, because v1 keeps the 5 cm chase and so only has 43.2 inside
 WALL_GAP = 0.0                            # v1: back panel inset 5, so the piece can stand against the wall
 if VARIANT == 2:
     GEAR_Y = 5.0                          # front rail, was 2.0
@@ -88,7 +89,7 @@ WELL_WALL_H = Z_TOP_UNDER - Z_DRW_TOP     # 7.8: well side walls reach the floor
 # well floors start GEAR_Y back from the front plane, so the band from 89.2 to 91 is empty at the face.
 Z_FRONT_TOP = Z_WELL_FLOOR if VARIANT == 2 else Z_DRW_TOP    # top edge of the drawer fronts and the niche door
 FRONT_H = Z_FRONT_TOP - Z_FIX_TOP         # 11.0 in v2 on a 9.2 box; = DRW_H (15.2) in v1
-BOOK_D = INT_D - BOOK_SETBACK             # 33.2 in v2, 43.2 in v1
+BOOK_D = INT_D - BOOK_SETBACK             # 33.2 in both: v1 43.2 - 10.0, v2 48.2 - 15.0
 NICHE_CUT_H_EFF = min(NICHE_CUT_H, Z_BACK_TOP - NICHE_CUT_Z0)   # v2: the panel's top edge at 91 clips the 12 cm cutout to 8
 
 def gear_positions():
@@ -137,6 +138,13 @@ if VARIANT == 2:
     assert WELL_SLOT_W < min(w[2] for w in well_positions())    # the cable notch fits even the narrowest rear wall
     assert WALL_GAP > 0 and _eq(WALL_GAP, 5.0)            # the trough vents only through the wall gap, so it is drawn and dimensioned
     assert _eq(NICHE_CUT_H_EFF, 8.0)                      # the niche cutout runs out at the back panel's top edge
+
+if VARIANT == 1:
+    # book zone setback (v1.7): the shin line crosses the compartment floor plane at y = -1.0,
+    # so a 10.0 setback takes the clearance at that pinch from 1.0 to 11.0
+    assert _eq(BOOK_SETBACK, 10.0) and _eq(BOOK_D, 33.2)
+    assert BOOK_D >= 31.4                                 # a 12" LP sleeve still fits, with 1.8 to spare
+    assert _eq(INT_D, 43.2) and _eq(BACK_INSET, 5.0)       # nothing else moved: v1 keeps its 5 cm chase, so 43.2 inside
 
 OAK, OAK2, OAKE = "#EAD9B9", "#D6BE94", "#7A5F32"
 VOID, GEARC, INK, DIMC, GHOST = "#F8F5EE", "#3B3B3B", "#1E1E1E", "#1C5BBF", "#9A9A9A"
@@ -247,7 +255,7 @@ def front_elevation():
         d.rect(cx, Z_CAP_UNDER, CAP_W, TT)
         speaker(d, cx + (CAP_W - SPK_W) / 2, H_WING, SPK_W, SPK_H)
     # bay carcass
-    if VARIANT == 1:
+    if not BOOK_SETBACK:
         d.rect(X_BAY0, RECESS_H, BAY_W, T)
     else:
         d.rect(X_BAY0, RECESS_H, BAY_W, T, fill="#EFE9DC", stroke=GHOST, sw=0.8, dash="4,3")
@@ -367,10 +375,10 @@ def side_section():
         d.rect(GEAR_Y, Z_DRW_TOP, xone[4] - GEAR_Y, T, fill=OAK2)      # well floor 18 mm, top face at 91 (detail B)
         d.text((xone[4] + Y_BACK0) / 2 + 0.3, Z_WELL_FLOOR + 4.3, "trough", size=7, fill=NOTE)
     # books
-    d.rect(BOOK_SETBACK + 1.0, Z_BOT_TOP + SHELF_UP, (BOOK_D - 1.0) if VARIANT == 2 else 40.0, T)
+    d.rect(BOOK_SETBACK + 1.0, Z_BOT_TOP + SHELF_UP, BOOK_D - 1.0, T)
     d.rect(BOOK_SETBACK + 1.5, Z_BOT_TOP, 22, 17, fill="#A67C52", stroke="none")
     d.rect(BOOK_SETBACK + 1.5, Z_BOT_TOP + SHELF_UP + T, 20, 15.5, fill="#6E8B74", stroke="none")
-    if VARIANT == 2:
+    if BOOK_SETBACK:
         d.dim_h(0, BOOK_SETBACK, 24.5, f"{BOOK_SETBACK:g} setback", ext=Z_BOT_TOP, above=False)
     # tray stowed + slide + apron
     d.rect(0, Z_TRAY_UNDER, TRAY_D, TRAY_T)
@@ -603,7 +611,7 @@ def parts_rows():
     rows += [
         ("Bay", "Bay bottom panel", 1, f"{BAY_W:g} × {Y_BACK1 - BOOK_SETBACK:g}", 18, "Oak-veneered ply, front edge lipped",
          "Top face at 21.8 cm. Carries the books; stiffened by the divider and the back panel, no rail underneath."
-         if VARIANT == 1 else
+         if not BOOK_SETBACK else
          f"Top face at 21.8 cm. Front edge set back {BOOK_SETBACK:g} cm from the front plane for shin clearance; the recess is therefore open from the floor to the tray underside across that {BOOK_SETBACK:g} cm. Carries the books; stiffened by the divider and the back panel, no rail underneath."),
         ("Bay", "Fixed mid panel", 1, f"{BAY_W:g} × {INT_D:g}", 18, "Oak-veneered ply, front edge lipped", f"Top face at {Z_FIX_TOP:g} cm. Ceiling of the keyboard slot, floor of the drawer band."),
         ("Bay", "Bay back panel", 1, f"{BAY_W:g} × {Z_BACK_TOP - Z_BOT_TOP:g}", 18, "Oak-veneered ply",
@@ -619,7 +627,7 @@ def parts_rows():
          "Flush inset, concealed hinges, push-to-open latch, 1 cm vent gap at the bottom edge."
          if VARIANT == 1 else
          f"Flush inset, concealed hinges, push-to-open latch, 1 cm vent gap at the bottom edge. {FRONT_H:g} cm like the drawer fronts, {T*10:g} mm taller than its opening, so the face closes up to the fascia at {Z_WELL_FLOOR:g}."),
-        ("Bay", "Adjustable shelf", 2, f"{OPEN_W - 0.2:g} × 40" if VARIANT == 1 else f"{OPEN_W - 0.2:g} × {BOOK_D - 1.0:g}", 18, "Oak-veneered ply, front edge lipped", "One per book compartment, on 5 mm pins."),
+        ("Bay", "Adjustable shelf", 2, f"{OPEN_W - 0.2:g} × {BOOK_D - 1.0:g}", 18, "Oak-veneered ply, front edge lipped", "One per book compartment, on 5 mm pins."),
         ("Bay", "Drawer front", 2, f"{DRW_W - 0.4:g} × {FRONT_H - 0.4:g}", 18, "Solid oak (grain running across both fronts)",
          "Flush inset, 2 mm gaps, finger pull routed under the top edge."
          if VARIANT == 1 else
@@ -687,7 +695,7 @@ def table(headers, rows):
 
 def build_html(svgs, render_path=None):
     today = datetime.date.today().strftime("%d %B %Y")
-    version_line = "Version 1.6" if VARIANT == 1 else "Version 2.0 — flush-mounted gear"
+    version_line = "Version 1.7" if VARIANT == 1 else "Version 2.0 — flush-mounted gear"
     gear_rows, gear_head = [], ["Device", "W × D × H (cm)", "Position from left wing inner face (cm)"]
     if VARIANT == 2:
         gear_head = ["Device", "W × D × H overall (cm)", f"Height below the faceplate (cm), must fit {WELL_DROP:g}",
@@ -715,12 +723,12 @@ def build_html(svgs, render_path=None):
         ("Keyboard slot", f"63 to {Z_CAV_TOP:g}", f"Pull-out tray, top face at 63 cm, 40 cm extension on heavy-duty slides. Keyboard 133 × 35 × 12 stowed inside, {Z_CAV_TOP - (Z_TRAY_TOP + KB_H):g} cm air above it."),
         ("Book compartments", "21.8 to 61.2",
          ("Two openings 71.6 wide × 39.4 tall × 43.2 deep, one adjustable shelf each. Tall enough for LPs and art books."
-          if VARIANT == 1 else
+          if not BOOK_SETBACK else
           f"Two openings 71.6 wide × 39.4 tall × {BOOK_D:g} deep, one adjustable shelf each. Front plane set back {BOOK_SETBACK:g} cm from the console face for seated shin clearance. Still takes a 31.4 cm LP sleeve, with 1.8 cm to spare.")),
         ("Recess",
-         "0 to 20" if VARIANT == 1 else "0 to 20 (to 61.2 at the front)",
+         "0 to 20" if not BOOK_SETBACK else "0 to 20 (to 61.2 at the front)",
          ("Open across the whole bay and through to the wall: sustain pedal and feet when seated, toe space when standing."
-          if VARIANT == 1 else
+          if not BOOK_SETBACK else
           f"Open across the whole bay and through to the wall: sustain pedal and feet when seated, toe space when standing. The front {BOOK_SETBACK:g} cm stands open right up to the tray underside, so the shins clear the shelving.")),
         ("Wing columns", "7.8 to 127", f"Three openings per wing, {WING_INT_W:g} wide × 38.5 tall × 48.2 deep, records spine-out, about {REC_PER} per opening at 6 mm each, about {REC_TOTAL} in total."),
     ]
@@ -773,9 +781,14 @@ def build_html(svgs, render_path=None):
     ]
     if VARIANT == 2:
         key.insert(6, ("Wall gap", f"{WALL_GAP:g} behind the back panel, mandatory: the panel stops at {Z_BACK_TOP:g} and the trough's whole rear is open, venting into that gap. Allow {D + WALL_GAP:g} of floor depth, not {D:g}. Dimensioned on the section and the plan."))
+    _shin_note = ""
+    if BOOK_SETBACK:
+        _shin_note = (f" The book zone is set back {BOOK_SETBACK:g} cm from the front plane, so the shins clear it; in v1 they passed within about 1 cm of the bottom panel's front edge."
+                      if VARIANT == 2 else
+                      f" The book zone is set back {BOOK_SETBACK:g} cm from the front plane, so the shins clear it: a seated player's shins cross the height of the bay bottom panel, {Z_BOT_TOP:g} cm, about 1 cm in front of where its edge used to stand, so the clearance at that pinch goes from about 1 cm to about {BOOK_SETBACK + 1:g}.")
     ergo = [
         ("Seated at the keyboard: tray at 63 cm puts the key tops at about 74 cm, the same as an acoustic piano. Clear height under the tray is 61.2 cm; use a stool of 44 to 46 cm. The tray extends 40 cm so the knees sit under the tray and the feet and pedal go into the 20 cm recess. Nothing projects below the tray at the front."
-         + ("" if VARIANT == 1 else f" The book zone is set back {BOOK_SETBACK:g} cm from the front plane, so the shins clear it; in v1 they passed within about 1 cm of the bottom panel's front edge.")),
+         + _shin_note),
         ("Standing at the decks: surface at 100 cm, mixer faders at about 111 cm. Toes go under the floating bay."
          if VARIANT == 1 else
          "Standing at the decks: surface at 100 cm, every faceplate flush with it. Toes go under the floating bay. Reaching into a well for a rear socket means lifting the unit out by its finger notches."),
@@ -791,7 +804,7 @@ def build_html(svgs, render_path=None):
          f"Tie the wings together with the bay panels: bottom (top face 21.8), fixed mid panel (top face {Z_FIX_TOP:g}), top ({Z_WELL_FLOOR:g} to {H_TOP:g}) and the back panel. Dowels and glue at visible joints; concealed confirmats behind the drawers and the tray where they will not be seen."),
         "The bay bottom spans 145 cm with no leg. The book divider is glued and screwed along its full length to the bottom and back panels, and the back panel is glued along the rear edge: together they act as the stiffeners. Do not add a rail under the front edge; the recess must stay 20 cm clear.",
     ]
-    if VARIANT == 2:
+    if BOOK_SETBACK:
         build.append(f"Set the bay bottom panel, the book divider and both adjustable shelves back {BOOK_SETBACK:g} cm from the front plane. The panel's front edge is unsupported and unlipped at {Z_BOT_TOP:g}; lip it and ease it, it is at shin height.")
     build += [
         ("The bay back panel is inset 5 cm to form the cable chase. It is open at the bottom into the recess and closed at the sides by the wing panels and at the top by the top. The wing back panels are flush with the rear edge."
