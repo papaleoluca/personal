@@ -1,6 +1,12 @@
 <!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#f3f1ec;overflow:hidden}canvas{display:block}</style></head><body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+// Deterministic PRNG (mulberry32) seeded from a constant, so repeated renders of the same
+// variant are byte-identical instead of reshuffling every book/record colour and wood-grain
+// pixel on each screenshot. Same seed feeds both variants so they stay visually comparable
+// to each other, exactly like the two SVG sets.
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rand=mulberry32(0xC0FFEE);
 const V = new URLSearchParams(location.search).get('v') === '2' ? 2 : 1; // v2: flush-mounted gear, thicker apparent top, shallower drawer band, book zone set back 15 (v1.7 sets it back 10)
 const WALL_GAP = V===2?5.0:0; // v2 stands off the wall so the open trough can vent [0]
 const W=1600,H=1200;let OX=0; // x offset (cm) applied by box()/cyl(), used to shift the bay parts
@@ -18,8 +24,8 @@ sun.castShadow=true;sun.shadow.mapSize.set(4096,4096);const sc=sun.shadow.camera
 const fill=new THREE.DirectionalLight(0xe6eeff,0.4);fill.position.set(3.5,2.2,3);scene.add(fill);
 const rim=new THREE.DirectionalLight(0xffffff,0.25);rim.position.set(0.9,3,-3);scene.add(rim);
 function woodTex(vertical,base,streakDark,streakLight){const c=document.createElement('canvas');c.width=1024;c.height=1024;const g=c.getContext('2d');g.fillStyle=base;g.fillRect(0,0,1024,1024);
- for(let i=0;i<520;i++){const y=Math.random()*1024;const w=0.8+Math.random()*3.2;const a=0.05+Math.random()*0.2;g.strokeStyle=(Math.random()<0.5?streakDark:streakLight).replace('A',a.toFixed(2));g.lineWidth=w;g.beginPath();g.moveTo(-60,y);for(let x=0;x<=1100;x+=40){g.lineTo(x,y+Math.sin(x/160+i)*5+(Math.random()-0.5)*1.5);}g.stroke();}
- const id=g.getImageData(0,0,1024,1024);const d=id.data;for(let i=0;i<d.length;i+=4){const n=(Math.random()-0.5)*9;d[i]+=n;d[i+1]+=n;d[i+2]+=n;}g.putImageData(id,0,0);
+ for(let i=0;i<520;i++){const y=rand()*1024;const w=0.8+rand()*3.2;const a=0.05+rand()*0.2;g.strokeStyle=(rand()<0.5?streakDark:streakLight).replace('A',a.toFixed(2));g.lineWidth=w;g.beginPath();g.moveTo(-60,y);for(let x=0;x<=1100;x+=40){g.lineTo(x,y+Math.sin(x/160+i)*5+(rand()-0.5)*1.5);}g.stroke();}
+ const id=g.getImageData(0,0,1024,1024);const d=id.data;for(let i=0;i<d.length;i+=4){const n=(rand()-0.5)*9;d[i]+=n;d[i+1]+=n;d[i+2]+=n;}g.putImageData(id,0,0);
  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.encoding=THREE.sRGBEncoding;t.anisotropy=8;if(vertical){t.center.set(0.5,0.5);t.rotation=Math.PI/2;}return t;}
 const oakH=new THREE.MeshStandardMaterial({map:woodTex(false,'#dcbf92','rgba(170,132,82,A)','rgba(240,222,190,A)'),roughness:0.7});
 const oakV=new THREE.MeshStandardMaterial({map:woodTex(true,'#dcbf92','rgba(170,132,82,A)','rgba(240,222,190,A)'),roughness:0.7});
@@ -31,7 +37,7 @@ const grey=new THREE.MeshStandardMaterial({color:0x8a8a8a,roughness:0.5});
 function box(w,h,d,x,y,z,m){const mesh=new THREE.Mesh(new THREE.BoxGeometry(w/100,h/100,d/100),m);mesh.position.set((x+OX)/100,y/100,z/100);mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);return mesh;}
 function cyl(r,h,x,y,z,m,axisZ){const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r/100,r/100,h/100,48),m);if(axisZ)mesh.rotation.x=Math.PI/2;mesh.position.set((x+OX)/100,y/100,z/100);mesh.castShadow=true;mesh.receiveShadow=true;scene.add(mesh);return mesh;}
 // room
-const floorTex=(()=>{const c=document.createElement('canvas');c.width=1024;c.height=1024;const g=c.getContext('2d');g.fillStyle='#e9dfcd';g.fillRect(0,0,1024,1024);for(let i=0;i<300;i++){const y=Math.random()*1024;g.strokeStyle=`rgba(200,180,150,${(0.04+Math.random()*0.1).toFixed(2)})`;g.lineWidth=1+Math.random()*2;g.beginPath();g.moveTo(0,y);g.lineTo(1024,y+(Math.random()-0.5)*6);g.stroke();}for(let y=0;y<1024;y+=128){g.strokeStyle='rgba(150,125,95,0.35)';g.lineWidth=2;g.beginPath();g.moveTo(0,y);g.lineTo(1024,y);g.stroke();}const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(4,4);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;return t;})();
+const floorTex=(()=>{const c=document.createElement('canvas');c.width=1024;c.height=1024;const g=c.getContext('2d');g.fillStyle='#e9dfcd';g.fillRect(0,0,1024,1024);for(let i=0;i<300;i++){const y=rand()*1024;g.strokeStyle=`rgba(200,180,150,${(0.04+rand()*0.1).toFixed(2)})`;g.lineWidth=1+rand()*2;g.beginPath();g.moveTo(0,y);g.lineTo(1024,y+(rand()-0.5)*6);g.stroke();}for(let y=0;y<1024;y+=128){g.strokeStyle='rgba(150,125,95,0.35)';g.lineWidth=2;g.beginPath();g.moveTo(0,y);g.lineTo(1024,y);g.stroke();}const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(4,4);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;return t;})();
 const floor=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.MeshStandardMaterial({map:floorTex,roughness:0.6}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
 const wall=new THREE.Mesh(new THREE.PlaneGeometry(14,5),new THREE.MeshStandardMaterial({color:0xf5f3ef,roughness:0.95}));wall.position.set(0.925,2.5,-0.5-WALL_GAP/100);wall.receiveShadow=true;scene.add(wall);
 box(1400,8,1.2,92.5,4,-49.4-WALL_GAP,white); // skirting: moves back with the wall, so the v2 gap is visible
@@ -51,7 +57,7 @@ const NOTCH=V===2?GEAR_Y:0;                                          // the divi
 const TOP_H=V===2?(100-Z_WELL_FLOOR):TT, TOP_Y=V===2?(Z_WELL_FLOOR+100)/2:98.5; // apparent slab [3 -> 9] thick
 function gh(trueH){return V===2?WELL_DROP:trueH;} // effective gear-body height: own height in v1, flush WELL_DROP in v2
 const recCols=[0x3b2f2f,0x6b4a3a,0xd9cbb3,0x2f3a4a,0xa3927a,0x8c2f2f,0x1f1f1f,0xc7b299,0x4a6b5a,0xe0d5c0,0x2f2f2f,0x7a5a8a,0x8a5a44,0x4a5a6a,0xbf8f3f,0x5a7a9a,0x222a33,0xd8a070];
-function records(x0,zBot,fillFrac){const n=Math.floor((WING-2*T-0.6)/0.6*fillFrac);for(let i=0;i<n;i++){const m=new THREE.MeshStandardMaterial({color:recCols[Math.floor(Math.random()*recCols.length)],roughness:0.85});const t=0.42+Math.random()*0.25;const set=Math.random()*2.5;box(t,31.3,31.3,x0+T+0.3+i*0.6,zBot+15.7,-1.5-set-15.65,m);}}
+function records(x0,zBot,fillFrac){const n=Math.floor((WING-2*T-0.6)/0.6*fillFrac);for(let i=0;i<n;i++){const m=new THREE.MeshStandardMaterial({color:recCols[Math.floor(rand()*recCols.length)],roughness:0.85});const t=0.42+rand()*0.25;const set=rand()*2.5;box(t,31.3,31.3,x0+T+0.3+i*0.6,zBot+15.7,-1.5-set-15.65,m);}}
 for(const x0 of [0,W_-WING]){
  box(T,127,D,x0+0.9,63.5,-25,oakV);box(T,127,D,x0+WING-0.9,63.5,-25,oakV);
  box(WING-2*T,119.2,T,x0+WING/2,67.4,-49.1,oakH);
@@ -122,7 +128,7 @@ box(32,gh(10.7),35.8,112.6,gearY+gh(10.7)/2,-19.9-GDZ,dark);for(let i=0;i<4;i++)
 box(21.8,gh(11.1),30.6,145.5,gearY+gh(11.1)/2,-17.3-GDZ,dark);box(15,0.4,9,145.5,gearY+gh(11.1)+0.2,-25-GDZ,new THREE.MeshStandardMaterial({color:0x4a6a8a,roughness:0.4,emissive:0x203040}));cyl(7,0.6,145.5,gearY+gh(11.1)+0.3,-9.5-GDZ,darker,false);
 // books
 const bookCols=[0x8a5a2b,0x3f6b4f,0x6b4a7a,0x2f4f6f,0xb59a4a,0x9a3a2a,0x333333,0xc98a4a,0xe8e0d0,0x223344,0x7a2f22,0x1f5f5f,0xd9c7a0,0x5a3a6a];
-function books(x0,x1,y0,hmin,hmax,seedShift){let x=x0;while(true){const w=1.4+Math.random()*3;const h=hmin+Math.random()*(hmax-hmin);if(x+w>x1)break;const d=14+Math.random()*8;box(w,h,d,x+w/2,y0+h/2,-(BOOK_SETBACK+2+Math.random()*3+d/2),new THREE.MeshStandardMaterial({color:bookCols[Math.floor(Math.random()*bookCols.length)],roughness:0.85}));x+=w+0.15;}}
+function books(x0,x1,y0,hmin,hmax,seedShift){let x=x0;while(true){const w=1.4+rand()*3;const h=hmin+rand()*(hmax-hmin);if(x+w>x1)break;const d=14+rand()*8;box(w,h,d,x+w/2,y0+h/2,-(BOOK_SETBACK+2+rand()*3+d/2),new THREE.MeshStandardMaterial({color:bookCols[Math.floor(rand()*bookCols.length)],roughness:0.85}));x+=w+0.15;}}
 books(17.5,62,21.8,21,31,1);
 // a couple of LPs leaning in the left compartment
 for(let i=0;i<3;i++){box(0.6,31.3,31.3,64+i*0.8,21.8+15.7,-(BOOK_SETBACK+4+15.65),new THREE.MeshStandardMaterial({color:recCols[i*3%recCols.length],roughness:0.85}));}
