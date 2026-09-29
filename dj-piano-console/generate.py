@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """DJ + piano console: SVG drawings and HTML/PDF spec generator. All dimensions in cm."""
-import os, html as H, random, datetime
+import os, html as H, random, datetime, math
 
 OUT = os.path.dirname(os.path.abspath(__file__))
 os.makedirs(OUT, exist_ok=True)
@@ -89,6 +89,7 @@ if VARIANT == 2:
 Z_DRW_TOP = Z_WELL_FLOOR - T if VARIANT == 2 else Z_TOP_UNDER
 Z_BACK_TOP = Z_WELL_FLOOR if VARIANT == 2 else Z_TOP_UNDER   # v2: back panel stops at the trough, opening its rear face
 WELL_WALL_H = Z_TOP_UNDER - Z_DRW_TOP     # 7.8: well side walls reach the floor's underside to carry the cleats
+FASCIA_D = GEAR_Y                         # v2: the fascia fills the front rail under the top board, as both sections draw it
 # v2: the well floor eats 18 mm off the drawer band, so the fronts are made taller than their boxes
 # and run up to the fascia's bottom edge at 91. Nothing else is available to close that strip: the
 # well floors start GEAR_Y back from the front plane, so the band from 89.2 to 91 is empty at the face.
@@ -641,7 +642,7 @@ def parts_rows():
         _well_dep = ", ".join(f"{n} {y1 - y0:g}" for n, x, w, y0, y1, fz in _wp)
         _well_wxd = ", ".join(f"{n} {w:g} × {y1 - y0:g}" for n, x, w, y0, y1, fz in _wp)
         rows += [
-            ("Bay", "Slab fascia", 1, f"{BAY_W:g} × {FASCIA_H:g}", 60, "Solid oak", f"Front face, returned on both ends. Bottom edge at {Z_WELL_FLOOR:g}, flush with the well floors. Makes the top read as a {TT + FASCIA_H:g} cm slab."),
+            ("Bay", "Slab fascia", 1, f"{BAY_W:g} × {FASCIA_H:g}", int(FASCIA_D * 10), "Solid oak", f"Front face, returned on both ends. Bottom edge at {Z_WELL_FLOOR:g}, flush with the well floors. Makes the top read as a {TT + FASCIA_H:g} cm slab."),
             ("Bay", "Well side wall", 8, f"{WELL_WALL_H:g} high, depth per well", 18, "Oak-veneered ply", f"Two per well, hung from the underside of the top board down to {Z_DRW_TOP:g}, the well floor's underside: the bottom {T*10:g} mm of each wall houses the floor and carries its cleat. Glued to the top board: this is what stiffens the webs between the wells. Depth per well: {_well_dep} cm. See the section on {dref('well')}."),
             ("Bay", "Well rear wall", 3, f"{FASCIA_H:g} high, width per well", 18, "Oak-veneered ply", f"One per player well only: the turntable and both XDJ-700s. Each is notched {WELL_SLOT_W:g} × {FASCIA_H:g} cm for cables — {WELL_SLOT_W:g} cm wide, centred on the well, cut from the well floor at {Z_WELL_FLOOR:g} clear up to the top board, so a plug passes without being lifted. The Xone:92's well has no rear wall at all: its whole rear face, {_xone_w:g} × {FASCIA_H:g} cm, stands open into the trough, which is how the mixer sheds its heat. Width per wall: {_well_wid} cm. See the section on {dref('well')}."),
             ("Bay", "Well floor", 4, "width × depth per well", 18, "Oak-veneered ply", f"Top face at {Z_WELL_FLOOR:g}, underside at {Z_DRW_TOP:g} — the ceiling of the drawer band. On adjustable cleats, slotted +/- 10 mm, so the flush line is set against the real units at fit-out. Width × depth per well: {_well_wxd} cm. See the section on {dref('well')}."),
@@ -658,7 +659,7 @@ def parts_rows():
          + f"Cutout {CUT_W:g} × {CUT_H:g} cm behind the tray at {CUT_Z0:g} to {CUT_Z0 + CUT_H:g} cm; cutout {NICHE_W:g} × {NICHE_CUT_H_EFF:g} cm behind the niche at {NICHE_CUT_Z0:g} to {NICHE_CUT_Z0 + NICHE_CUT_H_EFF:g} cm."
          + ("" if VARIANT == 1 else f" The niche cutout runs out at the panel's top edge, where the open trough takes over.")),
         ("Bay", "Book zone divider", 1, f"{BOOK_D:g} × {Z_TRAY_UNDER - Z_BOT_TOP - 0.5:g}", 18, "Oak-veneered ply, front edge lipped", "Centred. Glued and screwed to bottom and back panel along its length; 5 mm gap under the tray."),
-        ("Bay", "Drawer band divider", 2, f"{INT_D:g} × {DRW_H:g}", 18, "Oak-veneered ply, front edge lipped",
+        ("Bay", "Drawer band divider", 2, f"{INT_D:g} × {FRONT_H:g}", 18, "Oak-veneered ply, front edge lipped",   # the blank: v2 notches it down behind the front
          "Frame the 24 cm power niche. Optional 6 × 4 cm pass-through at the rear of each for a charging lead."
          if VARIANT == 1 else
          f"Frame the 24 cm power niche. Notched: the front {GEAR_Y:g} cm rises to {FRONT_H:g} cm with the fronts, closing the strip behind the gaps between them; behind that it drops to {DRW_H:g} cm to pass under the well floors. Optional 6 × 4 cm pass-through at the rear of each for a charging lead."),
@@ -681,6 +682,170 @@ def parts_rows():
         ("All", "Solid oak lipping", "~28 m", "5 × 18 mm", "", "Solid oak", "All exposed ply edges."),
     ]
     return rows
+
+# ---------------- cut list (v2) ----------------
+# The parts list is the assembly reference. The cut list is the same wood the way a supplier prices
+# it: every piece at its finished size, the per-well pieces spelled out, the drawer boxes broken into
+# panels, and a total per stock. cut_list_check() ties it back to the parts list, so the two cannot
+# drift apart.
+SHEET_L, SHEET_W = 250.0, 125.0                 # veneered ply sheet, face grain along SHEET_L
+KERF = 0.4                                      # panel-saw kerf
+LIPPING_M = 28                                  # m: the parts list's figure for every exposed ply edge
+_DBOX_T, _DBOX_H = 1.5, 7.0                     # drawer boxes: 15 mm birch ply, 7 cm sides (parts list)
+
+def _wells_by_unit():
+    """{unit: (wells, cut-out width, cut-out depth)} in bay order; the two XDJ-700 wells are one entry."""
+    out = {}
+    for n, x, w, y0, y1, fz in well_positions():
+        out[n] = (out.get(n, (0,))[0] + 1, w, y1 - y0)
+    return out
+
+def cut_list():
+    """{stock: [(part, qty, L, W, thk_mm, grain, note)]} at finished sizes, L × W in cm.
+
+    grain=True keeps L along the face grain: the pieces the spec gives a direction (vertical on the
+    wing panels, horizontal on the long panels). The others may turn to nest on the sheet.
+    """
+    wells = _wells_by_unit()
+    lip, grain = "Front edge lipped.", "Grain along L."
+    ply = [
+        ("Wing side panel", 4, Z_CAP_UNDER, D, 18, True, f"{grain} {lip}"),
+        ("Wing bottom shelf", 2, D - T, WING_INT_W, 18, False, ""),
+        ("Wing fixed shelf", 4, D - T, WING_INT_W, 18, False, lip),
+        ("Wing back panel", 2, WING_INT_H, WING_INT_W, 18, True, grain),
+        ("Bay bottom panel", 1, BAY_W, Y_BACK1 - BOOK_SETBACK, 18, True, f"{grain} {lip}"),
+        ("Fixed mid panel", 1, BAY_W, INT_D, 18, True, f"{grain} {lip}"),
+        ("Bay back panel", 1, BAY_W, Z_BACK_TOP - Z_BOT_TOP, 18, True, f"{grain} Two cutouts, see the parts list."),
+        ("Book zone divider", 1, BOOK_D, Z_TRAY_UNDER - Z_BOT_TOP - 0.5, 18, False, lip),
+        ("Drawer band divider", 2, INT_D, FRONT_H, 18, False, f"Notched down to {DRW_H:g} behind the front {GEAR_Y:g} cm. {lip}"),
+        ("Adjustable shelf", 2, OPEN_W - 0.2, BOOK_D - 1.0, 18, True, f"{grain} {lip}"),
+    ]
+    ply += [(f"Well side wall ({n})", 2 * k, d, WELL_WALL_H, 18, False, "") for n, (k, w, d) in wells.items()]
+    ply += [(f"Well rear wall ({n})", 2 * k, (w - WELL_SLOT_W) / 2, FASCIA_H, 18, False,
+             f"Two pieces per wall, either side of the {WELL_SLOT_W:g} cm cable notch.")
+            for n, (k, w, d) in wells.items() if n != "Xone:92"]
+    ply += [(f"Well floor ({n})", k, w, d, 18, False, "") for n, (k, w, d) in wells.items()]
+    ply.append(("Keyboard tray panel", 1, TRAY_PANEL_W, TRAY_D, 18, True, f"{grain} Both faces show. {lip}"))
+    oak = [
+        ("Top", 1, BAY_W, D, TT * 10, False, f"Four gear cut-outs, see {dref('plan')}. Glued up from boards, or 30 mm veneered board with 30 mm oak lipping."),
+        ("Speaker cap", 2, D, CAP_W, TT * 10, False, ""),
+        ("Slab fascia", 1, BAY_W, FASCIA_H, FASCIA_D * 10, False, f"Fills the {GEAR_Y:g} cm front rail under the top board, from {Z_WELL_FLOOR:g} to {Z_TOP_UNDER:g}. See {dref('well')}."),
+        ("Wing plinth board", 2, WING_INT_W, WING_PLINTH_H, 18, False, ""),
+        ("Drawer front", 2, DRW_W - 0.4, FRONT_H - 0.4, 18, False,
+         f"Cut both fronts and the niche door in sequence from one board at least {BAY_W:g} × {FRONT_H - 0.4:g}, so the grain runs on across all three."),
+        ("Power niche door", 1, NICHE_W - 2 * GAP, NICHE_DOOR_H, 18, False, "From the same board as the drawer fronts."),
+        ("Tray side apron", 2, TRAY_D, APRON_H, 18, False, ""),
+        ("Tray rear rail", 1, TRAY_PANEL_W, APRON_UP, 18, False, ""),
+    ]
+    oak += [(f"Well floor cleat ({n})", 2 * k, d, WELL_CLEAT, 20, False, "") for n, (k, w, d) in wells.items()]
+    box_w, box_d = DRW_W, _RUNNER_NL / 10       # nominal: as wide as the opening; the runner sets the real width
+    nominal = (f"Nominal, for pricing: drawn for a box the full {DRW_W:g} cm width of its opening. "
+               "The runner's instructions set the final width.")
+    birch = [
+        ("Drawer box side", 4, box_d, _DBOX_H, _DBOX_T * 10, False, ""),
+        ("Drawer box front and back", 4, box_w - 2 * _DBOX_T, _DBOX_H, _DBOX_T * 10, False, nominal),
+        ("Drawer box bottom", 2, box_w - 2 * _DBOX_T, box_d - 2 * _DBOX_T, 6, False, "Nominal, as above."),
+    ]
+    return {"ply": ply, "oak": oak, "birch": birch}
+
+def cut_list_check(cut):
+    """A part in both lists has one count, size and thickness; the per-well pieces add up to the parts list."""
+    parts = {r[1]: r for r in parts_rows()}
+    for part, qty, L, W, thk, grain, note in cut["ply"] + cut["oak"]:
+        if part in parts:
+            pq, psize, pthk = parts[part][2:5]
+            assert (pq, psize, pthk) == (qty, f"{L:g} × {W:g}", thk), (part, (pq, psize, pthk), (qty, L, W, thk))
+    def total(prefix): return sum(r[1] for r in cut["ply"] + cut["oak"] if r[0].startswith(prefix))
+    assert total("Well side wall") == parts["Well side wall"][2]
+    assert total("Well floor (") == parts["Well floor"][2]
+    assert total("Well floor cleat") == parts["Well floor cleat"][2]
+    assert total("Well rear wall") == 2 * parts["Well rear wall"][2]     # the full-height notch splits every wall
+
+def ply_sheets(pieces):
+    """(sheets a layout uses, the fewest any layout could use) for [(L, W, grain)] on SHEET_L × SHEET_W.
+
+    The layout packs strips cut across the sheet: one crosscut frees a strip, rips free its pieces,
+    so a panel saw can cut it as drawn. A grain piece keeps L along SHEET_L; the others may turn.
+    The floor: no two pieces longer than half a sheet fit end to end, so each sheet holds one strip
+    of them and their widths side by side need that many sheets; the area gives the other floor.
+    """
+    sheets = []                                 # [length left, [[strip length, width used]]]
+    def place(pl, pw):
+        for left, strips in sheets:
+            for st in strips:
+                if pl <= st[0] and st[1] + KERF + pw <= SHEET_W:
+                    st[1] += KERF + pw
+                    return True
+        for sh in sheets:
+            if sh[0] >= pl + KERF:
+                sh[0] -= pl + KERF; sh[1].append([pl, pw])
+                return True
+        return False
+    for L, W, grain in sorted(pieces, key=lambda p: -(p[0] if p[2] else max(p[0], p[1]))):
+        turns = [(L, W)] if grain else [(max(L, W), min(L, W)), (min(L, W), max(L, W))]
+        assert turns[0][0] <= SHEET_L and turns[0][1] <= SHEET_W
+        if not any(place(pl, pw) for pl, pw in turns):
+            sheets.append([SHEET_L - turns[0][0] - KERF, [list(turns[0])]])
+    long_w = sum(W for L, W, grain in pieces if grain and L > (SHEET_L - KERF) / 2)
+    floor = max(math.ceil(long_w / SHEET_W), math.ceil(sum(L * W for L, W, g in pieces) / (SHEET_L * SHEET_W)))
+    return len(sheets), floor
+
+def cut_totals(cut):
+    """(rows for the totals table, the sheet note, sheet count) from the cut list."""
+    ply, oak, birch = cut["ply"], cut["oak"], cut["birch"]
+    def pcs(rows): return sum(r[1] for r in rows)
+    def m2(rows): return sum(r[1] * r[2] * r[3] for r in rows) / 1e4
+    def thick(rows, t): return [r for r in rows if r[4] == t]
+    cleats = [r for r in oak if r[0].startswith("Well floor cleat")]
+    boards = [r for r in oak if r not in cleats]
+    sheets, floor = ply_sheets([(r[2], r[3], r[5]) for r in ply for _ in range(r[1])])
+    assert sheets == floor, (sheets, floor)     # the layout is as good as any: fewer sheets cannot exist
+    by_area = math.ceil(m2(ply) / (SHEET_L * SHEET_W / 1e4))
+    longs = [r for r in ply if r[5] and r[2] > (SHEET_L - KERF) / 2]
+    names = [r[0].lower() + ("s" if r[1] > 1 else "") for r in longs]
+    names = ", ".join(names[:-1]) + " and " + names[-1]
+    long_w = sum(r[1] * r[3] for r in longs)
+    fronts = f"{BAY_W:g} × {FRONT_H - 0.4:g}"
+    rows = [
+        ("Oak-veneered birch plywood, 18 mm, A/B crown-cut", pcs(ply), f"{m2(ply):.2f} m²",
+         f"{sheets} sheets of {SHEET_L:g} × {SHEET_W:g}, face grain along the {SHEET_L:g}. See the note below."),
+        ("Solid oak, 30 mm", pcs(thick(boards, 30)), f"{m2(thick(boards, 30)):.2f} m²", "Top and speaker caps, glued up from boards."),
+        ("Solid oak, 50 mm", pcs(thick(boards, 50)), f"{m2(thick(boards, 50)):.2f} m²", f"Slab fascia, one piece {BAY_W:g} × {FASCIA_H:g}."),
+        ("Solid oak, 18 mm", pcs(thick(boards, 18)), f"{m2(thick(boards, 18)):.2f} m²",
+         f"Drawer fronts, niche door, plinths, tray aprons and rail. The fronts and the door come from one board at least {fronts}."),
+        (f"Solid oak, 20 × {WELL_CLEAT * 10:g} mm", pcs(cleats), f"{sum(r[1] * r[2] for r in cleats) / 100:.1f} m", "Well floor cleats."),
+        ("Solid oak lipping, 5 × 18 mm", "", f"about {LIPPING_M} m", "All exposed ply edges."),
+        ("Birch plywood, 15 mm", pcs(thick(birch, 15)), f"{m2(thick(birch, 15)):.2f} m²", "Drawer box sides, fronts and backs, nominal."),
+        ("Birch plywood, 6 mm", pcs(thick(birch, 6)), f"{m2(thick(birch, 6)):.2f} m²", "Drawer box bottoms, nominal."),
+        ("Total", pcs(ply) + pcs(oak) + pcs(birch), "", "Pieces, plus the lipping."),
+    ]
+    note = (f"Why {sheets} sheets when {m2(ply):.2f} m² would fit on {by_area}: the grain sets the count, not the area. "
+            f"The {names} are each longer than half a sheet, so each runs along a sheet's {SHEET_L:g} cm length and no two fit end to end: every sheet takes one row of them. "
+            f"Side by side they need {long_w:g} cm, and {sheets - 1} sheets are only {(sheets - 1) * SHEET_W:g} cm wide. "
+            f"All {pcs(ply)} pieces fit on {sheets} sheets with {KERF * 10:g} mm saw kerfs.")
+    return rows, note, sheets
+
+def _cols(tbl, widths):
+    """Pin a table's column widths (%), so the cut list's tables line up one under another."""
+    return tbl.replace("<table>", "<table><colgroup>" + "".join(f'<col style="width:{w}%">' for w in widths) + "</colgroup>", 1)
+
+def cut_list_html():
+    cut = cut_list()
+    cut_list_check(cut)
+    totals, note, _sheets = cut_totals(cut)
+    head, widths = ["Part", "Qty", "L × W (cm)", "Thk (mm)", "Notes"], (24, 5, 12, 7, 52)
+    def rows(rs): return [(p, q, f"{L:g} × {W:g}", f"{t:g}", n) for p, q, L, W, t, g, n in rs]
+    lipping = ("Solid oak lipping", f"~{LIPPING_M} m", "1.8 wide", "5", "All exposed ply edges.")
+    return (f'<div class="page cut"><h2>Cut list for quoting</h2>'
+            f'<p class="muted">Every piece of wood at its finished size, grouped by the stock it is cut from, so a supplier or a carpenter can price the job without reading the drawings. '
+            f'Sizes in cm, L × W; thickness in mm. "Grain along L" marks the pieces whose grain direction the spec fixes; the rest may be turned to nest. '
+            f'No machining allowance or waste is included. The parts list stays the assembly reference.</p>'
+            f'<h3>Totals</h3>{_cols(table(["Stock", "Pieces", "Net quantity", "Notes"], totals), (30, 7, 13, 50))}'
+            f'<p class="muted">{H.escape(note)}</p>'
+            f'<h3>18 mm oak-veneered birch plywood</h3>{_cols(table(head, rows(cut["ply"])), widths)}'
+            f'<h3>Solid oak</h3>{_cols(table(head, rows(cut["oak"]) + [lipping]), widths)}'
+            f'<h3>Birch plywood, drawer boxes</h3>{_cols(table(head, rows(cut["birch"])), widths)}'
+            '</div>')
 
 _STRIP_H = 4.0                                  # typical power-strip height, cm
 _BRICK_H = 8.5                                  # typical wall-wart brick height, cm -- measure the actual units
@@ -798,6 +963,7 @@ def build_html(svgs, render_path=None):
     .kv td:first-child { font-weight: 600; width: 34%; }
     .parts table { font-size: 7.9pt; } .parts th, .parts td { padding: 1.5pt 4pt; }
     .parts th:nth-child(1) { width: 6%; } .parts th:nth-child(2) { width: 14%; } .parts th:nth-child(3) { width: 5%; } .parts th:nth-child(4) { width: 15%; } .parts th:nth-child(5) { width: 5%; } .parts th:nth-child(6) { width: 22%; }
+    .cut table { font-size: 7.9pt; } .cut th, .cut td { padding: 1.5pt 4pt; }
     h2, h3 { page-break-after: avoid; break-after: avoid; }
     tr { page-break-inside: avoid; break-inside: avoid; }
     .cols table { font-size: 8.2pt; } .cols th, .cols td { padding: 1.3pt 5pt; }
@@ -872,6 +1038,15 @@ def build_html(svgs, render_path=None):
         f"Record capacity: wings widened from 14.5 to {WING_W:g} cm on 14 September 2026 ({W:g} cm overall), about {REC_TOTAL} records at 6 mm per sleeve. Each book compartment holds about 110 more LPs if wanted.",
         f"Wall shelf for the speakers later: the caps can be left off and the wings capped at 100 cm, which turns the piece into a plain {W:g} × 100 box.",
     ]
+    cut_page, quantities = "", ("Quantities: about 7.5 m² of 18 mm oak-veneered birch ply (three 250 × 125 sheets with waste), about 1 m² of 30 mm solid oak for the top and caps, plus solid oak for aprons, rail, drawer fronts, plinths and lipping. The carpenter should re-check against their stock sizes.")
+    if VARIANT == 2:
+        cut = cut_list()
+        _rows, _note, sheets = cut_totals(cut)
+        ply_m2 = sum(r[1] * r[2] * r[3] for r in cut["ply"]) / 1e4
+        oak30_m2 = sum(r[1] * r[2] * r[3] for r in cut["oak"] if r[4] == TT * 10) / 1e4
+        quantities = (f"Quantities, from the cut list: {ply_m2:.2f} m² of 18 mm oak-veneered birch ply, which takes {sheets} sheets of {SHEET_L:g} × {SHEET_W:g} because of the grain, "
+                      f"{oak30_m2:.2f} m² of 30 mm solid oak for the top and caps, plus solid oak for the fascia, aprons, rail, drawer fronts, plinths, cleats and lipping. The carpenter should re-check against their stock sizes.")
+        cut_page = cut_list_html() + "\n"
     def _svg(key):
         return svgs[key].replace('<svg ', f'<svg style="height:{DRAWING_HEIGHT[key]}" ', 1)
     def _h2(key, top=False):
@@ -900,13 +1075,13 @@ def build_html(svgs, render_path=None):
 <div class="page parts"><h2>Parts list</h2>
 {table(["Group", "Part", "Qty", "Size L × W (cm)", "Thk (mm)", "Material", "Notes"], parts_rows())}
 </div>
-<div class="page"><h2>Hardware</h2>{table(["Item", "Qty", "Specification"], HARDWARE)}
+{cut_page}<div class="page"><h2>Hardware</h2>{table(["Item", "Qty", "Specification"], HARDWARE)}
 <h2 style="margin-top:12pt">Materials and finish</h2>
 <ul>
 <li>Carcass: 18 mm oak-veneered birch plywood, A/B crown-cut veneer, every exposed edge lipped with 5 mm solid oak. Grain vertical on the wing panels, horizontal on the long panels and continuous across the two drawer fronts.</li>
 <li>Top and speaker caps: 30 mm solid European oak from glued-up boards. If movement is a concern, 30 mm veneered blockboard with 30 mm solid oak lipping.</li>
 <li>Solid oak for the drawer fronts, tray aprons, rear rail and plinth boards.</li>
-<li>Quantities: about 7.5 m² of 18 mm oak-veneered birch ply (three 250 × 125 sheets with waste), about 1 m² of 30 mm solid oak for the top and caps, plus solid oak for aprons, rail, drawer fronts, plinths and lipping. The carpenter should re-check against their stock sizes.</li>
+<li>{quantities}</li>
 <li>Finish: natural light oak, no stain. Sand to 150/180 grit, two coats of Osmo Polyx-Oil 3062 Matt (or Rubio Monocoat Oil Plus 2C Pure). Finish every part, including the tray underside, before final assembly. Hardware in black.</li>
 </ul>
 </div>
