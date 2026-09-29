@@ -1,0 +1,2836 @@
+[
+ {
+  "id": 0,
+  "ctx": [
+   "title"
+  ],
+  "en": "DJ and piano console, design package"
+ },
+ {
+  "id": 1,
+  "ctx": [
+   "h1"
+  ],
+  "en": "DJ and piano console"
+ },
+ {
+  "id": 2,
+  "ctx": [
+   "p"
+  ],
+  "en": "Design package for the carpenter. Version 2.0 — flush-mounted gear, 16 September 2026. All dimensions in centimetres unless marked mm. Light natural oak, matte oiled."
+ },
+ {
+  "id": 3,
+  "ctx": [
+   "p"
+  ],
+  "en": "One piece, 185 cm wide, that holds a DJ set-up on top at standing height, a stage piano on a pull-out tray at seated height, about 160 records in two end columns, books in two open compartments, two drawers with a power niche between them, and two studio monitors on caps at the top of the columns. The middle section floats 20 cm above the floor so a sustain pedal and feet fit underneath."
+ },
+ {
+  "id": 4,
+  "ctx": [
+   "h3"
+  ],
+  "en": "Key dimensions"
+ },
+ {
+  "id": 5,
+  "ctx": [
+   "th"
+  ],
+  "en": "Item"
+ },
+ {
+  "id": 6,
+  "ctx": [
+   "th"
+  ],
+  "en": "Value"
+ },
+ {
+  "id": 7,
+  "ctx": [
+   "td"
+  ],
+  "en": "Overall"
+ },
+ {
+  "id": 8,
+  "ctx": [
+   "td"
+  ],
+  "en": "185 wide × 50 deep × 130 high (caps). DJ surface at 100. Footprint is the same at every height: the caps are flush with the columns."
+ },
+ {
+  "id": 9,
+  "ctx": [
+   "td"
+  ],
+  "en": "Bay (between wings)"
+ },
+ {
+  "id": 10,
+  "ctx": [
+   "td"
+  ],
+  "en": "145 wide. Gear span 145, keyboard tray 141.2 overall including aprons, keyboard 133."
+ },
+ {
+  "id": 11,
+  "ctx": [
+   "td"
+  ],
+  "en": "Wings"
+ },
+ {
+  "id": 12,
+  "ctx": [
+   "td"
+  ],
+  "en": "20 wide each, 16.4 clear inside, full height to 127, cap 20 × 50 × 3 on top."
+ },
+ {
+  "id": 13,
+  "ctx": [
+   "td"
+  ],
+  "en": "Keyboard tray"
+ },
+ {
+  "id": 14,
+  "ctx": [
+   "td"
+  ],
+  "en": "Top face 63, underside 61.2, extension 40, tray 137.6 × 42. Key tops about 74 (piano height)."
+ },
+ {
+  "id": 15,
+  "ctx": [
+   "td"
+  ],
+  "en": "Recess"
+ },
+ {
+  "id": 16,
+  "ctx": [
+   "td"
+  ],
+  "en": "20 clear, full bay width, open to the wall."
+ },
+ {
+  "id": 17,
+  "ctx": [
+   "td"
+  ],
+  "en": "Depth budget"
+ },
+ {
+  "id": 18,
+  "ctx": [
+   "td"
+  ],
+  "en": "48.2 usable inside the bay, 1.8 back panel flush with the rear face. Front rail 5, deepest well 36.2, back rail 7.0. Wings use the full depth (48.2 inside)."
+ },
+ {
+  "id": 19,
+  "ctx": [
+   "td"
+  ],
+  "en": "Wall gap"
+ },
+ {
+  "id": 20,
+  "ctx": [
+   "td"
+  ],
+  "en": "5 behind the back panel, mandatory: the panel stops at 91 and the trough&#x27;s whole rear is open, venting into that gap. Allow 55 of floor depth, not 50. Dimensioned on the section and the plan."
+ },
+ {
+  "id": 21,
+  "ctx": [
+   "td"
+  ],
+  "en": "Panel thickness"
+ },
+ {
+  "id": 22,
+  "ctx": [
+   "td"
+  ],
+  "en": "18 mm carcass, 30 mm top and caps over a 60 mm fascia, 15 mm drawer boxes."
+ },
+ {
+  "id": 23,
+  "ctx": [
+   "td"
+  ],
+  "en": "Storage"
+ },
+ {
+  "id": 24,
+  "ctx": [
+   "td"
+  ],
+  "en": "About 160 records in the wings (six openings, 6 mm per sleeve; 190 if mostly single sleeves), two book compartments of 71.6 cm, two drawers. Each book compartment holds about 110 more LPs if wanted."
+ },
+ {
+  "id": 25,
+  "ctx": [
+   "td"
+  ],
+  "en": "Weight, empty"
+ },
+ {
+  "id": 26,
+  "ctx": [
+   "td"
+  ],
+  "en": "Roughly 120 to 130 kg. Loaded with records, books and gear about 250 kg. Spread over the two wings and the floating bay."
+ },
+ {
+  "id": 27,
+  "ctx": [
+   "h3"
+  ],
+  "en": "What goes where"
+ },
+ {
+  "id": 28,
+  "ctx": [
+   "th"
+  ],
+  "en": "Zone"
+ },
+ {
+  "id": 29,
+  "ctx": [
+   "th"
+  ],
+  "en": "Height (cm)"
+ },
+ {
+  "id": 30,
+  "ctx": [
+   "th"
+  ],
+  "en": "Contents"
+ },
+ {
+  "id": 31,
+  "ctx": [
+   "td"
+  ],
+  "en": "Speaker caps"
+ },
+ {
+  "id": 32,
+  "ctx": [
+   "td"
+  ],
+  "en": "127 to 130"
+ },
+ {
+  "id": 33,
+  "ctx": [
+   "td"
+  ],
+  "en": "Two 5-inch monitors on isolation pads, one per wing. Cap 20 × 50 cm, 30 mm oak, flush with the column on every side. A KRK Rokit 5 (18.5 wide) leaves 7 mm each side."
+ },
+ {
+  "id": 34,
+  "ctx": [
+   "td"
+  ],
+  "en": "DJ surface"
+ },
+ {
+  "id": 35,
+  "ctx": [
+   "td"
+  ],
+  "en": "100 (slab 91 to 100)"
+ },
+ {
+  "id": 36,
+  "ctx": [
+   "td"
+  ],
+  "en": "Turntable, XDJ-700, Xone:92, XDJ-700 left to right within the 145 cm bay, each sunk into a well that gives 9 cm of clearance below its faceplate — not below its overall height. Faceplates finish flush with the oak. Front rail 5 cm, oak webs about 5.6 cm. Dust covers cannot be fitted."
+ },
+ {
+  "id": 37,
+  "ctx": [
+   "td"
+  ],
+  "en": "Drawer band"
+ },
+ {
+  "id": 38,
+  "ctx": [
+   "td"
+  ],
+  "en": "80 to 89.2 (fronts to 91)"
+ },
+ {
+  "id": 39,
+  "ctx": [
+   "td"
+  ],
+  "en": "Two flush drawers of 58.7 cm (9.2 cm high) with a 24 cm power niche between them: push-to-open door, strip and bricks inside, open at the top into the cable trough."
+ },
+ {
+  "id": 40,
+  "ctx": [
+   "td"
+  ],
+  "en": "Cable trough"
+ },
+ {
+  "id": 41,
+  "ctx": [
+   "td"
+  ],
+  "en": "91 to 97"
+ },
+ {
+  "id": 42,
+  "ctx": [
+   "td"
+  ],
+  "en": "Continuous under the back rail, full 145 cm bay, 7 cm deep behind the Xone:92 and 12.2 behind the XDJs. Every well opens into it. Its own rear face is open too, 145 × 6 cm, so air enters and leaves along its whole length into the 5 cm wall gap; also the mixer&#x27;s ventilation."
+ },
+ {
+  "id": 43,
+  "ctx": [
+   "td"
+  ],
+  "en": "Keyboard slot"
+ },
+ {
+  "id": 44,
+  "ctx": [
+   "td"
+  ],
+  "en": "63 to 78.2"
+ },
+ {
+  "id": 45,
+  "ctx": [
+   "td"
+  ],
+  "en": "Pull-out tray, top face at 63 cm, 40 cm extension on heavy-duty slides. Keyboard 133 × 35 × 12 stowed inside, 3.2 cm air above it."
+ },
+ {
+  "id": 46,
+  "ctx": [
+   "td"
+  ],
+  "en": "Book compartments"
+ },
+ {
+  "id": 47,
+  "ctx": [
+   "td"
+  ],
+  "en": "21.8 to 61.2"
+ },
+ {
+  "id": 48,
+  "ctx": [
+   "td"
+  ],
+  "en": "Two openings 71.6 wide × 39.4 tall × 33.2 deep, one adjustable shelf each. Front plane set back 15 cm from the console face for seated shin clearance. Still takes a 31.4 cm LP sleeve, with 1.8 cm to spare."
+ },
+ {
+  "id": 49,
+  "ctx": [
+   "td"
+  ],
+  "en": "0 to 20 (to 61.2 at the front)"
+ },
+ {
+  "id": 50,
+  "ctx": [
+   "td"
+  ],
+  "en": "Open across the whole bay and through to the wall: sustain pedal and feet when seated, toe space when standing. The front 15 cm stands open right up to the tray underside, so the shins clear the shelving."
+ },
+ {
+  "id": 51,
+  "ctx": [
+   "td"
+  ],
+  "en": "Wing columns"
+ },
+ {
+  "id": 52,
+  "ctx": [
+   "td"
+  ],
+  "en": "7.8 to 127"
+ },
+ {
+  "id": 53,
+  "ctx": [
+   "td"
+  ],
+  "en": "Three openings per wing, 16.4 wide × 38.5 tall × 48.2 deep, records spine-out, about 27 per opening at 6 mm each, about 160 in total."
+ },
+ {
+  "id": 54,
+  "ctx": [
+   "h2"
+  ],
+  "en": "Ergonomics"
+ },
+ {
+  "id": 55,
+  "ctx": [
+   "li"
+  ],
+  "en": "Seated at the keyboard: tray at 63 cm puts the key tops at about 74 cm, the same as an acoustic piano. Clear height under the tray is 61.2 cm; use a stool of 44 to 46 cm. The tray extends 40 cm so the knees sit under the tray and the feet and pedal go into the 20 cm recess. Nothing projects below the tray at the front. The book zone is set back 15 cm from the front plane, so the shins clear it; in v1 they passed within about 1 cm of the bottom panel&#x27;s front edge."
+ },
+ {
+  "id": 56,
+  "ctx": [
+   "li"
+  ],
+  "en": "Standing at the decks: surface at 100 cm, every faceplate flush with it. Toes go under the floating bay. Reaching into a well for a rear socket means lifting the unit out by its finger notches."
+ },
+ {
+  "id": 57,
+  "ctx": [
+   "li"
+  ],
+  "en": "Speakers: cap tops at 130 cm put a 5-inch monitor&#x27;s tweeter at about 152 cm, a little below standing ear height; the isolation pads add a slight upward tilt. Toe them in toward the centre."
+ },
+ {
+  "id": 58,
+  "ctx": [
+   "li"
+  ],
+  "en": "Cables: each player unit&#x27;s leads leave through the 12 cm notch in the rear wall of its well into the trough under the back rail; the Xone:92&#x27;s well has no rear wall and opens into the trough across its full width. The leads run along the trough and drop into the power niche, where the switched strip and the bricks sit. The keyboard&#x27;s mains lead and the pedal cable keep their cutout behind the tray; leave a 60 cm slack loop for the tray travel. Stand the console 5 cm off the wall: the back panel is the rear face and stops at 91, so the trough&#x27;s rear is open along the whole bay and that gap is what lets air move through it and the leads out of it."
+ },
+ {
+  "id": 59,
+  "ctx": [
+   "h2"
+  ],
+  "en": "Gear layout in the top"
+ },
+ {
+  "id": 60,
+  "ctx": [
+   "th"
+  ],
+  "en": "Device"
+ },
+ {
+  "id": 61,
+  "ctx": [
+   "th"
+  ],
+  "en": "W × D × H overall (cm)"
+ },
+ {
+  "id": 62,
+  "ctx": [
+   "th"
+  ],
+  "en": "Height below the faceplate (cm), must fit 9"
+ },
+ {
+  "id": 63,
+  "ctx": [
+   "th"
+  ],
+  "en": "Position from left wing inner face (cm)"
+ },
+ {
+  "id": 64,
+  "ctx": [
+   "svg-text",
+   "td"
+  ],
+  "en": "Turntable"
+ },
+ {
+  "id": 65,
+  "ctx": [
+   "td"
+  ],
+  "en": "45.3 × 35.3 × 16.2"
+ },
+ {
+  "id": 66,
+  "ctx": [
+   "td"
+  ],
+  "en": "measure this unit"
+ },
+ {
+  "id": 67,
+  "ctx": [
+   "td"
+  ],
+  "en": "3 to 48.3"
+ },
+ {
+  "id": 68,
+  "ctx": [
+   "svg-text",
+   "td"
+  ],
+  "en": "XDJ-700"
+ },
+ {
+  "id": 69,
+  "ctx": [
+   "td"
+  ],
+  "en": "21.8 × 30.6 × 11.1"
+ },
+ {
+  "id": 70,
+  "ctx": [
+   "td"
+  ],
+  "en": "54.3 to 76.1"
+ },
+ {
+  "id": 71,
+  "ctx": [
+   "svg-text",
+   "td"
+  ],
+  "en": "Xone:92"
+ },
+ {
+  "id": 72,
+  "ctx": [
+   "td"
+  ],
+  "en": "32 × 35.8 × 10.7"
+ },
+ {
+  "id": 73,
+  "ctx": [
+   "td"
+  ],
+  "en": "82.1 to 114.1"
+ },
+ {
+  "id": 74,
+  "ctx": [
+   "td"
+  ],
+  "en": "120.1 to 141.9"
+ },
+ {
+  "id": 75,
+  "ctx": [
+   "p"
+  ],
+  "en": "Positions assume a Technics-size turntable (45.3 × 35.3), an Allen &amp; Heath Xone:92 and two Pioneer XDJ-700 with 6 cm gaps and 3 cm end margins. Re-measure your own units before cutting: each well is templated to its unit with only 2 mm clearance per side, so the cut-outs depend on it directly. The H column is each unit's <strong>overall</strong> height, everything included — the turntable's 16.2 is mostly its dust cover, which cannot be fitted once the deck is sunk. Overall height is not what the well has to swallow. What the well gives is 9 cm of clearance <strong>below the faceplate</strong>, from the faceplate line at 100 down to the well floor at 91, and it is each unit's own chassis height below its own faceplate that has to fit in that. Measure it on all four units before cutting; the well floor cleats then take up the difference, but only ±10 mm."
+ },
+ {
+  "id": 76,
+  "ctx": [
+   "h2"
+  ],
+  "en": "Variants left open"
+ },
+ {
+  "id": 77,
+  "ctx": [
+   "li"
+  ],
+  "en": "Speaker caps: the earlier 24 cm cap overhanging 4 cm inward was dropped on 14 September 2026; a flush 20 cm cap is enough for a KRK Rokit 5. Widen the cap only if the speakers change."
+ },
+ {
+  "id": 78,
+  "ctx": [
+   "li"
+  ],
+  "en": "Record capacity: wings widened from 14.5 to 20 cm on 14 September 2026 (185 cm overall), about 160 records at 6 mm per sleeve. Each book compartment holds about 110 more LPs if wanted."
+ },
+ {
+  "id": 79,
+  "ctx": [
+   "li"
+  ],
+  "en": "Wall shelf for the speakers later: the caps can be left off and the wings capped at 100 cm, which turns the piece into a plain 185 × 100 box."
+ },
+ {
+  "id": 80,
+  "ctx": [
+   "h2"
+  ],
+  "en": "1. Front elevation"
+ },
+ {
+  "id": 81,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "records, spines out"
+ },
+ {
+  "id": 82,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "book zone set back 15 cm for knee and shin clearance"
+ },
+ {
+  "id": 83,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "power niche"
+ },
+ {
+  "id": 84,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "units dashed: sunk below the surface, hidden behind the fascia in this view"
+ },
+ {
+  "id": 85,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Gear sunk 9 cm into the slab: faceplates flush in one unbroken oak face, wells open to the trough, no dust covers"
+ },
+ {
+  "id": 86,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Drawer: cables, adapters, needles"
+ },
+ {
+  "id": 87,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Drawer: headphones"
+ },
+ {
+  "id": 88,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "front 11 cm tall on a 9.2 cm box"
+ },
+ {
+  "id": 89,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Keyboard 133 × 35 × 12 stowed on the pull-out tray (extends 40 cm, see section)"
+ },
+ {
+  "id": 90,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Books or LPs (39 cm clear)"
+ },
+ {
+  "id": 91,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Adjustable shelf on 5 mm pins"
+ },
+ {
+  "id": 92,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Foot and pedal recess, 20 cm clear, full width, open through to the wall"
+ },
+ {
+  "id": 93,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "headphone hook, outer face"
+ },
+ {
+  "id": 94,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "5&quot; monitors on isolation pads"
+ },
+ {
+  "id": 95,
+  "ctx": [
+   "svg-text",
+   "td"
+  ],
+  "en": "20"
+ },
+ {
+  "id": 96,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "145 bay / gear span"
+ },
+ {
+  "id": 97,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "185 overall (footprint = width at every height)"
+ },
+ {
+  "id": 98,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "39.4"
+ },
+ {
+  "id": 99,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "15.2"
+ },
+ {
+  "id": 100,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "11 fronts"
+ },
+ {
+  "id": 101,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "9 slab"
+ },
+ {
+  "id": 102,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "27"
+ },
+ {
+  "id": 103,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "63 tray top"
+ },
+ {
+  "id": 104,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "100 DJ surface"
+ },
+ {
+  "id": 105,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "130 cap top"
+ },
+ {
+  "id": 106,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "6"
+ },
+ {
+  "id": 107,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "38.5"
+ },
+ {
+  "id": 108,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "panels 18 mm, top and caps 30 mm"
+ },
+ {
+  "id": 109,
+  "ctx": [
+   "h2"
+  ],
+  "en": "2. Side section through the bay, cut through the power niche and the mixer, looking toward the right wing"
+ },
+ {
+  "id": 110,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "right wing (behind)"
+ },
+ {
+  "id": 111,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "wall"
+ },
+ {
+  "id": 112,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "5 cm wall gap, mandatory: the trough vents and the mains lead exits here"
+ },
+ {
+  "id": 113,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "trough"
+ },
+ {
+  "id": 114,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "15 setback"
+ },
+ {
+  "id": 115,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "stool 44 to 46 cm"
+ },
+ {
+  "id": 116,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "thigh clears tray underside (61.2)"
+ },
+ {
+  "id": 117,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "cable trough under the back rail, 7 cm deep, rear open"
+ },
+ {
+  "id": 118,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "back panel 18 mm, flush with the rear face, top edge at 91"
+ },
+ {
+  "id": 119,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "power niche: strip flat, bricks standing at the rear"
+ },
+ {
+  "id": 120,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "back panel cut away behind the niche"
+ },
+ {
+  "id": 121,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "heavy-duty tray slide 400 mm (detail A)"
+ },
+ {
+  "id": 122,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "sustain pedal in the recess"
+ },
+ {
+  "id": 123,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "tray extended 40 cm (dashed)"
+ },
+ {
+  "id": 124,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "48.2 interior"
+ },
+ {
+  "id": 125,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "5 wall gap"
+ },
+ {
+  "id": 126,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "5 front rail"
+ },
+ {
+  "id": 127,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "7 back rail"
+ },
+ {
+  "id": 128,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "50 overall depth"
+ },
+ {
+  "id": 129,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "40 extension"
+ },
+ {
+  "id": 130,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "42 tray"
+ },
+ {
+  "id": 131,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "20 recess"
+ },
+ {
+  "id": 132,
+  "ctx": [
+   "svg-text",
+   "td"
+  ],
+  "en": "30"
+ },
+ {
+  "id": 133,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "61.2 clear under tray"
+ },
+ {
+  "id": 134,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "100"
+ },
+ {
+  "id": 135,
+  "ctx": [
+   "h2"
+  ],
+  "en": "3. Plan of the top"
+ },
+ {
+  "id": 136,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "5&quot; monitor"
+ },
+ {
+  "id": 137,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "cut-out 45.7 × 35.7"
+ },
+ {
+  "id": 138,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "cut-out 22.2 × 31"
+ },
+ {
+  "id": 139,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "cut-out 32.4 × 36.2"
+ },
+ {
+  "id": 140,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "cable trough, full bay width"
+ },
+ {
+  "id": 141,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "back panel below stops at 91: the trough&#x27;s rear face is open across the bay, 145 × 6 cm, venting into the wall gap"
+ },
+ {
+  "id": 142,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "45.3 × 35.3"
+ },
+ {
+  "id": 143,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "21.8 × 30.6"
+ },
+ {
+  "id": 144,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "32 × 35.8"
+ },
+ {
+  "id": 145,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "headphone hook"
+ },
+ {
+  "id": 146,
+  "ctx": [
+   "svg-text",
+   "td"
+  ],
+  "en": "3"
+ },
+ {
+  "id": 147,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "45.3"
+ },
+ {
+  "id": 148,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "21.8"
+ },
+ {
+  "id": 149,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "32"
+ },
+ {
+  "id": 150,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "3.1"
+ },
+ {
+  "id": 151,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "145"
+ },
+ {
+  "id": 152,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "185"
+ },
+ {
+  "id": 153,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "5"
+ },
+ {
+  "id": 154,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "36.2 deepest well"
+ },
+ {
+  "id": 155,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "50"
+ },
+ {
+  "id": 156,
+  "ctx": [
+   "h2"
+  ],
+  "en": "4. Detail A: tray edge, slide and apron (section looking from the front, left side)"
+ },
+ {
+  "id": 157,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "book compartment below"
+ },
+ {
+  "id": 158,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "wing column"
+ },
+ {
+  "id": 159,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "1.8"
+ },
+ {
+  "id": 160,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "1.9"
+ },
+ {
+  "id": 161,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "2.3"
+ },
+ {
+  "id": 162,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "12 keyboard"
+ },
+ {
+  "id": 163,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "2.9"
+ },
+ {
+  "id": 164,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Fixed panel 18 mm at 78.2 to 80; drawer band above"
+ },
+ {
+  "id": 165,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Heavy-duty slide 400 mm, 100 kg or more per pair, hold-open detent"
+ },
+ {
+  "id": 166,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Solid oak apron 18 x 68 mm over the tray edge; slide screws into it"
+ },
+ {
+  "id": 167,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Keyboard 133 wide, 2.3 cm to each apron, key tops at about 74"
+ },
+ {
+  "id": 168,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Thin non-slip mat under the keyboard"
+ },
+ {
+  "id": 169,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Tray 18 mm oak-veneered birch ply, 137.6 x 42, finished both faces"
+ },
+ {
+  "id": 170,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Wing inner panel 18 mm = bay side wall; slide cabinet member fixes to it"
+ },
+ {
+  "id": 171,
+  "ctx": [
+   "h2"
+  ],
+  "en": "5. Detail B: gear well (section through the front rail)"
+ },
+ {
+  "id": 172,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "9 clear"
+ },
+ {
+  "id": 173,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "1.4"
+ },
+ {
+  "id": 174,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Oak top board 30 mm; cut-out edges eased, not lipped"
+ },
+ {
+  "id": 175,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Fascia 60 mm solid oak, front and ends; bottom edge at 91, level with the well floors"
+ },
+ {
+  "id": 176,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Xone:92 and XDJ-700 faceplates may bear on a rebate; confirm against the units"
+ },
+ {
+  "id": 177,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Faceplate flush with oak; 2 mm clearance at sides and rear, none at front — leave it open"
+ },
+ {
+  "id": 178,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Technics plinth has no flange: stands on its own feet on the floor at 91"
+ },
+ {
+  "id": 179,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Well floor 18 mm on slotted cleats, +/-10 mm: top face 91, underside 89.2"
+ },
+ {
+  "id": 180,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Cleat 20 x 14 mm, two per well, front to back; top face flush under the floor"
+ },
+ {
+  "id": 181,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "Player wells: rear wall notched 12 cm wide into the trough; the Xone:92 has no rear wall"
+ },
+ {
+  "id": 182,
+  "ctx": [
+   "svg-text"
+  ],
+  "en": "finger notches at two corners of each well, r 20 mm"
+ },
+ {
+  "id": 183,
+  "ctx": [
+   "h2"
+  ],
+  "en": "Parts list"
+ },
+ {
+  "id": 184,
+  "ctx": [
+   "th"
+  ],
+  "en": "Group"
+ },
+ {
+  "id": 185,
+  "ctx": [
+   "th"
+  ],
+  "en": "Part"
+ },
+ {
+  "id": 186,
+  "ctx": [
+   "th"
+  ],
+  "en": "Qty"
+ },
+ {
+  "id": 187,
+  "ctx": [
+   "th"
+  ],
+  "en": "Size L × W (cm)"
+ },
+ {
+  "id": 188,
+  "ctx": [
+   "th"
+  ],
+  "en": "Thk (mm)"
+ },
+ {
+  "id": 189,
+  "ctx": [
+   "th"
+  ],
+  "en": "Material"
+ },
+ {
+  "id": 190,
+  "ctx": [
+   "th"
+  ],
+  "en": "Notes"
+ },
+ {
+  "id": 191,
+  "ctx": [
+   "td"
+  ],
+  "en": "Wing side panel"
+ },
+ {
+  "id": 192,
+  "ctx": [
+   "td"
+  ],
+  "en": "4"
+ },
+ {
+  "id": 193,
+  "ctx": [
+   "td"
+  ],
+  "en": "127 × 50"
+ },
+ {
+  "id": 194,
+  "ctx": [
+   "td"
+  ],
+  "en": "18"
+ },
+ {
+  "id": 195,
+  "ctx": [
+   "td"
+  ],
+  "en": "Oak-veneered birch ply, front edge lipped"
+ },
+ {
+  "id": 196,
+  "ctx": [
+   "td"
+  ],
+  "en": "Floor to cap underside. Inner pair is also the bay side wall. Grain vertical."
+ },
+ {
+  "id": 197,
+  "ctx": [
+   "td"
+  ],
+  "en": "Wing bottom shelf"
+ },
+ {
+  "id": 198,
+  "ctx": [
+   "td"
+  ],
+  "en": "2"
+ },
+ {
+  "id": 199,
+  "ctx": [
+   "td"
+  ],
+  "en": "48.2 × 16.4"
+ },
+ {
+  "id": 200,
+  "ctx": [
+   "td"
+  ],
+  "en": "Oak-veneered ply"
+ },
+ {
+  "id": 201,
+  "ctx": [
+   "td"
+  ],
+  "en": "Top face at 7.8 cm (plinth 6 cm below)."
+ },
+ {
+  "id": 202,
+  "ctx": [
+   "td"
+  ],
+  "en": "Wing fixed shelf"
+ },
+ {
+  "id": 203,
+  "ctx": [
+   "td"
+  ],
+  "en": "Oak-veneered ply, front edge lipped"
+ },
+ {
+  "id": 204,
+  "ctx": [
+   "td"
+  ],
+  "en": "Two per wing, giving three openings of 38.5 cm clear."
+ },
+ {
+  "id": 205,
+  "ctx": [
+   "td"
+  ],
+  "en": "Wing back panel"
+ },
+ {
+  "id": 206,
+  "ctx": [
+   "td"
+  ],
+  "en": "119.2 × 16.4"
+ },
+ {
+  "id": 207,
+  "ctx": [
+   "td"
+  ],
+  "en": "Flush with the rear edge (no chase in the wings)."
+ },
+ {
+  "id": 208,
+  "ctx": [
+   "td"
+  ],
+  "en": "Wing plinth board"
+ },
+ {
+  "id": 209,
+  "ctx": [
+   "td"
+  ],
+  "en": "16.4 × 6"
+ },
+ {
+  "id": 210,
+  "ctx": [
+   "td"
+  ],
+  "en": "Solid oak"
+ },
+ {
+  "id": 211,
+  "ctx": [
+   "td"
+  ],
+  "en": "Set back 3 cm from the front."
+ },
+ {
+  "id": 212,
+  "ctx": [
+   "td"
+  ],
+  "en": "Speaker cap"
+ },
+ {
+  "id": 213,
+  "ctx": [
+   "td"
+  ],
+  "en": "50 × 20"
+ },
+ {
+  "id": 214,
+  "ctx": [
+   "td"
+  ],
+  "en": "Same footprint as the column, flush on every side. Screwed from below through the wing panels."
+ },
+ {
+  "id": 215,
+  "ctx": [
+   "td"
+  ],
+  "en": "Bay"
+ },
+ {
+  "id": 216,
+  "ctx": [
+   "td"
+  ],
+  "en": "Top"
+ },
+ {
+  "id": 217,
+  "ctx": [
+   "td"
+  ],
+  "en": "1"
+ },
+ {
+  "id": 218,
+  "ctx": [
+   "td"
+  ],
+  "en": "145 × 50"
+ },
+ {
+  "id": 219,
+  "ctx": [
+   "td"
+  ],
+  "en": "Solid oak, or 30 mm veneered board with 30 mm oak lipping"
+ },
+ {
+  "id": 220,
+  "ctx": [
+   "td"
+  ],
+  "en": "Four cut-outs for the gear, all front edges 5 cm from the front edge. Sizes per the plan; 2 mm clearance at sides and rear, none at the front. Finger notches r 20 mm at two corners of each. Edges eased, not lipped."
+ },
+ {
+  "id": 221,
+  "ctx": [
+   "td"
+  ],
+  "en": "Slab fascia"
+ },
+ {
+  "id": 222,
+  "ctx": [
+   "td"
+  ],
+  "en": "145 × 6"
+ },
+ {
+  "id": 223,
+  "ctx": [
+   "td"
+  ],
+  "en": "60"
+ },
+ {
+  "id": 224,
+  "ctx": [
+   "td"
+  ],
+  "en": "Front face, returned on both ends. Bottom edge at 91, flush with the well floors. Makes the top read as a 9 cm slab."
+ },
+ {
+  "id": 225,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well side wall"
+ },
+ {
+  "id": 226,
+  "ctx": [
+   "td"
+  ],
+  "en": "8"
+ },
+ {
+  "id": 227,
+  "ctx": [
+   "td"
+  ],
+  "en": "7.8 high, depth per well"
+ },
+ {
+  "id": 228,
+  "ctx": [
+   "td"
+  ],
+  "en": "Two per well, hung from the underside of the top board down to 89.2, the well floor&#x27;s underside: the bottom 18 mm of each wall houses the floor and carries its cleat. Glued to the top board: this is what stiffens the webs between the wells. Depth per well: Turntable 35.7, XDJ-700 31, Xone:92 36.2, XDJ-700 31 cm. See the section on detail B, drawing 5."
+ },
+ {
+  "id": 229,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well rear wall"
+ },
+ {
+  "id": 230,
+  "ctx": [
+   "td"
+  ],
+  "en": "6 high, width per well"
+ },
+ {
+  "id": 231,
+  "ctx": [
+   "td"
+  ],
+  "en": "One per player well only: the turntable and both XDJ-700s. Each is notched 12 × 6 cm for cables — 12 cm wide, centred on the well, cut from the well floor at 91 clear up to the top board, so a plug passes without being lifted. The Xone:92&#x27;s well has no rear wall at all: its whole rear face, 32.4 × 6 cm, stands open into the trough, which is how the mixer sheds its heat. Width per wall: Turntable 45.7, XDJ-700 22.2, XDJ-700 22.2 cm. See the section on detail B, drawing 5."
+ },
+ {
+  "id": 232,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well floor"
+ },
+ {
+  "id": 233,
+  "ctx": [
+   "td"
+  ],
+  "en": "width × depth per well"
+ },
+ {
+  "id": 234,
+  "ctx": [
+   "td"
+  ],
+  "en": "Top face at 91, underside at 89.2 — the ceiling of the drawer band. On adjustable cleats, slotted +/- 10 mm, so the flush line is set against the real units at fit-out. Width × depth per well: Turntable 45.7 × 35.7, XDJ-700 22.2 × 31, Xone:92 32.4 × 36.2, XDJ-700 22.2 × 31 cm. See the section on detail B, drawing 5."
+ },
+ {
+  "id": 235,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well floor cleat"
+ },
+ {
+  "id": 236,
+  "ctx": [
+   "td"
+  ],
+  "en": "20 × 14 mm, length per well"
+ },
+ {
+  "id": 237,
+  "ctx": [
+   "td"
+  ],
+  "en": "Two per well, front to back on the side walls, slotted screw holes. Top face at 89.2 so the floor lands at 91 and nothing stands proud of it. Length per well: Turntable 35.7, XDJ-700 31, Xone:92 36.2, XDJ-700 31 cm. See the section on detail B, drawing 5."
+ },
+ {
+  "id": 238,
+  "ctx": [
+   "td"
+  ],
+  "en": "Bay bottom panel"
+ },
+ {
+  "id": 239,
+  "ctx": [
+   "td"
+  ],
+  "en": "145 × 35"
+ },
+ {
+  "id": 240,
+  "ctx": [
+   "td"
+  ],
+  "en": "Top face at 21.8 cm. Front edge set back 15 cm from the front plane for shin clearance; the recess is therefore open from the floor to the tray underside across that 15 cm. Carries the books; stiffened by the divider and the back panel, no rail underneath."
+ },
+ {
+  "id": 241,
+  "ctx": [
+   "td"
+  ],
+  "en": "Fixed mid panel"
+ },
+ {
+  "id": 242,
+  "ctx": [
+   "td"
+  ],
+  "en": "145 × 48.2"
+ },
+ {
+  "id": 243,
+  "ctx": [
+   "td"
+  ],
+  "en": "Top face at 80 cm. Ceiling of the keyboard slot, floor of the drawer band."
+ },
+ {
+  "id": 244,
+  "ctx": [
+   "td"
+  ],
+  "en": "Bay back panel"
+ },
+ {
+  "id": 245,
+  "ctx": [
+   "td"
+  ],
+  "en": "145 × 69.2"
+ },
+ {
+  "id": 246,
+  "ctx": [
+   "td"
+  ],
+  "en": "Flush with the rear face, top edge at 91: there is no panel above that, so the trough&#x27;s rear face stands open across the whole bay, 145 × 6 cm. That opening is how the trough breathes and how the leads leave. Cutout 20 × 8 cm behind the tray at 66 to 74 cm; cutout 24 × 8 cm behind the niche at 83 to 91 cm. The niche cutout runs out at the panel&#x27;s top edge, where the open trough takes over."
+ },
+ {
+  "id": 247,
+  "ctx": [
+   "td"
+  ],
+  "en": "Book zone divider"
+ },
+ {
+  "id": 248,
+  "ctx": [
+   "td"
+  ],
+  "en": "33.2 × 38.9"
+ },
+ {
+  "id": 249,
+  "ctx": [
+   "td"
+  ],
+  "en": "Centred. Glued and screwed to bottom and back panel along its length; 5 mm gap under the tray."
+ },
+ {
+  "id": 250,
+  "ctx": [
+   "td"
+  ],
+  "en": "Drawer band divider"
+ },
+ {
+  "id": 251,
+  "ctx": [
+   "td"
+  ],
+  "en": "48.2 × 9.2"
+ },
+ {
+  "id": 252,
+  "ctx": [
+   "td"
+  ],
+  "en": "Frame the 24 cm power niche. Notched: the front 5 cm rises to 11 cm with the fronts, closing the strip behind the gaps between them; behind that it drops to 9.2 cm to pass under the well floors. Optional 6 × 4 cm pass-through at the rear of each for a charging lead."
+ },
+ {
+  "id": 253,
+  "ctx": [
+   "td"
+  ],
+  "en": "Power niche door"
+ },
+ {
+  "id": 254,
+  "ctx": [
+   "td"
+  ],
+  "en": "23.6 × 9.8"
+ },
+ {
+  "id": 255,
+  "ctx": [
+   "td"
+  ],
+  "en": "Solid oak, grain continuous with the drawer fronts"
+ },
+ {
+  "id": 256,
+  "ctx": [
+   "td"
+  ],
+  "en": "Flush inset, concealed hinges, push-to-open latch. 9.8 cm in the 11 cm opening: the 1 cm vent gap is all taken at the bottom edge, so the top edge still meets the fascia at 91."
+ },
+ {
+  "id": 257,
+  "ctx": [
+   "td"
+  ],
+  "en": "Adjustable shelf"
+ },
+ {
+  "id": 258,
+  "ctx": [
+   "td"
+  ],
+  "en": "71.4 × 32.2"
+ },
+ {
+  "id": 259,
+  "ctx": [
+   "td"
+  ],
+  "en": "One per book compartment, on 5 mm pins."
+ },
+ {
+  "id": 260,
+  "ctx": [
+   "td"
+  ],
+  "en": "Drawer front"
+ },
+ {
+  "id": 261,
+  "ctx": [
+   "td"
+  ],
+  "en": "58.3 × 10.6"
+ },
+ {
+  "id": 262,
+  "ctx": [
+   "td"
+  ],
+  "en": "Solid oak (grain running across both fronts)"
+ },
+ {
+  "id": 263,
+  "ctx": [
+   "td"
+  ],
+  "en": "Flush inset, 2 mm gaps, finger pull routed under the top edge. 11 cm on a 9.2 cm box: it overhangs the box 18 mm upward to meet the fascia at 91, closing the face. Clear behind, because the well floors start 5 cm back. Size off the opening, not off the box."
+ },
+ {
+  "id": 264,
+  "ctx": [
+   "td"
+  ],
+  "en": "Drawer box"
+ },
+ {
+  "id": 265,
+  "ctx": [
+   "td"
+  ],
+  "en": "45 deep × 7 high, width per runner spec"
+ },
+ {
+  "id": 266,
+  "ctx": [
+   "td"
+  ],
+  "en": "15"
+ },
+ {
+  "id": 267,
+  "ctx": [
+   "td"
+  ],
+  "en": "Birch ply, 6 mm bottom"
+ },
+ {
+  "id": 268,
+  "ctx": [
+   "td"
+  ],
+  "en": "For the 58.7 cm openings, sized to the runners. The 45 cm depth is matched to 450 mm undermount runners: an undermount pair only engages a box of its own length, so the 400 mm runners used in v1 will not do. 7 cm sides in the 9.2 cm band leave 22 mm below and above the box for the runner and its clearances — check against the runner&#x27;s own drilling diagram before cutting. Notch the niche-side wall 6 × 4 cm at the rear if the pass-through is used."
+ },
+ {
+  "id": 269,
+  "ctx": [
+   "td"
+  ],
+  "en": "Tray"
+ },
+ {
+  "id": 270,
+  "ctx": [
+   "td"
+  ],
+  "en": "Keyboard tray panel"
+ },
+ {
+  "id": 271,
+  "ctx": [
+   "td"
+  ],
+  "en": "137.6 × 42"
+ },
+ {
+  "id": 272,
+  "ctx": [
+   "td"
+  ],
+  "en": "Oak-veneered birch ply, both faces"
+ },
+ {
+  "id": 273,
+  "ctx": [
+   "td"
+  ],
+  "en": "Underside is visible from the book compartments: finish it. Front edge lipped."
+ },
+ {
+  "id": 274,
+  "ctx": [
+   "td"
+  ],
+  "en": "Tray side apron"
+ },
+ {
+  "id": 275,
+  "ctx": [
+   "td"
+  ],
+  "en": "42 × 6.8"
+ },
+ {
+  "id": 276,
+  "ctx": [
+   "td"
+  ],
+  "en": "Covers the tray edge (1.8) and rises 5 cm above it. Slide drawer member screws into it."
+ },
+ {
+  "id": 277,
+  "ctx": [
+   "td"
+  ],
+  "en": "Tray rear rail"
+ },
+ {
+  "id": 278,
+  "ctx": [
+   "td"
+  ],
+  "en": "137.6 × 5"
+ },
+ {
+  "id": 279,
+  "ctx": [
+   "td"
+  ],
+  "en": "On the tray top along the rear edge, doweled to the aprons. Stops racking."
+ },
+ {
+  "id": 280,
+  "ctx": [
+   "td"
+  ],
+  "en": "All"
+ },
+ {
+  "id": 281,
+  "ctx": [
+   "td"
+  ],
+  "en": "Solid oak lipping"
+ },
+ {
+  "id": 282,
+  "ctx": [
+   "td"
+  ],
+  "en": "~28 m"
+ },
+ {
+  "id": 283,
+  "ctx": [
+   "td"
+  ],
+  "en": "5 × 18 mm"
+ },
+ {
+  "id": 284,
+  "ctx": [
+   "td"
+  ],
+  "en": ""
+ },
+ {
+  "id": 285,
+  "ctx": [
+   "td"
+  ],
+  "en": "All exposed ply edges."
+ },
+ {
+  "id": 286,
+  "ctx": [
+   "h2"
+  ],
+  "en": "Hardware"
+ },
+ {
+  "id": 287,
+  "ctx": [
+   "th"
+  ],
+  "en": "Specification"
+ },
+ {
+  "id": 288,
+  "ctx": [
+   "td"
+  ],
+  "en": "Keyboard tray slides"
+ },
+ {
+  "id": 289,
+  "ctx": [
+   "td"
+  ],
+  "en": "1 pair"
+ },
+ {
+  "id": 290,
+  "ctx": [
+   "td"
+  ],
+  "en": "Heavy-duty full-extension ball-bearing, 400 mm, rated 100 kg or more per pair, with hold-open detent. Accuride 3634 (400 mm) or Fulterer FR 5000 (400 mm). Side mount at 63 to 68 cm."
+ },
+ {
+  "id": 291,
+  "ctx": [
+   "td"
+  ],
+  "en": "Drawer runners"
+ },
+ {
+  "id": 292,
+  "ctx": [
+   "td"
+  ],
+  "en": "2 pairs"
+ },
+ {
+  "id": 293,
+  "ctx": [
+   "td"
+  ],
+  "en": "Full-extension undermount with soft close, 450 mm, 40 kg class: Blum Movento 760H4500S with Blumotion, or Hettich Actro 5D 450 mm. Not the 400 mm pair used in v1 — an undermount runner is matched to its box, and a 45 cm box will not engage a 400 mm runner. Confirmed against the interior: a 450 mm runner wants about 470 mm of clear depth and the bay gives 482 mm, so it fits with about 12 mm to spare."
+ },
+ {
+  "id": 294,
+  "ctx": [
+   "td"
+  ],
+  "en": "Shelf pins"
+ },
+ {
+  "id": 295,
+  "ctx": [
+   "td"
+  ],
+  "en": "5 mm steel, two adjustable shelves. 32 mm pitch; rows 18.7 and 44.5 cm back from the console face, 37 mm in from the compartment&#x27;s faces."
+ },
+ {
+  "id": 296,
+  "ctx": [
+   "td"
+  ],
+  "en": "Levelling feet"
+ },
+ {
+  "id": 297,
+  "ctx": [
+   "td"
+  ],
+  "en": "M8 adjustable glides, 15 to 25 mm, two per wing side panel, hidden behind the plinth boards."
+ },
+ {
+  "id": 298,
+  "ctx": [
+   "td"
+  ],
+  "en": "Anti-tip brackets"
+ },
+ {
+  "id": 299,
+  "ctx": [
+   "td"
+  ],
+  "en": "One per wing, concealed, fixed to the wall. Recommended: the wings are 130 cm tall with speakers on top. In v2 it doubles as a spacer: pack it out to 5 cm so it holds the console that far off the wall rather than pulling it flush. The trough&#x27;s open rear vents into that gap, so closing it would seal the mixer in."
+ },
+ {
+  "id": 300,
+  "ctx": [
+   "td"
+  ],
+  "en": "Speaker isolation pads"
+ },
+ {
+  "id": 301,
+  "ctx": [
+   "td"
+  ],
+  "en": "IsoAcoustics ISO-155 or Auralex MoPAD, set with a slight upward tilt toward the standing position."
+ },
+ {
+  "id": 302,
+  "ctx": [
+   "td"
+  ],
+  "en": "Headphone hook"
+ },
+ {
+  "id": 303,
+  "ctx": [
+   "td"
+  ],
+  "en": "Black steel or oak, on the outer face of the right wing at about 105 cm."
+ },
+ {
+  "id": 304,
+  "ctx": [
+   "td"
+  ],
+  "en": "Power strip"
+ },
+ {
+  "id": 305,
+  "ctx": [
+   "td"
+  ],
+  "en": "6-way with switch, up to 40 cm long, or two 4-way strips side by side. Lies flat on the niche floor with sockets facing up. Niche is 24 wide × 9.2 tall × 48.2 deep, its rear 7 cm open at the top into the cable trough and the rest ceilinged by the well floors. Stand the bricks on the niche floor beside the strip, toward the rear — 41.2 to 48.2 cm back from the front, past the point where the well floors stop. There the trough is open overhead and the headroom is 17 cm, up to the underside of the back rail at 97, so brick height is not a constraint at that position. Do not stack a brick on the strip: that reaches about 12.5 cm above the niche floor, to 92.5, which fouls the well floor if it is anywhere near the front of the niche and blocks the trough if it is at the rear — and the trough has to stay clear as the route for the mains lead out through the niche cutout at 83 to 91 cm. Height only matters if a brick has to sit at the front of the niche instead, under a well floor: 9.2 cm of headroom there, which an 8.5 cm brick clears by 7 mm."
+ },
+ {
+  "id": 306,
+  "ctx": [
+   "td"
+  ],
+  "en": "Niche door hardware"
+ },
+ {
+  "id": 307,
+  "ctx": [
+   "td"
+  ],
+  "en": "1 set"
+ },
+ {
+  "id": 308,
+  "ctx": [
+   "td"
+  ],
+  "en": "Two concealed hinges (Blum Clip top or similar) and a push-to-open latch (Blum Tip-On): no handle. Its 1 cm vent gap goes at the bottom edge."
+ },
+ {
+  "id": 309,
+  "ctx": [
+   "td"
+  ],
+  "en": "Drawer pass-through grommets"
+ },
+ {
+  "id": 310,
+  "ctx": [
+   "td"
+  ],
+  "en": "2 (optional)"
+ },
+ {
+  "id": 311,
+  "ctx": [
+   "td"
+  ],
+  "en": "Rubber or oak-lined 60 × 40 mm grommets in the drawer-band dividers, for charging leads from the strip into the drawers."
+ },
+ {
+  "id": 312,
+  "ctx": [
+   "td"
+  ],
+  "en": "Non-slip mat"
+ },
+ {
+  "id": 313,
+  "ctx": [
+   "td"
+  ],
+  "en": "Thin rubber or EVA sheet, about 133 × 35 cm, under the keyboard."
+ },
+ {
+  "id": 314,
+  "ctx": [
+   "td"
+  ],
+  "en": "Carcass fixings"
+ },
+ {
+  "id": 315,
+  "ctx": [
+   "td"
+  ],
+  "en": "as needed"
+ },
+ {
+  "id": 316,
+  "ctx": [
+   "td"
+  ],
+  "en": "8 mm dowels and glue at all visible joints; concealed confirmat screws where hidden (behind drawers and tray). Slide screws per manufacturer."
+ },
+ {
+  "id": 317,
+  "ctx": [
+   "td"
+  ],
+  "en": "Finish"
+ },
+ {
+  "id": 318,
+  "ctx": [
+   "td"
+  ],
+  "en": "about 1 L"
+ },
+ {
+  "id": 319,
+  "ctx": [
+   "td"
+  ],
+  "en": "Osmo Polyx-Oil 3062 Matt, two coats, or Rubio Monocoat Oil Plus 2C Pure (about 350 ml). Natural oak tone, no stain."
+ },
+ {
+  "id": 320,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well floor cleats and fixings"
+ },
+ {
+  "id": 321,
+  "ctx": [
+   "td"
+  ],
+  "en": "8 cleats"
+ },
+ {
+  "id": 322,
+  "ctx": [
+   "td"
+  ],
+  "en": "M5 threaded inserts and pan screws in slotted holes, +/- 10 mm of travel, so each unit&#x27;s flush line is set at fit-out rather than at cutting."
+ },
+ {
+  "id": 323,
+  "ctx": [
+   "h2"
+  ],
+  "en": "Materials and finish"
+ },
+ {
+  "id": 324,
+  "ctx": [
+   "li"
+  ],
+  "en": "Carcass: 18 mm oak-veneered birch plywood, A/B crown-cut veneer, every exposed edge lipped with 5 mm solid oak. Grain vertical on the wing panels, horizontal on the long panels and continuous across the two drawer fronts."
+ },
+ {
+  "id": 325,
+  "ctx": [
+   "li"
+  ],
+  "en": "Top and speaker caps: 30 mm solid European oak from glued-up boards. If movement is a concern, 30 mm veneered blockboard with 30 mm solid oak lipping."
+ },
+ {
+  "id": 326,
+  "ctx": [
+   "li"
+  ],
+  "en": "Solid oak for the drawer fronts, tray aprons, rear rail and plinth boards."
+ },
+ {
+  "id": 327,
+  "ctx": [
+   "li"
+  ],
+  "en": "Quantities: about 7.5 m² of 18 mm oak-veneered birch ply (three 250 × 125 sheets with waste), about 1 m² of 30 mm solid oak for the top and caps, plus solid oak for aprons, rail, drawer fronts, plinths and lipping. The carpenter should re-check against their stock sizes."
+ },
+ {
+  "id": 328,
+  "ctx": [
+   "li"
+  ],
+  "en": "Finish: natural light oak, no stain. Sand to 150/180 grit, two coats of Osmo Polyx-Oil 3062 Matt (or Rubio Monocoat Oil Plus 2C Pure). Finish every part, including the tray underside, before final assembly. Hardware in black."
+ },
+ {
+  "id": 329,
+  "ctx": [
+   "h2"
+  ],
+  "en": "Construction notes"
+ },
+ {
+  "id": 330,
+  "ctx": [
+   "li"
+  ],
+  "en": "Build the two wings first as closed columns (open front) 20 × 50 × 127. Their inner panels are the bay side walls, so drill them for the tray slides (cabinet member at 63 to 68 cm, 1.5 cm from the front) and for the bay panel fixings before assembly."
+ },
+ {
+  "id": 331,
+  "ctx": [
+   "li"
+  ],
+  "en": "Tie the wings together with the bay panels: bottom (top face 21.8), fixed mid panel (top face 80), top (91 to 100) and the back panel. Dowels and glue at visible joints; concealed confirmats behind the drawers and the tray where they will not be seen."
+ },
+ {
+  "id": 332,
+  "ctx": [
+   "li"
+  ],
+  "en": "The bay bottom spans 145 cm with no leg. The book divider is glued and screwed along its full length to the bottom and back panels, and the back panel is glued along the rear edge: together they act as the stiffeners. Do not add a rail under the front edge; the recess must stay 20 cm clear."
+ },
+ {
+  "id": 333,
+  "ctx": [
+   "li"
+  ],
+  "en": "Set the bay bottom panel, the book divider and both adjustable shelves back 15 cm from the front plane. The panel&#x27;s front edge is unsupported and unlipped at 21.8; lip it and ease it, it is at shin height."
+ },
+ {
+  "id": 334,
+  "ctx": [
+   "li"
+  ],
+  "en": "The bay back panel is the rear face of the piece and stops at 91. The cable trough is the band from 91 to 97, left open behind the wells from wing to wing; with no panel above 91 its rear face is open as well, the full 145 × 6 cm. Stand the console 5 cm off the wall. That gap is what the trough breathes through along its whole length and what the leads leave through, so it is part of the build, not a placement preference: see the section and the plan, where it is drawn and dimensioned."
+ },
+ {
+  "id": 335,
+  "ctx": [
+   "li"
+  ],
+  "en": "Cut the four gear wells in the top before finishing, and dry-fit every unit before the fascia goes on. The flush line is set by the cleats, so cut the cut-outs to the units and leave the floor heights to fit-out."
+ },
+ {
+  "id": 336,
+  "ctx": [
+   "li"
+  ],
+  "en": "The wells give 9 cm of clearance below the surface, 100 down to the floor at 91. That is the budget for each unit&#x27;s chassis below its own faceplate, not for its overall height: three of the four units in the gear table are listed taller than 9 cm because those figures include everything above the faceplate, the turntable&#x27;s dust cover included. Measure the below-faceplate height of all four units before cutting, and dial each well floor to it on the cleats, which give ±10 mm and no more."
+ },
+ {
+  "id": 337,
+  "ctx": [
+   "li"
+  ],
+  "en": "Do not gasket, tape or foam anything shut. The 2 mm clearance at the sides and rear of each unit, the notches in the well rear walls, the Xone:92&#x27;s missing rear wall, the open rear of the trough and the 1 cm gap under the niche door are the whole of the ventilation, and the Xone:92 is an analogue mixer that runs warm. Every one of them stays open."
+ },
+ {
+  "id": 338,
+  "ctx": [
+   "li"
+  ],
+  "en": "Glue the well side walls to the underside of the top board before the fascia goes on. Each web between two wells is then a 30 mm cap on two 60 mm walls, which is what carries the span; a bare 30 mm web is not stiff enough to lean on."
+ },
+ {
+  "id": 339,
+  "ctx": [
+   "li"
+  ],
+  "en": "Keyboard tray: side-mounted heavy-duty slides above the tray surface, screwed into the solid oak aprons (detail A, drawing 4). Confirm the keyboard&#x27;s actual footprint and connector positions before cutting the tray and the back-panel cutout."
+ },
+ {
+  "id": 340,
+  "ctx": [
+   "li"
+  ],
+  "en": "Drawers on undermount runners with flush inset fronts, 2 mm gaps, finger pull routed under the top edge. Run the grain across both fronts and the niche door as one board. Cut the fronts and the door to 11 cm, not to the 9.2 cm band: the well floors take 18 mm off the top of the boxes, but nothing closes the face there, so the fronts run on up to the fascia at 91. The 18 mm standing proud of each box has clear air behind it back to the front rail. The two dividers are notched to match over their front 5 cm."
+ },
+ {
+  "id": 341,
+  "ctx": [
+   "li"
+  ],
+  "en": "Power niche: 24 × 9.2, its rear 7 cm opening upward into the trough rather than rearward into a chase. Door on concealed hinges with a push latch, 9.8 cm tall in the 11 cm opening so a 1 cm gap is left at the bottom edge for air. The strip lies flat on the niche floor with sockets up. Stand the bricks on the floor beside it, toward the rear of the niche, y 41.2 to 48.2 from the front: past that line the well floors have stopped and the open trough runs overhead, so the headroom there is 17 cm, up to the back rail&#x27;s underside at 97, and brick height is not a constraint. What matters is that nothing is stacked on the strip — strip plus brick is about 12.5 cm, topping out at 92.5, which fouls a well floor at the front of the niche and blocks the trough at the rear — and that the trough stays clear as the route for the mains lead out through the back-panel cutout (83 to 91, x 80.5 to 104.5), which runs out at the panel&#x27;s top edge and hands over to the trough&#x27;s own open rear. Height is only critical for a brick pushed to the front of the niche instead, under a well floor: 9.2 cm of headroom there, which an 8.5 cm brick clears by 7 mm."
+ },
+ {
+  "id": 342,
+  "ctx": [
+   "li"
+  ],
+  "en": "Adjustable shelves on 5 mm pins, holes at 32 mm pitch. Set the two rows out from the book compartment&#x27;s own front and back faces, 37 mm in from each, not from the front of the carcass: the compartment starts 15 cm back, so the rows fall 18.7 and 44.5 cm behind the console&#x27;s front face, 25.8 cm apart. Finish the underside of the tray: it is the ceiling of the book compartments."
+ },
+ {
+  "id": 343,
+  "ctx": [
+   "li"
+  ],
+  "en": "Level on the eight feet so the tray runs true, then fix each wing to the wall with a concealed anti-tip bracket, packed out to 5 cm so the bracket holds the wall gap open instead of pulling the console flush."
+ },
+ {
+  "id": 344,
+  "ctx": [
+   "h2"
+  ],
+  "en": "Concept render"
+ },
+ {
+  "id": 345,
+  "ctx": [
+   "p"
+  ],
+  "en": "Computer-generated view built from the drawing geometry (Three.js). Materials, lighting and gear details are indicative; the drawings govern."
+ },
+ {
+  "id": 346,
+  "ctx": [
+   "p"
+  ],
+  "en": "Design package for the carpenter. Version 2.0 — flush-mounted gear, {DATE}. All dimensions in centimetres unless marked mm. Light natural oak, matte oiled."
+ },
+ {
+  "id": 347,
+  "ctx": [
+   "h2"
+  ],
+  "en": "Cut list for quoting"
+ },
+ {
+  "id": 348,
+  "ctx": [
+   "p"
+  ],
+  "en": "Every piece of wood at its finished size, grouped by the stock it is cut from, so a supplier or a carpenter can price the job without reading the drawings. Sizes in cm, L × W; thickness in mm. \"Grain along L\" marks the pieces whose grain direction the spec fixes; the rest may be turned to nest. No machining allowance or waste is included. The parts list stays the assembly reference."
+ },
+ {
+  "id": 349,
+  "ctx": [
+   "h3"
+  ],
+  "en": "Totals"
+ },
+ {
+  "id": 350,
+  "ctx": [
+   "th"
+  ],
+  "en": "Stock"
+ },
+ {
+  "id": 351,
+  "ctx": [
+   "th"
+  ],
+  "en": "Pieces"
+ },
+ {
+  "id": 352,
+  "ctx": [
+   "th"
+  ],
+  "en": "Net quantity"
+ },
+ {
+  "id": 353,
+  "ctx": [
+   "td"
+  ],
+  "en": "Oak-veneered birch plywood, 18 mm, A/B crown-cut"
+ },
+ {
+  "id": 354,
+  "ctx": [
+   "td"
+  ],
+  "en": "4 sheets of 250 × 125, face grain along the 250. See the note below."
+ },
+ {
+  "id": 355,
+  "ctx": [
+   "td"
+  ],
+  "en": "Solid oak, 30 mm"
+ },
+ {
+  "id": 356,
+  "ctx": [
+   "td"
+  ],
+  "en": "Top and speaker caps, glued up from boards."
+ },
+ {
+  "id": 357,
+  "ctx": [
+   "td"
+  ],
+  "en": "Solid oak, 50 mm"
+ },
+ {
+  "id": 358,
+  "ctx": [
+   "td"
+  ],
+  "en": "Slab fascia, one piece 145 × 6."
+ },
+ {
+  "id": 359,
+  "ctx": [
+   "td"
+  ],
+  "en": "Solid oak, 18 mm"
+ },
+ {
+  "id": 360,
+  "ctx": [
+   "td"
+  ],
+  "en": "Drawer fronts, niche door, plinths, tray aprons and rail. The fronts and the door come from one board at least 145 × 10.6."
+ },
+ {
+  "id": 361,
+  "ctx": [
+   "td"
+  ],
+  "en": "Solid oak, 20 × 14 mm"
+ },
+ {
+  "id": 362,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well floor cleats."
+ },
+ {
+  "id": 363,
+  "ctx": [
+   "td"
+  ],
+  "en": "Solid oak lipping, 5 × 18 mm"
+ },
+ {
+  "id": 364,
+  "ctx": [
+   "td"
+  ],
+  "en": "about 28 m"
+ },
+ {
+  "id": 365,
+  "ctx": [
+   "td"
+  ],
+  "en": "Birch plywood, 15 mm"
+ },
+ {
+  "id": 366,
+  "ctx": [
+   "td"
+  ],
+  "en": "Drawer box sides, fronts and backs, nominal."
+ },
+ {
+  "id": 367,
+  "ctx": [
+   "td"
+  ],
+  "en": "Birch plywood, 6 mm"
+ },
+ {
+  "id": 368,
+  "ctx": [
+   "td"
+  ],
+  "en": "Drawer box bottoms, nominal."
+ },
+ {
+  "id": 369,
+  "ctx": [
+   "td"
+  ],
+  "en": "Total"
+ },
+ {
+  "id": 370,
+  "ctx": [
+   "td"
+  ],
+  "en": "Pieces, plus the lipping."
+ },
+ {
+  "id": 371,
+  "ctx": [
+   "p"
+  ],
+  "en": "Why 4 sheets when 7.55 m² would fit on 3: the grain sets the count, not the area. The wing side panels, bay bottom panel, fixed mid panel, bay back panel and keyboard tray panel are each longer than half a sheet, so each runs along a sheet&#x27;s 250 cm length and no two fit end to end: every sheet takes one row of them. Side by side they need 394.4 cm, and 3 sheets are only 375 cm wide. All 39 pieces fit on 4 sheets with 4 mm saw kerfs."
+ },
+ {
+  "id": 372,
+  "ctx": [
+   "h3"
+  ],
+  "en": "18 mm oak-veneered birch plywood"
+ },
+ {
+  "id": 373,
+  "ctx": [
+   "th"
+  ],
+  "en": "L × W (cm)"
+ },
+ {
+  "id": 374,
+  "ctx": [
+   "td"
+  ],
+  "en": "Grain along L. Front edge lipped."
+ },
+ {
+  "id": 375,
+  "ctx": [
+   "td"
+  ],
+  "en": "Front edge lipped."
+ },
+ {
+  "id": 376,
+  "ctx": [
+   "td"
+  ],
+  "en": "Grain along L."
+ },
+ {
+  "id": 377,
+  "ctx": [
+   "td"
+  ],
+  "en": "Grain along L. Two cutouts, see the parts list."
+ },
+ {
+  "id": 378,
+  "ctx": [
+   "td"
+  ],
+  "en": "Notched down to 9.2 behind the front 5 cm. Front edge lipped."
+ },
+ {
+  "id": 379,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well side wall (Turntable)"
+ },
+ {
+  "id": 380,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well side wall (XDJ-700)"
+ },
+ {
+  "id": 381,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well side wall (Xone:92)"
+ },
+ {
+  "id": 382,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well rear wall (Turntable)"
+ },
+ {
+  "id": 383,
+  "ctx": [
+   "td"
+  ],
+  "en": "Two pieces per wall, either side of the 12 cm cable notch."
+ },
+ {
+  "id": 384,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well rear wall (XDJ-700)"
+ },
+ {
+  "id": 385,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well floor (Turntable)"
+ },
+ {
+  "id": 386,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well floor (XDJ-700)"
+ },
+ {
+  "id": 387,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well floor (Xone:92)"
+ },
+ {
+  "id": 388,
+  "ctx": [
+   "td"
+  ],
+  "en": "Grain along L. Both faces show. Front edge lipped."
+ },
+ {
+  "id": 389,
+  "ctx": [
+   "td"
+  ],
+  "en": "Four gear cut-outs, see the plan of the top, drawing 3. Glued up from boards, or 30 mm veneered board with 30 mm oak lipping."
+ },
+ {
+  "id": 390,
+  "ctx": [
+   "td"
+  ],
+  "en": "Fills the 5 cm front rail under the top board, from 91 to 97. See detail B, drawing 5."
+ },
+ {
+  "id": 391,
+  "ctx": [
+   "td"
+  ],
+  "en": "Cut both fronts and the niche door in sequence from one board at least 145 × 10.6, so the grain runs on across all three."
+ },
+ {
+  "id": 392,
+  "ctx": [
+   "td"
+  ],
+  "en": "From the same board as the drawer fronts."
+ },
+ {
+  "id": 393,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well floor cleat (Turntable)"
+ },
+ {
+  "id": 394,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well floor cleat (XDJ-700)"
+ },
+ {
+  "id": 395,
+  "ctx": [
+   "td"
+  ],
+  "en": "Well floor cleat (Xone:92)"
+ },
+ {
+  "id": 396,
+  "ctx": [
+   "td"
+  ],
+  "en": "1.8 wide"
+ },
+ {
+  "id": 397,
+  "ctx": [
+   "h3"
+  ],
+  "en": "Birch plywood, drawer boxes"
+ },
+ {
+  "id": 398,
+  "ctx": [
+   "td"
+  ],
+  "en": "Drawer box side"
+ },
+ {
+  "id": 399,
+  "ctx": [
+   "td"
+  ],
+  "en": "Drawer box front and back"
+ },
+ {
+  "id": 400,
+  "ctx": [
+   "td"
+  ],
+  "en": "Nominal, for pricing: drawn for a box the full 58.7 cm width of its opening. The runner&#x27;s instructions set the final width."
+ },
+ {
+  "id": 401,
+  "ctx": [
+   "td"
+  ],
+  "en": "Drawer box bottom"
+ },
+ {
+  "id": 402,
+  "ctx": [
+   "td"
+  ],
+  "en": "Nominal, as above."
+ },
+ {
+  "id": 403,
+  "ctx": [
+   "li"
+  ],
+  "en": "Quantities, from the cut list: 7.55 m² of 18 mm oak-veneered birch ply, which takes 4 sheets of 250 × 125 because of the grain, 0.93 m² of 30 mm solid oak for the top and caps, plus solid oak for the fascia, aprons, rail, drawer fronts, plinths, cleats and lipping. The carpenter should re-check against their stock sizes."
+ }
+]

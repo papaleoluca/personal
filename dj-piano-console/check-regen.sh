@@ -2,13 +2,17 @@
 #
 # Regression guard for the DJ + piano console design package.
 #
-# Regenerates BOTH variants and BOTH concept renders into a throwaway directory
-# and compares every artefact against the copy sitting next to this script. Run it
-# on a clean tree and that copy is the committed one. The tree is never written to.
+# Regenerates BOTH variants, BOTH concept renders and the French edition into a
+# throwaway directory and compares every artefact against the copy sitting next to
+# this script. Run it on a clean tree and that copy is the committed one. The tree
+# is never written to.
 #
 #   drawing-*.svg  drawing-*-v2.svg      compared by sha256
 #   dj-piano-console{,-v2}-spec.html     compared by sha256 after normalising the
 #                                        date stamp, the one legitimate daily diff
+#   dj-piano-console-v2-spec-fr.html     the French edition, rebuilt by fr/build_fr.py
+#                                        from the English this run generated, and
+#                                        compared like the English HTML
 #   render-cg.png  render-cg-v2.png      compared by sha256 (render-cg.html seeds
 #                                        its PRNG, so the renders are reproducible)
 #
@@ -45,9 +49,10 @@ if [ -z "${HERE:-}" ] || [ ! -f "$HERE/generate.py" ] || [ ! -f "$HERE/render-cg
 fi
 
 # Floor on how many artefacts a healthy run compares (4 v1 SVG + 5 v2 SVG +
-# 2 HTML + 2 PNG). Adding a drawing only raises the real count; this is here so
-# that a run which compares nothing can never be mistaken for a clean one.
-MIN_ARTEFACTS=13
+# 3 HTML, the French one included, + 2 PNG). Adding a drawing only raises the real
+# count; this is here so that a run which compares nothing can never be mistaken
+# for a clean one.
+MIN_ARTEFACTS=14
 
 CHROME=${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}
 if [ ! -x "$CHROME" ]; then
@@ -95,19 +100,29 @@ render "?v=2" "render-cg-v2.png" || exit 2
 ( cd "$WORK" && python3 ./generate.py )            >/dev/null || { echo "check-regen: v1 generate failed" >&2; exit 2; }
 ( cd "$WORK" && VARIANT=2 python3 ./generate.py )  >/dev/null || { echo "check-regen: v2 generate failed" >&2; exit 2; }
 
+# The French edition is rebuilt from the English this run just generated, so the
+# guard also catches a French that has fallen behind the English: build_fr.py
+# leaves any string it cannot translate in English and exits 1, and the comparison
+# below shows the resulting drift. Its audit is kept for the report either way.
+french_audit=0
+python3 -B "$HERE/fr/build_fr.py" --src "$WORK/dj-piano-console-v2-spec.html" \
+    --out "$WORK/dj-piano-console-v2-spec-fr.html" > "$WORK/fr-audit.txt" 2>&1 || french_audit=1
+
 # ---------------------------------------------------------------------------
 # The HTML carries a date.today() stamp in its sub-title and nothing else that
 # legitimately moves. Rewrite it to a fixed token - and verify the rewrite fired,
 # so a normaliser that quietly stops matching shows up as a guard error rather
 # than as permanent drift or, worse, as a pass.
 # ---------------------------------------------------------------------------
-normalise_html() {  # $1 = source, $2 = destination
-    sed -E 's/(Design package for the carpenter\. [^,<]*), [0-9]{1,2} [A-Za-z]+ [0-9]{4}\./\1, DATE-STAMP./' "$1" > "$2" || return 1
+normalise_html() {  # $1 = source, $2 = destination (English or French sub-title)
+    sed -E -e 's/(Design package for the carpenter\. [^,<]*), [0-9]{1,2} [A-Za-z]+ [0-9]{4}\./\1, DATE-STAMP./' \
+           -e 's/(Dossier technique pour le menuisier\. [^,<]*), [0-9]{1,2} [^ ,.<]+ [0-9]{4}\./\1, DATE-STAMP./' \
+           "$1" > "$2" || return 1
     grep -q 'DATE-STAMP' "$2"
 }
 
-artefacts() {  # $1 = directory -> sorted basenames of everything generate.py owns
-    ( cd "$1" 2>/dev/null && ls -1 drawing-*.svg dj-piano-console*-spec.html \
+artefacts() {  # $1 = directory -> sorted basenames of everything generate.py and fr/build_fr.py own
+    ( cd "$1" 2>/dev/null && ls -1 drawing-*.svg dj-piano-console*-spec.html dj-piano-console*-spec-fr.html \
         render-cg.png render-cg-v2.png 2>/dev/null ) | sort -u
 }
 
@@ -138,7 +153,7 @@ for f in $names; do
         drift=1; continue
     fi
     case "$f" in
-        *-spec.html)
+        *-spec.html|*-spec-fr.html)
             if ! normalise_html "$new" "$WORK/.norm/new-$f" || ! normalise_html "$old" "$WORK/.norm/old-$f"; then
                 printf 'ERROR  %-28s the date-stamp normaliser matched nothing; fix it before trusting this guard\n' "$f"
                 drift=1; continue
@@ -158,6 +173,12 @@ for f in $names; do
         drift=1
     fi
 done
+
+if [ "$french_audit" -ne 0 ]; then
+    printf 'DRIFT  %-28s the French build flagged these; translate them in fr/ (see README):\n' "fr/build_fr.py audit"
+    sed 's/^/         /' "$WORK/fr-audit.txt"
+    drift=1
+fi
 
 echo
 if [ "$drift" -eq 0 ]; then
