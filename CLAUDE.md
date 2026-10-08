@@ -22,3 +22,7 @@ which `workout-plan/.gitignore` excludes. Never commit the plaintext HTML.
 - Magic link (a separate run, `--share` only prints): `npx --yes staticrypt@3.5.4 --share "<page URL>" --share-remember`
 - The password is not stored anywhere in the repo. Ask Luca for it.
 - Before committing, grep the output for a heading from the page to confirm no plaintext.
+- Training log (upper body plan): one `<div class='card log' data-day='A' data-date='YYYY-MM-DD'>` per session
+  inside `#log`, titled with an `<h3>` like `Tue 6 Oct · Day B`. The script at the end of the page builds the
+  day tabs and the date picker from those attributes and opens on the most recent session, so a new
+  session only needs its card.
